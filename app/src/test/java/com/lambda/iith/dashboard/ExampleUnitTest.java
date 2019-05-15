@@ -1,4 +1,4 @@
-package com.appdev.kokate.iith_dashboard;
+package com.lambda.iith.dashboard;
 
 import org.junit.Test;
 

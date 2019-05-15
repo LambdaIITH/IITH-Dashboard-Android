@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "735251746381",
+    "firebase_url": "https://iith-dashboard.firebaseio.com",
+    "project_id": "iith-dashboard",
+    "storage_bucket": "iith-dashboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735251746381:android:c58f00b1db6fec04",
+        "android_client_info": {
+          "package_name": "com.lambda.iith.dashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735251746381-e7ng8644sgqpbmjo6363h9789gih940g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lambda.iith.dashboard",
+            "certificate_hash": "84ff92e839161024e710a40d521c9943460aac5f"
+          }
+        },
+        {
+          "client_id": "735251746381-1khjqv48ipvrmf6igft4hm4a0pnnsd0o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByhC4vMetmT1Vqyl0f3JzBgX1og9ADf80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735251746381-1khjqv48ipvrmf6igft4hm4a0pnnsd0o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
