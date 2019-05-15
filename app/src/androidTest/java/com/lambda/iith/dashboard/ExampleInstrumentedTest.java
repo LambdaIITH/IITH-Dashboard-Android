@@ -1,4 +1,4 @@
-package com.appdev.kokate.iith_dashboard;
+package com.lambda.iith.dashboard;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
