@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "735251746381-2d7mme2ng0c2plvk855ipld9qvpjrjmk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lambda.iith.dashboard",
+            "certificate_hash": "4c425fd75db803ccbea6ae24f384423c482b8a26"
+          }
+        },
+        {
+          "client_id": "735251746381-hrhegqde0l4pk9ssnrsoa431a5t4cuub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lambda.iith.dashboard",
+            "certificate_hash": "050c88b244b142da27b28cf54911b48b6c0bb8d4"
+          }
+        },
+        {
           "client_id": "735251746381-e7ng8644sgqpbmjo6363h9789gih940g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
