@@ -14,4 +14,26 @@
     <string name="menu_share">Cab Sharing</string>
     <string name="menu_send">Lost and Found</string>
     <string name="menu_logout">Logout</string>
+
+    <string name="csr_from">From</string>
+    <string name="csr_date">Date</string>
+    <string name="csr_to">To</string>
+    <string name="csr_check1">Secret Booking</string>
+    <string name="csr_check2">Recieve Notifications</string>
+    <string name="csr_book">Book</string>
+    <string name="csr_cancel">Cancel</string>
+    <string name="csr_fromSelect">12:20</string>
+    <string name="csr_toSelect">14:20</string>
+    <string name="csr_dateSelect">122-05-2019</string>
+    <string name="csm_register">Register</string>
+    <string name="csm_cancel">Cancel</string>
+    <string name="csm_snooze">Snooze</string>
+    <string name="cs_date">Date</string>
+    <string name="cs_CabDate">22/05/2019</string>
+    <string name="cs_Heading2">Shares Available</string>
+    <string name="cs_Heading1">Registered For</string>
+    <string name="cs_CabTime2">14:00</string>
+    <string name="cs_TO">TO</string>
+    <string name="cs_CabTime1">12:00</string>
+    <string name="cs_time">Time</string>
 </resources>
