@@ -14,4 +14,7 @@
     <string name="menu_share">Cab Sharing</string>
     <string name="menu_send">Lost and Found</string>
     <string name="menu_logout">Logout</string>
+    <string name="bs_show">GO</string>
+    <string name="bs_day">Day</string>
+    <string name="bs_selectType">Bus Type</string>
 </resources>
