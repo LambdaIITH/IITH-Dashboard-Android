@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#07000000">
+
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/csm_snooze"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@+id/cs_snooze"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/cs_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#D50000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cs_cancel"
+        app:maxImageSize="48dp"
+        app:srcCompat="@mipmap/baseline_add_black_48" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/cs_snooze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:foregroundGravity="top|right"
+        app:backgroundTint="#AEEA00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:maxImageSize="48dp"
+        app:srcCompat="@mipmap/round_not_interested_black_48"
+        android:focusable="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/cs_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:foregroundGravity="center_vertical|clip_horizontal|center"
+        app:backgroundTint="#AEEA00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cs_snooze"
+        app:maxImageSize="48dp"
+        app:srcCompat="@mipmap/round_clear_black_48"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/csm_cancel"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@+id/cs_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/csm_register"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@+id/cs_register"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="400dp"
+        android:layout_height="207dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
