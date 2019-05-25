@@ -36,4 +36,21 @@
     <string name="cs_TO">TO</string>
     <string name="cs_CabTime1">12:00</string>
     <string name="cs_time">Time</string>
+    <string name="bs_show">GO</string>
+    <string name="hint_one">Select Day</string>
+    <string name="hint_two">Select bus type</string>
+    <string name="bs_day">Day</string>
+    <string name="bs_selectType">Bus Type</string>
+
+    <string-array name="days">
+        <item>Weekday</item>
+        <item>Weekend</item>
+    </string-array>
+
+    <string-array name="busType">
+        <item>Maingate-Hostel</item>
+        <item>Lingampally-IITH</item>
+        <item>Minibuses</item>
+        <item>ODF-Kandi</item>
+    </string-array>
 </resources>
