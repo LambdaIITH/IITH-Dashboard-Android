@@ -28,6 +28,8 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.ImageView;
 
+import java.net.URL;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-    /**
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-**/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

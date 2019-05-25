@@ -10,34 +10,33 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_bus_schedule"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@mipmap/baseline_directions_bus_black_18dp"
             android:title="@string/menu_gallery" />
         <item
             android:id="@+id/nav_mess_menu"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@mipmap/baseline_restaurant_menu_black_48"
             android:title="@string/menu_slideshow" />
         <item
             android:id="@+id/nav_timetable"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@mipmap/baseline_directions_car_black_48"
             android:title="@string/menu_tools" />
 
 
-
-            <item
-                android:id="@+id/nav_cab_sharing"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_lost_found"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+        <item
+            android:id="@+id/nav_cab_sharing"
+            android:icon="@mipmap/baseline_directions_car_black_48"
+            android:title="@string/menu_share" />
+        <item
+            android:id="@+id/nav_lost_found"
+            android:icon="@mipmap/baseline_add_circle_black_48"
+            android:title="@string/menu_send" />
     </group>
 
     <item android:title="">
         <menu>
             <item
                 android:id="@+id/logout"
-                android:icon="@android:drawable/btn_dialog"
+                android:icon="@mipmap/baseline_exit_to_app_black_48"
                 android:title="@string/menu_logout" />
         </menu>
     </item>
