@@ -28,6 +28,8 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.ImageView;
 
+import java.net.URL;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
