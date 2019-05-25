@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/side_nav_bar">
+    android:background="#000000">
 
     <Button
         android:id="@+id/button1"
@@ -19,14 +19,13 @@
         android:fontFamily="serif"
         android:text="UDH"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#0C0B0B"
+        android:textColor="#304FFE"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button2"
