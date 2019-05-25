@@ -42,7 +42,7 @@ public class CabSharingMenu extends DialogFragment {
            public void onClick(View v) {
 
                 FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.fragmentLayout, new CabSharingRegister()).commit();
+                fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharingRegister()).commit();
                 getDialog().hide();
             }
        });
@@ -54,7 +54,7 @@ public class CabSharingMenu extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.fragmentLayout, new CabSharing()).commit();
+        fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
     }
 
     public static CabSharingMenu newInstance(String title) {

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MessMenuDatePicker"></activity>
+        <activity android:name=".SignIn"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

@@ -64,7 +64,7 @@ public class CabSharingRegister extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
 
-                fm.beginTransaction().replace(R.id.fragmentLayout, new CabSharing()).commit();
+                fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
 
             }
         });
@@ -99,7 +99,7 @@ public class CabSharingRegister extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
 
-                fm.beginTransaction().replace(R.id.fragmentLayout, new CabSharing()).commit();
+                fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
 
             }
         });

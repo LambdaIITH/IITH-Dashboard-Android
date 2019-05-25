@@ -1,8 +1,6 @@
 package com.lambda.iith.dashboard;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,7 +27,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity
@@ -49,14 +46,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -151,18 +141,21 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-        Fragment fragment = null;
-        int id = item.getItemId();
 
+        int id = item.getItemId();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_slideshow) {
-            fragment = new MessMenu();
-        } else if (id == R.id.nav_tools) {
+        } else if (id == R.id.nav_mess_menu) {
+            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_bus_schedule) {
+            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
+        } else if (id == R.id.nav_timetable) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_cab_sharing) {
+            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new CabSharing()).commit();
+        } else if (id == R.id.nav_lost_found) {
 
         } else if (id == R.id.logout)
             signOut();
@@ -171,12 +164,7 @@ public class MainActivity extends AppCompatActivity
 
 
         }
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.screen_area, fragment);
-            ft.commit();
-        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
