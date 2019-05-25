@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/side_nav_bar">
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="171dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="348dp"
+        android:background="@drawable/rounded_button"
+        android:clickable="true"
+        android:fontFamily="serif"
+        android:text="UDH"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#0C0B0B"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="168dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="336dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="180dp"
+        android:background="@drawable/rounded_button2"
+        android:clickable="true"
+        android:fontFamily="serif"
+        android:onClick="btn"
+        android:text="LDH"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#FFEB3B"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@android:style/Widget.TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="serif"
+        android:freezesText="true"
+        android:gravity="center"
+        android:soundEffectsEnabled="true"
+        android:text="Select the Mess"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="#FFF"
+        android:textSize="36sp"
+        android:textStyle="normal|bold"
+
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="43dp" />
+
+</android.support.constraint.ConstraintLayout>
