@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
+    /**
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+**/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -181,5 +184,26 @@ public class MainActivity extends AppCompatActivity
         if (currentUser==null) {
             startActivity(new Intent(MainActivity.this, SignIn.class));
         }
+    }
+
+    //This method is used to set the default screen that will be shown.
+    private void setDefaultFragment(Fragment defaultFragment){
+        this.replaceFragment(defaultFragment);
+    }
+
+
+    //replaces the current fragment with the destination one.
+    private void replaceFragment(Fragment destFragment) {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+
+        //beginning fragment transaction
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        //Replacing layout holder with the required fragment object
+        fragmentTransaction.replace(R.id.drawer_layout,destFragment);
+
+        // Commit the Fragment replace action.
+        fragmentTransaction.commit();
+
     }
 }
