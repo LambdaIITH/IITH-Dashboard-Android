@@ -5,13 +5,11 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="IITH DashBoard"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".SignIn"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".MessMenuDatePicker"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
