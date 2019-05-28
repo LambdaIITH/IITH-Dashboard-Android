@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CabSharingRegister">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#00000000"
+            android:isScrollContainer="false"
+            app:navigationIcon="@mipmap/baseline_arrow_back_white_24"
+            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay"
+            app:title="@string/title_activity_mess_menu_date"/>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/activity_mess_menu_date_picker" />
+
+</android.support.design.widget.CoordinatorLayout>
