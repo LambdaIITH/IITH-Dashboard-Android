@@ -158,6 +158,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_cab_sharing) {
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new CabSharing()).commit();
         } else if (id == R.id.nav_lost_found) {
+            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new LostnFoundFrag()).commit();
+
 
         } else if (id == R.id.logout)
             signOut();
