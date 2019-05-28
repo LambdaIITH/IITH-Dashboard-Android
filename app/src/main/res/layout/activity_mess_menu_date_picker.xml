@@ -2,22 +2,25 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#050505"
-    tools:context=".MessMenuDatePicker">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentStart="false"
+    android:layout_alignParentBottom="false"
+    android:background="@color/Background"
+    app:layout_constraintEnd_toStartOf="@+id/Reg_Date"
+    app:layout_constraintStart_toStartOf="@+id/Reg_Date">
 
-    <RelativeLayout
+<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#05000000">
+        android:background="@color/Background">
 
         <TextView
             android:id="@+id/textView"
             style="@android:style/Widget.TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="70dp"
             android:fontFamily="serif"
             android:freezesText="true"
             android:gravity="center"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_alignParentStart="false"
     android:layout_alignParentBottom="false"
-    android:background="#000000"
+    android:background="@color/Background"
     app:layout_constraintEnd_toStartOf="@+id/Reg_Date"
     app:layout_constraintStart_toStartOf="@+id/Reg_Date"
     tools:context=".SignIn">
@@ -55,9 +55,9 @@
 
         android:layout_marginStart="7dp"
         android:layout_marginBottom="36dp"
-        android:background="#000000"
+        android:background="@color/Background"
         android:text="@string/csr_fromSelect"
-        android:textColor="@android:color/white"
+        android:textColor="@color/onBackground"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/checkBox"
         app:layout_constraintStart_toEndOf="@+id/lbl_your_name" />
@@ -68,9 +68,9 @@
         android:layout_height="wrap_content"
 
         android:layout_marginEnd="43dp"
-        android:background="#000000"
+        android:background="@color/Background"
         android:text="@string/csr_toSelect"
-        android:textColor="@android:color/white"
+        android:textColor="@color/onBackground"
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/lbl_your_name2"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -86,7 +86,7 @@
         android:backgroundTint="#16534D4D"
         android:hapticFeedbackEnabled="true"
         android:text="@string/csr_dateSelect"
-        android:textColor="@android:color/white"
+        android:textColor="@color/onBackground"
         android:textColorHighlight="@android:color/darker_gray"
         android:textColorLink="@android:color/darker_gray"
         android:textSize="24sp"
@@ -97,24 +97,14 @@
         android:id="@+id/cs_book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="33dp"
+        android:layout_marginEnd="8dp"
         android:background="#85304FFE"
         android:text="@string/csr_book"
         android:textColor="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@+id/checkBox2"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
-
-    <Button
-        android:id="@+id/cs_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="81dp"
-        android:background="#85304FFE"
-        android:text="@string/csr_cancel"
-        android:textColor="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
 
     <CheckBox

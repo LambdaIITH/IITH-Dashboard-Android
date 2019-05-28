@@ -54,5 +54,8 @@
         <item>Minibuses</item>
         <item>ODF-Kandi</item>
     </string-array>
+    <string name="title_activity_cab_sharing_register2">CabSharing</string>
+    <string name="title_activity_mess_menu_date">MessMenu</string>
+
 
 </resources>

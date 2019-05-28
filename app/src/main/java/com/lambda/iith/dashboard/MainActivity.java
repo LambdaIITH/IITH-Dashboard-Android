@@ -1,15 +1,14 @@
 package com.lambda.iith.dashboard;
 
 import android.content.Intent;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
+
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleSignInOptions gso;
     public String name;
     public  String email;
-    public Uri photoUrl;
+    public String photoUrl;
 
     private  TextView Nav_Bar_Header; //Navigation Bar Header i.e User Name
     private  TextView Nav_Bar_Email; //Navigation Bar email
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity
             // Name, email address, and profile photo Url
             name = user.getDisplayName().toString();
             email = user.getEmail().toString();
-            photoUrl = user.getPhotoUrl();
+            photoUrl = user.getPhotoUrl().toString();
 
 
         }
@@ -104,8 +103,7 @@ public class MainActivity extends AppCompatActivity
         Nav_Bar_Email = (TextView) findViewById(R.id.nav_bar_email);
         Nav_Bar_Email.setText(email); // Setting email recieved from google account in navigation bar
 
-        Nav_Bar_DP = (ImageView) findViewById(R.id.nav_bar_dp);
-        Nav_Bar_DP.setImageURI(photoUrl);
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -203,4 +201,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
     }
+
+
 }

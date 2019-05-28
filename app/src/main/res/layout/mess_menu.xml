@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@color/Background">
 
     <Button
         android:id="@+id/button1"
@@ -19,7 +19,7 @@
         android:fontFamily="serif"
         android:text="UDH"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#304FFE"
+        android:textColor="@color/onPrimary"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +41,7 @@
         android:onClick="btn"
         android:text="LDH"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#FFEB3B"
+        android:textColor="@color/onPrimary"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +67,7 @@
         android:soundEffectsEnabled="true"
         android:text="Select the Mess"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="#FFF"
+        android:textColor="@color/onBackground"
         android:textSize="36sp"
         android:textStyle="normal|bold"
 

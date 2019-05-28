@@ -1,21 +1,13 @@
 package com.lambda.iith.dashboard;
 
 import android.app.DatePickerDialog;
-
 import android.app.TimePickerDialog;
-
 import android.os.Bundle;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -24,28 +16,29 @@ import android.widget.TimePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
-public class CabSharingRegister extends Fragment {
+public class CabSharingRegister extends AppCompatActivity {
     private Button date , from, to;
     private  int mDay , mMonth , mYear, mHour , mMinute;
-    private Button Book , Cancel;
+    private Button Book ;
     public View view;
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.cab_sharing_register, container , false);
-        date = (Button) view.findViewById(R.id.Reg_Date);
-        from = (Button) view.findViewById(R.id.csr_from);
-        to = (Button) view.findViewById(R.id.to);
-        Cancel = (Button) view.findViewById(R.id.cs_cancel) ;
-        Book = (Button) view.findViewById(R.id.cs_book);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cab_sharing_register2);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
+        date = (Button) findViewById(R.id.Reg_Date);
+        from = (Button) findViewById(R.id.csr_from);
+        to = (Button) findViewById(R.id.to);
+
+        Book = (Button) findViewById(R.id.cs_book);
 
         Calendar calendar = Calendar.getInstance();
-        mDay = calendar.DAY_OF_MONTH;
-        mMonth = calendar.MONTH;
-        mYear = calendar.YEAR;
-        mHour = calendar.HOUR_OF_DAY;
-        mMinute = calendar.MINUTE;
+        mDay = calendar.DAY_OF_WEEK;
 
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -62,7 +55,7 @@ public class CabSharingRegister extends Fragment {
         Book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
+                FragmentManager fm = getSupportFragmentManager();
 
                 fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
 
@@ -74,6 +67,9 @@ public class CabSharingRegister extends Fragment {
             public void onClick(View v) {
                 TimePickerObj(from , 0);
 
+
+
+
             }
         });
 
@@ -83,6 +79,11 @@ public class CabSharingRegister extends Fragment {
         to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String Date = from.getText().toString();
+                int hour = Character.getNumericValue(Date.charAt(0))*10 +  Character.getNumericValue(Date.charAt(1));
+
+                int minute = Character.getNumericValue(Date.charAt(3))*10 + Character.getNumericValue(Date.charAt(4));
+                to.setText(String.format("%02d:%02d", hour+1, minute));
                 TimePickerObj(to, 1);
             }
         });
@@ -94,37 +95,18 @@ public class CabSharingRegister extends Fragment {
             }
         });
 
-        Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
 
-                fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
-
-            }
-        });
-
-
-
-
-
-        return view;
-
-    }
-
-    public static CabSharingRegister newInstance(String title) {
-        CabSharingRegister frag = new CabSharingRegister();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        frag.setArguments(args);
-        return frag;
     }
 
     public void TimePickerObj(final TextView textView , final int k){
         final Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        final int minute = mcurrentTime.get(Calendar.MINUTE);
-        final TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+        String Date = textView.getText().toString();
+        int hour = Character.getNumericValue(Date.charAt(0))*10 +  Character.getNumericValue(Date.charAt(1));
+
+        int minute = Character.getNumericValue(Date.charAt(3))*10 + Character.getNumericValue(Date.charAt(4));
+
+
+        final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
 
@@ -138,12 +120,22 @@ public class CabSharingRegister extends Fragment {
 
     public void DatePickerObj(final Button textView){
         final Calendar mcurrentTime = Calendar.getInstance();
-        int day = mcurrentTime.get(Calendar.DAY_OF_MONTH);
-        final int month = mcurrentTime.get(Calendar.MONTH);
-        int year = mcurrentTime.get(Calendar.YEAR);
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        //int day = mcurrentTime.get(Calendar.DAY_OF_MONTH);
+        //final int month = mcurrentTime.get(Calendar.MONTH);
+        //int year = mcurrentTime.get(Calendar.YEAR);
+
+        String Date = textView.getText().toString();
+        int day = Character.getNumericValue(Date.charAt(0))*10 +  Character.getNumericValue(Date.charAt(1));
+
+        int year = Character.getNumericValue(Date.charAt(6))*1000 + Character.getNumericValue(Date.charAt(7))*100+ Character.getNumericValue(Date.charAt(8))*10 + Character.getNumericValue(Date.charAt(9));
+        int month = Character.getNumericValue(Date.charAt(3))*10 + Character.getNumericValue(Date.charAt(4));
+
+
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
                 textView.setText(String.format("%02d-%02d-%02d", dayOfMonth, month , year));
             }
 
@@ -154,6 +146,15 @@ public class CabSharingRegister extends Fragment {
 
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+    }
 }
