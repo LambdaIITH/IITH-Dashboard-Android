@@ -8,11 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class LostnFoundFrag extends Fragment {
+public class FragmentQuiz extends Fragment {
+    View view;
+
+
+    public FragmentQuiz() {
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.lost_found_fragment, container, false);
+        view = inflater.inflate(R.layout.quiz_fragment, container, false);
+        return view;
+
     }
 }

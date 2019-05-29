@@ -9,15 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".Main2Activity"></activity>
         <activity
             android:name=".CabSharingRegister"
             android:label="@string/title_activity_cab_sharing_register2"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity
             android:name=".MessMenuDatePicker"
             android:label="@string/title_activity_mess_menu_date"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name=".SignIn" />
         <activity
             android:name=".MainActivity"
