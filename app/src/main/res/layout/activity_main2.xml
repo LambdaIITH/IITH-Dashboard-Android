@@ -17,8 +17,10 @@
     app:tabGravity="fill"
     app:tabMode="fixed"
     android:id="@+id/tablayout_id"
-    app:tabTextColor="@color/tabtextcolor"
-    app:tabIndicatorColor="@color/tabindicatorcolor"/>
+    app:tabTextColor="@color/onSurface"
+    app:tabBackground="@color/colorPrimaryDark"
+    
+    app:tabIndicatorColor="@color/onSurface"/>
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
