@@ -50,7 +50,7 @@ public class FragmentExplore  extends Fragment {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent homeIntent = new Intent(getActivity(),MainActivity.class);
+                Intent homeIntent = new Intent(getActivity(),Main3Activity.class);
                 startActivity(homeIntent);
             }
         });
