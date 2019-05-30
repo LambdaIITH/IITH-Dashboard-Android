@@ -1,31 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center">
 
-    <TextView
+
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.lambda.iith.dashboard.FragmentQuiz" >
+    </ListView>
+
+    <!---->
+
+    <!--&lt;!&ndash;<android.support.design.widget.FloatingActionButton&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/fabLost"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_alignParentRight="true"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_alignParentBottom="true"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_marginRight="20dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_marginBottom="20dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:backgroundTint="@color/fabBack"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:clickable="true"&ndash;&gt;-->
+    <!--&lt;!&ndash;app:srcCompat="@mipmap/baseline_add_black_48" />&ndash;&gt;-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:backgroundTint="@color/fabBack"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:text="ADD"-->
+    <!--android:textColor="@color/onSurface" />-->
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Found Fragment"
-        android:textSize="20dp"
-        android:textColor="@color/onSurface"
-
-        android:textStyle="bold"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabfound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/fabBack"
+        android:src="@drawable/ic_add_circle_black_24dp"
         android:clickable="true"
-        app:srcCompat="@mipmap/baseline_add_black_48" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginRight="18dp"
+        android:id="@+id/add_id_circle"/>
 
 </RelativeLayout>
+
+
+
