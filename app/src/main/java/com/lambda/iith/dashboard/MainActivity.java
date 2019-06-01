@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -148,17 +148,22 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_mess_menu) {
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
+            toolbar.setTitle("Mess Menu");
 
         } else if (id == R.id.nav_bus_schedule) {
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
+            toolbar.setTitle("Bus Schedule");
         } else if (id == R.id.nav_timetable) {
 
-        } else if (id == R.id.nav_cab_sharing) {
+        } else if (id == R.id.nav_cab_sharing)
+
+        {
+            toolbar.setTitle("Cab Sharing");
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new CabSharing()).commit();
         } else if (id == R.id.nav_lost_found) {
-//            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Main2Activity()).commit();
-            Intent i = new Intent(MainActivity.this, Main2Activity.class);
-            startActivity(i);
+            toolbar.setTitle("Lost and Found");
+           fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Main2Activity()).commit();
+
 
 
 

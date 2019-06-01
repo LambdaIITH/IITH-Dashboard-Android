@@ -56,6 +56,8 @@
     </string-array>
     <string name="title_activity_cab_sharing_register2">CabSharing</string>
     <string name="title_activity_mess_menu_date">MessMenu</string>
+    <string name="title_activity_cab_type">CabType</string>
+    <string name="cab_type_rgia_to_iith">Cab Type : RGIA to IITH</string>
 
 
 </resources>
