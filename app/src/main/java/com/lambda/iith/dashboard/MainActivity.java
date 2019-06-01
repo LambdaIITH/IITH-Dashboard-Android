@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new CabSharing()).commit();
         } else if (id == R.id.nav_lost_found) {
             toolbar.setTitle("Lost and Found");
+
            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Main2Activity()).commit();
 
 
