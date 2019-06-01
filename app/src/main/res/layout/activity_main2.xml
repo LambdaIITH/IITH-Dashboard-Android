@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,37 +6,69 @@
     android:layout_height="match_parent"
     tools:context=".Main2Activity"
     android:orientation="vertical">
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:id="@+id/appbarid"
+    android:gravity="center"
+    android:elevation="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
-        android:id="@+id/frame_id">
-
-
-
-        <android.support.design.widget.TabLayout
-            android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
-            android:id="@+id/tablayout_id"
-            app:tabTextColor="@color/onSurface"
-            app:tabBackground="@color/colorPrimaryDark"
-            app:tabIndicatorColor="@color/onSurface"/>
+            android:layout_marginTop="11dp"
+            android:id="@+id/back_id"
+            android:src="@drawable/ic_arrow_back_black_24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lost And Found"
+            android:textSize="26dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/onSurface"/>
 
-        <android.support.v4.view.ViewPager
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="48dp"
-            android:id="@+id/viewpager_id">
-        </android.support.v4.view.ViewPager>
+
+    </LinearLayout>
+
+
+</android.support.design.widget.AppBarLayout>
+
+
+
+
+
+
+<FrameLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+
+    android:layout_marginTop="0dp"
+    android:id="@+id/frame_id">
+
+
+
+<android.support.design.widget.TabLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+app:tabGravity="fill"
+app:tabMode="fixed"
+android:id="@+id/tablayout_id"
+app:tabTextColor="@color/onSurface"
+app:tabBackground="@color/colorPrimaryDark"
+app:tabIndicatorColor="@color/onSurface"/>
+
+<android.support.v4.view.ViewPager
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_marginTop="48dp"
+android:id="@+id/viewpager_id">
+</android.support.v4.view.ViewPager>
 
     </FrameLayout>
-
-
-
-
-
 </LinearLayout>
