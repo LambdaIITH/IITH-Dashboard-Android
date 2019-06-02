@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment()).commit();
 
 
 
@@ -145,7 +146,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
+                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
+            }
+            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment()).commit();
+            toolbar.setTitle("IITH Dashboard");
+
         } else if (id == R.id.nav_mess_menu) {
 
             if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
@@ -205,7 +211,7 @@ public class MainActivity extends AppCompatActivity
 
     //This method is used to set the default screen that will be shown.
     private void setDefaultFragment(Fragment defaultFragment){
-        this.replaceFragment(defaultFragment);
+        this.replaceFragment(new HomeScreenFragment());
     }
 
 
