@@ -15,6 +15,7 @@
     <string name="menu_send">Lost and Found</string>
     <string name="menu_logout">Logout</string>
 
+
     <string name="csr_from">From</string>
     <string name="csr_date">Date</string>
     <string name="csr_to">To</string>
@@ -36,4 +37,27 @@
     <string name="cs_TO">TO</string>
     <string name="cs_CabTime1">12:00</string>
     <string name="cs_time">Time</string>
+    <string name="bs_show">GO</string>
+    <string name="hint_one">Select Day</string>
+    <string name="hint_two">Select bus type</string>
+    <string name="bs_day">Day</string>
+    <string name="bs_selectType">Bus Type</string>
+
+    <string-array name="days">
+        <item>Weekday</item>
+        <item>Weekend</item>
+    </string-array>
+
+    <string-array name="busType">
+        <item>Maingate-Hostel</item>
+        <item>Lingampally-IITH</item>
+        <item>Minibuses</item>
+        <item>ODF-Kandi</item>
+    </string-array>
+    <string name="title_activity_cab_sharing_register2">CabSharing</string>
+    <string name="title_activity_mess_menu_date">MessMenu</string>
+    <string name="title_activity_cab_type">CabType</string>
+    <string name="cab_type_rgia_to_iith">Cab : RGIA to IITH</string>
+
+
 </resources>

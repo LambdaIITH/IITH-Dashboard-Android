@@ -1,6 +1,7 @@
 package com.lambda.iith.dashboard;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -41,9 +42,7 @@ public class CabSharingMenu extends DialogFragment {
             @Override
            public void onClick(View v) {
 
-                FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.fragmentLayout, new CabSharingRegister()).commit();
-                getDialog().hide();
+                startActivity(new Intent(getContext() ,CabType.class));
             }
        });
 
@@ -54,7 +53,7 @@ public class CabSharingMenu extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.fragmentLayout, new CabSharing()).commit();
+        fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
     }
 
     public static CabSharingMenu newInstance(String title) {
@@ -62,6 +61,7 @@ public class CabSharingMenu extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
+
         return frag;
     }
 }
