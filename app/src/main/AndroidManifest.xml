@@ -9,8 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Main3Activity"></activity>
-        <activity android:name=".Main2Activity" />
+        <activity android:name=".Main3Activity"> </activity>
+        <activity android:name=".Main2Activity"/>
+        <activity
+            android:name=".CabType"
+            android:label="@string/title_activity_cab_type"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+
         <activity
             android:name=".CabSharingRegister"
             android:label="@string/title_activity_cab_sharing_register2"

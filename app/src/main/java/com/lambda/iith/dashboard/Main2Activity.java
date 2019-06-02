@@ -26,16 +26,15 @@ public class Main2Activity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     private ViewPager viewPager;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
+        //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                startActivity(new Intent(getApplicationContext(),MainActivity.class));
@@ -51,11 +50,6 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
         tabLayout =(TabLayout) findViewById(R.id.tablayout_id);
 //        appBarLayout =(AppBarLayout) findViewById(R.id.appbarid);
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
@@ -66,7 +60,11 @@ public class Main2Activity extends AppCompatActivity {
         // adapter setup
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+
     }
+
+
 
 
 }

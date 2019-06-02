@@ -82,7 +82,7 @@
 
         android:layout_marginStart="22dp"
         android:layout_marginBottom="37dp"
-        android:background="#000000"
+        android:background="#00000000"
         android:backgroundTint="#16534D4D"
         android:hapticFeedbackEnabled="true"
         android:text="@string/csr_dateSelect"

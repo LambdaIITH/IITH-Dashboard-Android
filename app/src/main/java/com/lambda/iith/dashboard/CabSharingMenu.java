@@ -42,7 +42,7 @@ public class CabSharingMenu extends DialogFragment {
             @Override
            public void onClick(View v) {
 
-                startActivity(new Intent(getContext() ,CabSharingRegister.class));
+                startActivity(new Intent(getContext() ,CabType.class));
             }
        });
 
@@ -61,6 +61,7 @@ public class CabSharingMenu extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
+
         return frag;
     }
 }
