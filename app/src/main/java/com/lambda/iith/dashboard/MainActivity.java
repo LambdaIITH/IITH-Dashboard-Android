@@ -147,10 +147,17 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_mess_menu) {
+
+            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
+                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
+            }
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
             toolbar.setTitle("Mess Menu");
 
         } else if (id == R.id.nav_bus_schedule) {
+            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
+                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
+            }
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
             toolbar.setTitle("Bus Schedule");
         } else if (id == R.id.nav_timetable) {
@@ -159,9 +166,17 @@ public class MainActivity extends AppCompatActivity
 
         {
             toolbar.setTitle("Cab Sharing");
+            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
+                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
+            }
             fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new CabSharing()).commit();
         } else if (id == R.id.nav_lost_found) {
-            startActivity(new Intent(MainActivity.this , Main2Activity.class));
+
+            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
+                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
+            }
+            toolbar.setTitle("Lost and Found");
+            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Main2Activity()).commit();
 
 
 
