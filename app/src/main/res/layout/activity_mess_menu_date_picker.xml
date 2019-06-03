@@ -6,133 +6,131 @@
     android:layout_height="match_parent"
     android:layout_alignParentStart="false"
     android:layout_alignParentBottom="false"
-    android:background="@color/Background"
     app:layout_constraintEnd_toStartOf="@+id/Reg_Date"
     app:layout_constraintStart_toStartOf="@+id/Reg_Date">
 
-<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/Background">
-
-        <TextView
-            android:id="@+id/textView"
-            style="@android:style/Widget.TextView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:fontFamily="serif"
-            android:freezesText="true"
-            android:gravity="center"
-            android:soundEffectsEnabled="true"
-            android:text="Select a day to show the Mess Menu"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:textColor="#ffffff"
-            android:textSize="25sp"
-            android:textStyle="normal|bold"
+            android:layout_height="match_parent">
 
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="16dp" />
+                <TextView
+                    android:id="@+id/textView"
+                    style="@android:style/Widget.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:fontFamily="serif"
+                    android:freezesText="true"
+                    android:gravity="center"
+                    android:soundEffectsEnabled="true"
+                    android:text="Select a day to show the Mess Menu"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                    android:textColor="#ffffff"
+                    android:textSize="25sp"
+                    android:textStyle="normal|bold"
 
-        <Button
-            android:id="@+id/Button_Sunday"
-            android:layout_width="280dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/textView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
-            android:background="@drawable/rounded_button3"
-            android:fontFamily="serif"
-            android:text="Sunday"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="16dp" />
 
-        <Button
-            android:id="@+id/Button_Monday"
-            android:layout_width="280dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/Button_Sunday"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button3"
-            android:fontFamily="serif"
-            android:text="Monday"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/Button_Sunday"
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@id/textView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/rounded_button3"
+                    android:fontFamily="serif"
+                    android:text="Sunday"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/Button_Tuesday"
-            android:layout_width="280dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/Button_Monday"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button3"
-            android:fontFamily="serif"
-            android:text="Tuesday"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/Button_Monday"
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@id/Button_Sunday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rounded_button3"
+                    android:fontFamily="serif"
+                    android:text="Monday"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/Button_Wednesday"
-            android:layout_width="280dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/Button_Tuesday"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button3"
-            android:fontFamily="serif"
-            android:text="Wednesday"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/Button_Tuesday"
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@id/Button_Monday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rounded_button3"
+                    android:fontFamily="serif"
+                    android:text="Tuesday"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/Button_Thrusday"
-            android:layout_width="280dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/Button_Wednesday"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button3"
-            android:fontFamily="serif"
-            android:text="Thrusday"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/Button_Wednesday"
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@id/Button_Tuesday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rounded_button3"
+                    android:fontFamily="serif"
+                    android:text="Wednesday"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/Button_Friday"
-            android:layout_width="280dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/Button_Thrusday"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button3"
-            android:fontFamily="serif"
-            android:text="Friday"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/Button_Thrusday"
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@id/Button_Wednesday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rounded_button3"
+                    android:fontFamily="serif"
+                    android:text="Thrusday"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/Button_Saturday"
-            android:layout_width="280dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/Button_Friday"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button3"
-            android:fontFamily="serif"
-            android:text="Saturday"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/Button_Friday"
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@id/Button_Thrusday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rounded_button3"
+                    android:fontFamily="serif"
+                    android:text="Friday"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-    </RelativeLayout>
+                <Button
+                    android:id="@+id/Button_Saturday"
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:layout_below="@id/Button_Friday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/rounded_button3"
+                    android:fontFamily="serif"
+                    android:text="Saturday"
+                    android:textColor="@android:color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+        </RelativeLayout>
 
 
 </ScrollView>

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_alignParentStart="false"
     android:layout_alignParentBottom="false"
-    android:background="@color/Background"
     app:layout_constraintEnd_toStartOf="@+id/Reg_Date"
     app:layout_constraintStart_toStartOf="@+id/Reg_Date"
     tools:context=".SignIn">
@@ -55,7 +54,7 @@
 
         android:layout_marginStart="7dp"
         android:layout_marginBottom="36dp"
-        android:background="@color/Background"
+        android:background="#00121212"
         android:text="@string/csr_fromSelect"
         android:textColor="@color/onBackground"
         android:textSize="24sp"
@@ -68,7 +67,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginEnd="43dp"
-        android:background="@color/Background"
+        android:background="#000E0E0E"
         android:text="@string/csr_toSelect"
         android:textColor="@color/onBackground"
         android:textSize="24sp"
@@ -82,8 +81,7 @@
 
         android:layout_marginStart="22dp"
         android:layout_marginBottom="37dp"
-        android:background="#00000000"
-        android:backgroundTint="#16534D4D"
+        android:background="#00050505"
         android:hapticFeedbackEnabled="true"
         android:text="@string/csr_dateSelect"
         android:textColor="@color/onBackground"
