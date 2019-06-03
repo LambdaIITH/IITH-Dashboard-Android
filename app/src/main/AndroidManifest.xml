@@ -8,9 +8,9 @@
         android:label="IITH DashBoard"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/Theme.AppCompat">
         <activity android:name=".Main3Activity"> </activity>
-        <activity android:name=".Main2Activity"/>
+
         <activity
             android:name=".CabType"
             android:label="@string/title_activity_cab_type"

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="1000dp"
+    android:background="@color/Background"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/Background"
+        android:clipToPadding="true"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardview1"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/cardview2"
+            android:layout_centerHorizontal="true"
+            app:cardBackgroundColor="#202020"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp"
+            tools:layout_editor_absoluteX="11dp"
+            tools:layout_editor_absoluteY="182dp">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/cardview1"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:text="CardView1_topic"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <Space
+            android:id="@+id/space1"
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardview2"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            app:cardBackgroundColor="#202020"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp"
+            tools:layout_editor_absoluteX="11dp"
+            tools:layout_editor_absoluteY="16dp">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/cardview1"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:text="CardView2_topic"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <Space
+            android:id="@+id/space2"
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardview3"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/cardview1"
+            android:layout_centerHorizontal="true"
+            app:cardBackgroundColor="#202020"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp"
+            tools:layout_editor_absoluteX="13dp"
+            tools:layout_editor_absoluteY="508dp">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/cardview1"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:text="CardView3_topic"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <Space
+            android:id="@+id/space3"
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardview4"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/cardview2"
+            android:layout_centerHorizontal="true"
+            app:cardBackgroundColor="#202020"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="343dp">
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/cardview1"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:text="CardView4_topic"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <Space
+            android:id="@+id/space4"
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardview5"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/cardview2"
+            android:layout_centerHorizontal="true"
+            app:cardBackgroundColor="#202020"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="343dp">
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/cardview1"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:text="CardView5_topic"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+</ScrollView>
