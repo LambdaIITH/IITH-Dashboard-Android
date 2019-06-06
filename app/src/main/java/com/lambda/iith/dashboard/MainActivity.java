@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -27,8 +28,6 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.ImageView;
 
-import java.net.URL;
-
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     public String name;
     public  String email;
     public String photoUrl;
-
+    private BottomNavigationView bottomNavigationView;
     private  TextView Nav_Bar_Header; //Navigation Bar Header i.e User Name
     private  TextView Nav_Bar_Email; //Navigation Bar email
     private  ImageView Nav_Bar_DP; //DP in navigation bar
@@ -58,6 +57,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setOnCreateContextMenuListener(this);
 
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -85,7 +86,44 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            Toolbar toolbar = findViewById(R.id.toolbar);
+
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            switch (menuItem.getItemId()) {
+                case R.id.nav_home: {
+                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new HomeScreenFragment()).commit();
+                    return  true;
+                }
+
+                case R.id.nav_acads:{
+                   // fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment());
+                    return  true;
+                }
+
+                case R.id.nav_bus :{
+                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
+                    return  true;
+                }
+
+                case R.id.nav_mess:{
+                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
+                    return  true;
+                }
+
+            }
+            return false;
+        }
+
+    };
+
+
+        @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -105,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         Nav_Bar_Email.setText(email); // Setting email recieved from google account in navigation bar
 
 
-        getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -117,9 +155,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -145,52 +181,25 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (id == R.id.nav_home) {
-            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
-                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
-            }
-            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment()).commit();
-            toolbar.setTitle("IITH Dashboard");
 
-        } else if (id == R.id.nav_mess_menu) {
 
-            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
-                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
-            }
-            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
-            toolbar.setTitle("Mess Menu");
-
-        } else if (id == R.id.nav_bus_schedule) {
-            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
-                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
-            }
-            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
-            toolbar.setTitle("Bus Schedule");
-        } else if (id == R.id.nav_timetable) {
-
-        } else if (id == R.id.nav_cab_sharing)
+        if (id == R.id.nav_cab_sharing)
 
         {
-            toolbar.setTitle("Cab Sharing");
-            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
-                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
-            }
-            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new CabSharing()).commit();
+
+            startActivity(new Intent(MainActivity.this , CabSharing.class));
         } else if (id == R.id.nav_lost_found) {
 
-            if (getSupportFragmentManager().findFragmentById(R.id.fragmentlayout) != null){
-                fragmentManager.beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.fragmentlayout)).commit();
-            }
-            toolbar.setTitle("Lost and Found");
-            fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Main2Activity()).commit();
+
+            startActivity(new Intent(MainActivity.this , Main2Activity.class));
 
 
 
 
-        } else if (id == R.id.logout)
+        } else if (id == R.id.logout){
             signOut();
 
-        {
+
 
 
         }
