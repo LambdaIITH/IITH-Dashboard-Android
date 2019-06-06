@@ -60,7 +60,7 @@ public class CabSharingRegister extends AppCompatActivity {
             public void onClick(View v) {
                 FragmentManager fm = getSupportFragmentManager();
 
-                fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
+               // fm.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
 
             }
         });

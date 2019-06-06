@@ -24,7 +24,9 @@
         app:headerLayout="@layout/nav_header_main"
         app:itemIconTint="@color/common_google_signin_btn_text_dark_default"
         app:itemTextColor="#F8FFFFFF"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer" >
+
+    </android.support.design.widget.NavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>

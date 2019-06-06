@@ -58,6 +58,11 @@
     <string name="title_activity_mess_menu_date">MessMenu</string>
     <string name="title_activity_cab_type">CabType</string>
     <string name="cab_type_rgia_to_iith">Cab : RGIA to IITH</string>
+    <integer-array name="img_id_arr">
+        <item>@drawable/img1</item>
+        <item>@drawable/img2</item>
 
+    </integer-array>
+    <string name="title_activity_cab_sharing1">CabSharing1</string>
 
 </resources>

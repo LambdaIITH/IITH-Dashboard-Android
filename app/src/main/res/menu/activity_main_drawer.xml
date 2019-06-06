@@ -4,22 +4,6 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_bus_schedule"
-            android:icon="@mipmap/baseline_directions_bus_black_18dp"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_mess_menu"
-            android:icon="@mipmap/baseline_restaurant_menu_black_48"
-            android:title="@string/menu_slideshow" />
-        <item
-            android:id="@+id/nav_timetable"
-            android:icon="@mipmap/baseline_directions_car_black_48"
-            android:title="@string/menu_tools" />
 
 
         <item
@@ -34,6 +18,10 @@
 
     <item android:title="">
         <menu>
+            <item
+                android:id="@+id/nav_Settings"
+                android:icon="@mipmap/settings"
+                android:title="@string/action_settings" />
             <item
                 android:id="@+id/logout"
                 android:icon="@mipmap/baseline_exit_to_app_black_48"
