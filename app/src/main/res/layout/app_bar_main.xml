@@ -32,7 +32,6 @@
         android:layout_gravity="bottom"
         android:background="#202020"
         android:foregroundGravity="clip_horizontal"
-        app:itemBackground="#202020"
         app:itemIconTint="#F1EEEE"
         app:itemTextColor="#F8FFFFFF"
         app:menu="@menu/bottom_navigation" />
