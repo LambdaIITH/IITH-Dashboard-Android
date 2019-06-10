@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CabSharing">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="@mipmap/baseline_arrow_back_white_24"
+            app:popupTheme="@style/PopupOverlay"
+            app:title="Add to Timetable" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_assignment_black_24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp" />
+            <TextView
+                android:id="@+id/couse_name"
+                android:layout_width="match_parent"
+                android:textSize="19dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="9dp"
+                android:hint="Enter course name" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_event_black_24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+
+                android:layout_marginRight="12dp" />
+            <TextView
+                android:id="@+id/couse_day"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="9dp"
+                android:textSize="19dp"
+
+                android:hint="Pick a day"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_access_time_black_24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/couse_starttime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="19dp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="9dp"
+
+                        android:hint="Start" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/couse_endtime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="19dp"
+                        android:layout_marginTop="9dp"
+                        android:textStyle="bold"
+
+                        android:hint="End" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_assignment_black_24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp" />
+            <TextView
+                android:id="@+id/room_name"
+                android:layout_width="match_parent"
+                android:textSize="19dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="9dp"
+                android:hint="Add a room" />
+        </LinearLayout>
+
+
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Add"
+            android:id="@+id/add_course"/>
+
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

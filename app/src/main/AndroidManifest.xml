@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
+
+        <activity
+            android:name=".MondayAddActivity"
+            android:label="addActivity"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".CabSharing"
             android:label="@string/title_activity_cab_sharing1"
