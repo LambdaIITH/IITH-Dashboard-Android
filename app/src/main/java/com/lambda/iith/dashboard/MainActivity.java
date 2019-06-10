@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 case R.id.nav_acads:{
-                   // fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment());
+                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Timetable()).commit();
                     return  true;
                 }
 

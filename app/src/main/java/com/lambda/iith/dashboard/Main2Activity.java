@@ -69,7 +69,8 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
 
-        onBackPressed();
+        Intent homeIntent = new Intent(Main2Activity.this,MainActivity.class);
+        startActivity(homeIntent);
         return true;
     }
     }
