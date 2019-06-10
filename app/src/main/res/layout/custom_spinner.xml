@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_width="130dp"
+    android:layout_height="wrap_content"
     android:background="#202020">
 
     <ImageView
         android:id="@+id/image_background_spinner"
-        android:layout_width="128dp"
-        android:layout_height="45dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_toEndOf="@id/textview_name"
         android:src="@mipmap/drop" />
 
 
     <TextView
         android:id="@+id/textview_name"
-        android:layout_width="190dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/image_background_spinner"
         android:layout_alignParentTop="false"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="15dp"
         android:gravity="center_horizontal"
         android:text="Lingampally-IITH"
         android:textColor="#FFFFFF"
