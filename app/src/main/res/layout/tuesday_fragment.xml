@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Monday"
+        android:text="Tuesday"
         android:textSize="35dp"
         android:layout_marginLeft="16dp"
         android:id="@+id/gg2"

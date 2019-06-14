@@ -23,6 +23,7 @@
             android:label="@string/title_activity_cab_sharing1"
             android:theme="@style/NoActionBar"></activity>
         <activity android:name=".Main3Activity"></activity>
+
         <activity
             android:name=".CabType"
             android:label="@string/title_activity_cab_type"

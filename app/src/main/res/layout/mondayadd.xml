@@ -12,7 +12,7 @@
         android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_timetable"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:id="@+id/course_add_linlay"
             android:orientation="horizontal">
 
             <ImageView
@@ -53,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:id="@+id/room_layout"
             android:clickable="true"
             android:orientation="horizontal">
 
@@ -65,13 +67,13 @@
 
                 android:layout_marginRight="12dp" />
             <TextView
-                android:id="@+id/couse_day"
+                android:id="@+id/room_add"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="9dp"
                 android:textSize="19dp"
 
-                android:hint="Pick a day"
+                android:hint="Add a room"
                 />
         </LinearLayout>
         <LinearLayout
@@ -97,9 +99,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:id="@+id/selecttime"
                     android:orientation="horizontal">
                     <TextView
-                        android:id="@+id/couse_starttime"
+                        android:id="@+id/set_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="19dp"
@@ -131,24 +134,43 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/days_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="197dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_assignment_black_24dp"
-                android:layout_marginTop="12dp"
                 android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp" />
-            <TextView
-                android:id="@+id/room_name"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:src="@drawable/ic_assignment_black_24dp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:textSize="19dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="9dp"
-                android:hint="Add a room" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:text="Select the days"
+                    android:textSize="19dp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/room_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="9dp"
+
+                    />
+            </LinearLayout>
+
+
         </LinearLayout>
 
 

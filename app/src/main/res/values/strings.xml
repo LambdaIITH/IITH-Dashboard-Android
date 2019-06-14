@@ -65,4 +65,17 @@
     </integer-array>
     <string name="title_activity_cab_sharing1">CabSharing1</string>
 
+    <string-array name="day_list">
+            <item>Monday</item>
+            <item>Tuesday</item>
+            <item>Wednesday</item>
+            <item>Thursday</item>
+            <item>Friday</item>
+            <item>Saturday</item>
+            <item>Sunday</item>
+
+    </string-array>
+
+
+
 </resources>

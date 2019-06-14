@@ -35,13 +35,15 @@ public class Timetable extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.viewpagertime_id);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         // Adding fragments
-        adapter.AddFragment(new Monday(), "LOST");
-        adapter.AddFragment(new FragmentExplore(), "FOUND");
+        adapter.AddFragment(new Monday(), "Monday");
+        adapter.AddFragment(new Tuesday(), "Tuesday");
         // adapter setup
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         return view;
 
     }
+
+
 }
 
