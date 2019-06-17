@@ -4,33 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SkipLogin">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:navigationIcon="@mipmap/baseline_arrow_back_white_24"
+            app:popupTheme="@style/PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/fragmentlayout"
-        android:layout_width="match_parent"
-        android:layout_height="740dp"
-        android:layout_gravity="center_vertical">
-
-    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/BottomNavigation"
+        android:id="@+id/BottomNavigationSL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -38,6 +31,15 @@
         android:foregroundGravity="clip_horizontal"
         app:itemIconTint="#F1EEEE"
         app:itemTextColor="#F8FFFFFF"
-        app:menu="@menu/bottom_navigation" />
+        app:menu="@menu/skiploginmenu" />
+
+    <FrameLayout
+        android:id="@+id/SkipLoginLayout"
+        android:layout_width="match_parent"
+        android:layout_height="740dp"
+        android:layout_gravity="center_vertical">
+
+    </FrameLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
