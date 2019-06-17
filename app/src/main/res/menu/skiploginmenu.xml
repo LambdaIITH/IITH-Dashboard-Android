@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/sl_mess"
+        android:icon="@mipmap/baseline_restaurant_menu_black_48"
+        android:title="Mess Menu" />
+    <item
+        android:id="@+id/sl_bus"
+        android:icon="@mipmap/baseline_directions_bus_black_18dp"
+        android:title="Bus" />
+</menu>
