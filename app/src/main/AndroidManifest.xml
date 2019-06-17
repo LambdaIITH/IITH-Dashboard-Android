@@ -32,10 +32,6 @@
             android:name=".CabSharingRegister"
             android:label="@string/title_activity_cab_sharing_register2"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
-        <activity
-            android:name=".MessMenuDatePicker"
-            android:label="@string/title_activity_mess_menu_date"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name=".SignIn" />
         <activity
             android:name=".MainActivity"
