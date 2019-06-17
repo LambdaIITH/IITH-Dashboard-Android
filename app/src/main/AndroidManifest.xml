@@ -11,7 +11,7 @@
         android:theme="@style/Theme.AppCompat">
         <activity
             android:name=".SkipLogin"
-            android:label="@string/title_activity_skip_login"
+            android:label="Mess Menu"
             android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".MondayAddActivity"
