@@ -10,14 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
         <activity
+            android:name=".SkipLogin"
+            android:label="Mess Menu"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".MondayAddActivity"
+            android:label="addActivity"
+            android:theme="@style/NoActionBar" />
+        <activity
             android:name=".CabSharing"
             android:label="@string/title_activity_cab_sharing1"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_cab_sharing1"
-            android:theme="@style/NoActionBar"></activity>
-        <activity android:name=".Main3Activity"></activity>
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".Main3Activity" />
         <activity
             android:name=".CabType"
             android:label="@string/title_activity_cab_type"
@@ -27,19 +35,19 @@
             android:label="@string/title_activity_cab_sharing_register2"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity
-            android:name=".MessMenuDatePicker"
-            android:label="@string/title_activity_mess_menu_date"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
-        <activity android:name=".SignIn" />
+            android:name=".SignIn"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

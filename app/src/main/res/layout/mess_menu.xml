@@ -1,76 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    android:id="@+id/linearViewMain"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="171dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="170dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginBottom="348dp"
-        android:background="@drawable/rounded_button"
-        android:clickable="true"
-        android:fontFamily="serif"
-        android:text="UDH"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/onPrimary"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="168dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="336dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginBottom="180dp"
-        android:background="@drawable/rounded_button2"
-        android:clickable="true"
-        android:fontFamily="serif"
-        android:onClick="btn"
-        android:text="LDH"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/onPrimary"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.Barrier
-        android:id="@+id/barrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top" />
-
-    <TextView
-        android:id="@+id/textView"
-        style="@android:style/Widget.TextView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="serif"
-        android:freezesText="true"
-        android:gravity="center"
-        android:soundEffectsEnabled="true"
-        android:text="Select the Mess"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="@color/onBackground"
-        android:textSize="36sp"
-        android:textStyle="normal|bold"
+        android:orientation="horizontal">
 
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="43dp" />
+        <TextView
+            android:id="@+id/gg2"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:fontFamily="serif"
 
-</android.support.constraint.ConstraintLayout>
+            android:text="Today's Menu"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+
+
+            android:textStyle="bold" />
+
+
+        <ImageButton
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/imageView1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+
+
+            android:onClick="showPopup"
+            app:srcCompat="@drawable/toggle_mess_menu"
+            tools:ignore="MissingConstraints,NotSibling" />
+
+        <ImageButton
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView1"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:onClick="showPopup1"
+            app:srcCompat="@drawable/select_days"
+            tools:ignore="MissingConstraints" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/gg3"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="5dp"
+
+            android:layout_weight="1"
+
+            android:text="(Currently in LDH)"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_below="@+id/gg2"
+                android:text="Breakfast Menu"
+                android:textSize="20dp"
+                android:textColor="#ffffff"
+                android:id="@+id/gg1"
+                tools:ignore="MissingConstraints" />
+
+            <ListView
+                android:id="@+id/list_mess_menu"
+                android:layout_width="343dp"
+                android:layout_height="279dp"
+                android:layout_below="@id/gg1"
+                android:layout_marginTop="10dp"
+               android:layout_gravity="center"
+                android:background="@drawable/rounded_button3"
+                android:layout_marginBottom="1dp"></ListView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_below="@+id/list_mess_menu"
+                android:text="Lunch Menu"
+                android:textSize="20dp"
+                android:textColor="#ffffff"
+                android:id="@+id/lunch"
+                tools:ignore="MissingConstraints" />
+
+            <ListView
+                android:id="@+id/list_lunch_menu"
+                android:layout_width="343dp"
+                android:layout_height="279dp"
+                android:layout_below="@id/lunch"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_button3"
+                android:layout_marginBottom="1dp"></ListView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_below="@+id/list_lunch_menu"
+                android:text="Evening(Chill time) Menu"
+                android:textSize="20dp"
+                android:textColor="#ffffff"
+                android:id="@+id/evening"
+                tools:ignore="MissingConstraints" />
+
+            <ListView
+                android:id="@+id/list_evening_menu"
+                android:layout_width="343dp"
+                android:layout_height="279dp"
+                android:layout_below="@id/evening"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_button3"
+                android:layout_marginBottom="1dp"></ListView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_below="@+id/list_evening_menu"
+                android:text="Dinner Menu"
+                android:textSize="20dp"
+                android:textColor="#ffffff"
+                android:id="@+id/dinner"
+                tools:ignore="MissingConstraints" />
+
+            <ListView
+                android:id="@+id/list_dinner_menu"
+                android:layout_width="343dp"
+                android:layout_height="279dp"
+                android:layout_below="@id/dinner"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_button3"
+                android:layout_marginBottom="1dp"></ListView>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>
+
+
+

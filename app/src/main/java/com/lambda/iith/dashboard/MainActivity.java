@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 case R.id.nav_acads:{
-                   // fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment());
+                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Timetable()).commit();
                     return  true;
                 }
 
@@ -211,11 +212,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onStart() {
-        super.onStart();
+
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser==null) {
             startActivity(new Intent(MainActivity.this, SignIn.class));
         }
+
+        super.onStart();
+
     }
 
     //This method is used to set the default screen that will be shown.
