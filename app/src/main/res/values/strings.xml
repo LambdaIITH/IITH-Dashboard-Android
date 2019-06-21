@@ -43,10 +43,8 @@
     <string name="bs_day">Day</string>
     <string name="bs_selectType">Bus Type</string>
 
-    <string-array name="days">
-        <item>Weekday</item>
-        <item>Weekend</item>
-    </string-array>
+
+    <string name="type_prompt">Choose Bus Type</string>
 
     <string-array name="busType">
         <item>Maingate-Hostel</item>
