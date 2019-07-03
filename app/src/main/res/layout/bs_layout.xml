@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="52dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_toggle"
+        android:background="@drawable/rounded_corner"
         android:text="ToggleButton"
         android:textOff="Weekday"
         android:textOn="Weekend"

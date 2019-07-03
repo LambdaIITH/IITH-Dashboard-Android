@@ -21,7 +21,7 @@ public class SkipLogin extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         FragmentManager fragmentManager = getSupportFragmentManager();
         setSupportActionBar(toolbar);
-        fragmentManager.beginTransaction().replace(R.id.SkipLoginLayout, new MessMenu()).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
         toolbar.setTitle("Mess Menu");
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationSL);
 
@@ -34,13 +34,13 @@ public class SkipLogin extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 switch (menuItem.getItemId()) {
                     case R.id.sl_mess: {
-                        fragmentManager.beginTransaction().replace(R.id.SkipLoginLayout, new MessMenu()).commit();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
                         toolbar.setTitle("Mess Menu");
                         return true;
                     }
 
                     case R.id.sl_bus: {
-                        fragmentManager.beginTransaction().replace(R.id.SkipLoginLayout, new FragmentBS()).commit();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new FragmentBS()).commit();
                         toolbar.setTitle("Bus Schedule");
                         return true;
                     }

@@ -33,13 +33,12 @@
         app:itemTextColor="#F8FFFFFF"
         app:menu="@menu/skiploginmenu" />
 
-    <FrameLayout
-        android:id="@+id/SkipLoginLayout"
+    <include
+        layout="@layout/content_main"
         android:layout_width="match_parent"
-        android:layout_height="740dp"
-        android:layout_gravity="center_vertical">
-
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>

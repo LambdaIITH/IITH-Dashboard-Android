@@ -21,13 +21,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/fragmentlayout"
+    <include
+        layout="@layout/content_main"
         android:layout_width="match_parent"
-        android:layout_height="740dp"
-        android:layout_gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp" />
 
-    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/BottomNavigation"
