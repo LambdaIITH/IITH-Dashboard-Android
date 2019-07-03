@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,10 +33,11 @@ public class MessMenu extends Fragment  {
     ImageButton im1,im2;
     ScrollView hscrollViewMain;
     TextView htext1,htext2,htext3,htext4,htext5,htext6;
+    Button b1,b2;
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootview = inflater.inflate(R.layout.mess_menu,container,false);
-        im1 =(ImageButton) rootview.findViewById(R.id.imageView1);
+        //im1 =(ImageButton) rootview.findViewById(R.id.imageView1);
         im2 = (ImageButton) rootview.findViewById(R.id.imageView2);
         final MediaPlayer sound = MediaPlayer.create(getActivity(),R.raw.buttonclick);
 
@@ -46,7 +48,15 @@ public class MessMenu extends Fragment  {
          htext3 = (TextView)rootview. findViewById(R.id.evening);
          htext4 = (TextView)rootview. findViewById(R.id.dinner);
          htext5 = (TextView)rootview.findViewById(R.id.gg2);
-         htext6 = (TextView)rootview.findViewById(R.id.gg3);
+         htext6 = (TextView)rootview.findViewById(R.id.gg4);
+         b1 = (Button) rootview.findViewById(R.id.b1);
+         b2 = (Button) rootview.findViewById(R.id.b2);
+
+
+        final String[] daysArray = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
+        Calendar calendar = Calendar.getInstance();
+        final int day = calendar.get(Calendar.DAY_OF_WEEK);
+        htext6.setText(daysArray[day-1]);
 
         hscrollViewMain.post(new Runnable() {
              @Override
@@ -111,8 +121,30 @@ public class MessMenu extends Fragment  {
          });
 
 
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        im1.setTag(1);
+                b2.setBackgroundColor(Color.BLACK);
+                b2.setTextColor(Color.WHITE);
+                b1.setBackgroundColor(Color.WHITE);
+                b1.setTextColor(Color.BLACK);
+                Toast.makeText(getActivity(),"You are in UDH",Toast.LENGTH_SHORT).show();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                b2.setBackgroundColor(Color.WHITE);
+                b2.setTextColor(Color.BLACK);
+                b1.setBackgroundColor(Color.BLACK);
+                b1.setTextColor(Color.WHITE);
+                Toast.makeText(getActivity(),"You are in LDH",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*im1.setTag(1);
         im1.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View rootview) {
@@ -130,7 +162,7 @@ public class MessMenu extends Fragment  {
 
 
          }
-        });
+        });*/
         im2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View rootview) {
@@ -153,57 +185,71 @@ public class MessMenu extends Fragment  {
                         if (item.getItemId()== R.id.Monday){
                           if(daysArray[day-1] != "Monday"){
                               htext5.setText("Monday's Menu");
+                              htext6.setText("Monday");
                           }
                           else {
                               htext5.setText("Today's Menu");
+                              htext6.setText(daysArray[day-1]);
                           }
                         }
                         if (item.getItemId()== R.id.Tuesday){
                             if(daysArray[day-1] != "Tuesday"){
                                 htext5.setText("Tuesday's Menu");
+                                htext6.setText("Tuesday");
                             }
                             else {
                                 htext5.setText("Today's Menu");
+                                htext6.setText(daysArray[day-1]);
                             }
                         }
                         if (item.getItemId()== R.id.Wednesday){
                             if(daysArray[day-1] != "Wednesday"){
                                 htext5.setText("Wednesday's Menu");
+                                htext6.setText("Wednesday");
                             }
                             else {
                                 htext5.setText("Today's Menu");
+                                htext6.setText(daysArray[day-1]);
                             }
                         }
                         if (item.getItemId()== R.id.Thrusday){
                             if(daysArray[day-1] != "Thrusday"){
                                 htext5.setText("Thrusday's Menu");
+                                htext6.setText("Thrusday");
                             }
                             else {
                                 htext5.setText("Today's Menu");
+                                htext6.setText(daysArray[day-1]);
                             }
                         }
                         if (item.getItemId()== R.id.Friday){
                             if(daysArray[day-1] != "Friday"){
                                 htext5.setText("Friday's Menu");
+                                htext6.setText("Friday");
                             }
                             else {
                                 htext5.setText("Today's Menu");
+                                htext6.setText(daysArray[day-1]);
                             }
                         }
                         if (item.getItemId()== R.id.Saturday){
                             if(daysArray[day-1] != "Saturday"){
                                 htext5.setText("Saturday's Menu");
+                                htext6.setText("Saturday");
                             }
                             else {
                                 htext5.setText("Today's Menu");
+                                htext6.setText(daysArray[day-1]);
                             }
                         }
                         if (item.getItemId()== R.id.Sunday){
                             if(daysArray[day-1] != "Sunday"){
                                 htext5.setText("Sunday's Menu");
+                                htext6.setText("Sunday");
                             }
                             else {
                                 htext5.setText("Today's Menu");
+                                htext6.setText(daysArray[day-1]);
                             }
                         }
 
