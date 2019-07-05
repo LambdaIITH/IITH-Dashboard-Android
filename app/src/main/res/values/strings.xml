@@ -25,7 +25,7 @@
     <string name="csr_cancel">Cancel</string>
     <string name="csr_fromSelect">12:20</string>
     <string name="csr_toSelect">14:20</string>
-    <string name="csr_dateSelect">122-05-2019</string>
+    <string name="csr_dateSelect">22-05-2019</string>
     <string name="csm_register">Register</string>
     <string name="csm_cancel">Cancel</string>
     <string name="csm_snooze">Snooze</string>

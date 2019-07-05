@@ -28,7 +28,7 @@ public class CabSharing extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CabSharing.this , CabType.class));
+                startActivity(new Intent(CabSharing.this , CabSharingRegister.class));
             }
         });
 

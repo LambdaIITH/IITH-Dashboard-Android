@@ -22,8 +22,8 @@ public class HomeScreenFragment extends Fragment {
         cardView2 = (CardView) view.findViewById(R.id.cardview3);
         space1 = (Space) view.findViewById(R.id.space2);
 
-        cardView2.setVisibility(View.GONE);
-        space1.setVisibility(View.GONE);
+        //cardView2.setVisibility(View.GONE);
+        //space1.setVisibility(View.GONE);
         return view;
     }
 }
