@@ -16,61 +16,26 @@ import java.util.ArrayList;
 
 import structs.BsItem;
 
-public class CustomAdapter extends ArrayAdapter<BsItem> {
-
-    public CustomAdapter(Context context, ArrayList<BsItem> strings) {
-        super(context,0,strings);
+public class CustomAdapter extends ArrayAdapter {
+    private Context context;
+    private int textViewResourceId;
+    private String[] objects;
+    public static boolean flag = false;
+    public CustomAdapter(Context context, int textViewResourceId,
+                         String[] objects) {
+        super(context, textViewResourceId, objects);
+        this.context = context;
+        this.textViewResourceId = textViewResourceId;
+        this.objects = objects;
     }
-
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position,convertView,parent);
-    }
-
-    @Override
-    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.custom_spinner_dropdown,parent,false
-            );
-        }
-
-        TextView dropdownText = convertView.findViewById(R.id.textview_dropdown);
-        ImageView dropdownImage = convertView.findViewById(R.id.image_dropdown);
-
-        BsItem currentItem = getItem(position);
-        if(currentItem != null) {
-            dropdownImage.setImageResource(currentItem.getBackGroundImage());
-            dropdownText.setText(currentItem.getBsType());
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null)
+            convertView = View.inflate(context, textViewResourceId, null);
+        if (flag != false) {
+            TextView tv = (TextView) convertView;
+            tv.setText(objects[position]);
         }
         return convertView;
     }
-
-    private View initView(int position, View convertView, ViewGroup parent){
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.custom_spinner,parent,false
-            );
-        }
-
-        ImageView imageViewbackground = convertView.findViewById(R.id.image_background_spinner);
-        TextView textViewSpinner = convertView.findViewById(R.id.textview_name);
-
-        BsItem currentItem = getItem(position);
-        if(currentItem != null) {
-            imageViewbackground.setImageResource(currentItem.getBackGroundImage());
-            textViewSpinner.setText(currentItem.getBsType());
-        }
-        return convertView;
-    }
-
-    @Override
-    public int getCount(){
-        int count = super.getCount();
-        return count > 0 ? count -1:count;
-    }
-
-
-
 }
