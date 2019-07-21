@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedListener {
     Spinner spinner2;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
