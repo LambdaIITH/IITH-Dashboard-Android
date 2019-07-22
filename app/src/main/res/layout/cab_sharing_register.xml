@@ -6,45 +6,30 @@
     android:layout_height="match_parent"
     android:layout_alignParentStart="false"
     android:layout_alignParentBottom="false"
-    app:layout_constraintEnd_toStartOf="@+id/Reg_Date"
-    app:layout_constraintStart_toStartOf="@+id/Reg_Date"
+    app:layout_constraintEnd_toStartOf="@+id/Reg_Date_2"
+    app:layout_constraintStart_toStartOf="@+id/Reg_Date_2"
     tools:context=".SignIn">
-
-    <ImageButton
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="306dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/cs_book"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/baseline_clear_white_24" />
 
     <ToggleButton
         android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginBottom="75dp"
+        android:layout_marginTop="90dp"
         android:background="@drawable/rounded_corner"
         android:text="ToggleButton"
         android:textOff=" RGIA -> IITH "
         android:textOn=" IITH -> RGIA "
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/csr_from"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/csr_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="215dp"
+        android:layout_marginTop="213dp"
         android:layout_marginEnd="40dp"
         android:background="#00121212"
         android:text="@string/csr_fromSelect"
@@ -58,65 +43,78 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginTop="13dp"
         android:background="#000E0E0E"
         android:text="@string/csr_toSelect"
         android:textColor="@color/onBackground"
         android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView11"
-        app:layout_constraintStart_toStartOf="@+id/csr_from" />
+        app:layout_constraintStart_toStartOf="@+id/csr_from"
+        app:layout_constraintTop_toBottomOf="@+id/csr_from" />
 
     <Button
-        android:id="@+id/Reg_Date"
+        android:id="@+id/Reg_Date_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="13dp"
         android:background="#00000000"
         android:backgroundTint="#00DDC2C2"
         android:hapticFeedbackEnabled="true"
         android:text="@string/csr_dateSelect"
         android:textColor="@color/onBackground"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintStart_toStartOf="@+id/reg_Date"
+        app:layout_constraintTop_toBottomOf="@+id/reg_Date" />
+
+    <Button
+        android:id="@+id/reg_Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="36dp"
+        android:background="#00000000"
+        android:backgroundTint="#00DDC2C2"
+        android:hapticFeedbackEnabled="true"
+        android:text="@string/csr_dateSelect"
+        android:textColor="@color/onBackground"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
     <Button
         android:id="@+id/cs_book"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
         android:background="#304FFE"
         android:text="@string/csr_book"
         android:textColor="#FFFFFF"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/divider4"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider5" />
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginEnd="22dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="48dp"
         android:buttonTint="@android:color/darker_gray"
         android:text="@string/csr_check1"
         android:textColor="@android:color/darker_gray"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView11"
-        app:layout_constraintStart_toStartOf="@+id/Reg_Date"
-        app:layout_constraintTop_toBottomOf="@+id/Reg_Date" />
+        app:layout_constraintStart_toStartOf="@+id/divider"
+        app:layout_constraintTop_toBottomOf="@+id/Reg_Date_2" />
 
     <CheckBox
         android:id="@+id/checkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="29dp"
         android:buttonTint="@android:color/darker_gray"
         android:text="@string/csr_check2"
         android:textColor="@android:color/darker_gray"
@@ -129,42 +127,42 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="23dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="24dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/checkBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Reg_Date" />
+        app:layout_constraintTop_toBottomOf="@+id/to" />
 
     <View
         android:id="@+id/divider3"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="86dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="132dp"
+        android:layout_marginBottom="84dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+        app:layout_constraintBottom_toBottomOf="@+id/csr_from"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cs_book" />
+        app:layout_constraintTop_toTopOf="@+id/toggleButton" />
 
     <View
         android:id="@+id/divider4"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="77dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toTopOf="@+id/toggleButton"
+        app:layout_constraintBottom_toBottomOf="@+id/toggleButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/divider5"
@@ -180,36 +178,24 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/csr_date"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="8dp"
+        android:text="Start"
         android:textColor="@android:color/darker_gray"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/Reg_Date"
-        app:layout_constraintStart_toStartOf="@+id/Reg_Date" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/reg_Date" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:text="@string/csr_from"
+        android:layout_marginStart="25dp"
+        android:text="End"
         android:textColor="@android:color/darker_gray"
         android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/csr_from"
-        app:layout_constraintEnd_toStartOf="@+id/csr_from" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="12dp"
-        android:text="@string/cs_TO"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/to"
-        app:layout_constraintTop_toBottomOf="@+id/csr_from" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/Reg_Date_2"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
 
