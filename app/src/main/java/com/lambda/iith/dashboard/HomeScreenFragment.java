@@ -52,11 +52,10 @@ public class HomeScreenFragment extends Fragment {
         cab = view.findViewById(R.id.CabCard);
         timetable = view.findViewById(R.id.TimetableCard);
         bus = view.findViewById(R.id.BusCard);
-        mEmails = com.lambda.iith.dashboard.CabSharing.mEmails;
-        mNames = com.lambda.iith.dashboard.CabSharing.mNames;
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        System.out.println(sharedPref.getBoolean("cab", false));
-        cabCardMake(sharedPref.getBoolean("cab" , false));
+        System.out.println(sharedPref.getBoolean("cab", false) && sharedPref.getBoolean("Registered" , false));
+        cabCardMake(sharedPref.getBoolean("cab" , false)&& sharedPref.getBoolean("Registered" , false));
         busmake(sharedPref.getBoolean("bus" , true));
         messmake(sharedPref.getBoolean("mess" , true));
         timetablemake(sharedPref.getBoolean("timetable" , true));
@@ -68,13 +67,22 @@ public class HomeScreenFragment extends Fragment {
     }
     private void busmake(boolean b){
         if(b){bus.setVisibility(View.VISIBLE);}
+        else {
+            bus.setVisibility(View.GONE);
+        }
     }
 
     private void messmake(boolean b){
         if(b){mess.setVisibility(View.VISIBLE);}
+        else {
+            mess.setVisibility(View.GONE);
+        }
     }
     private void timetablemake(boolean b){
         if(b){timetable.setVisibility(View.VISIBLE);}
+        else {
+            timetable.setVisibility(View.GONE);
+        }
     }
 
 
@@ -142,7 +150,18 @@ public class HomeScreenFragment extends Fragment {
 
             queue.add(stringRequest);
 
+        }else {
+            cab.setVisibility(View.GONE);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cabCardMake(sharedPref.getBoolean("cab" , false) && sharedPref.getBoolean("Registered",false));
+        busmake(sharedPref.getBoolean("bus" , true));
+        messmake(sharedPref.getBoolean("mess" , true));
+        timetablemake(sharedPref.getBoolean("timetable" , true));
     }
 }

@@ -48,12 +48,12 @@ public class CabSharing extends AppCompatActivity {
 
     private ImageButton refresh;
     public int flag;
-    public static RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     private TextView textView;
 
-    public static ArrayList <String> mNames = new ArrayList<>();
-    public static ArrayList <String> mEmails= new ArrayList<>();
+    private ArrayList <String> mNames = new ArrayList<>();
+    private ArrayList <String> mEmails= new ArrayList<>();
     private String email , startTime , endTime;
     private TextView Date , time1 , time2 , cab;
     private int CabID;
@@ -179,12 +179,14 @@ public class CabSharing extends AppCompatActivity {
                                 }
 
                             }
-                            UpdateRecycler(mNames , mEmails);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
+                        UpdateRecycler(mNames , mEmails);
+
                     }
                 }, new Response.ErrorListener() {
             @Override

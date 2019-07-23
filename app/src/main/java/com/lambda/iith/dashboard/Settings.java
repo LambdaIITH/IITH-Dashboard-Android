@@ -31,6 +31,8 @@ public class Settings extends AppCompatActivity {
        mess = findViewById(R.id.MessMenu);
        bus = findViewById(R.id.BusSchedule);
 
+           cab.setEnabled(sharedPreferences.getBoolean("Registered",false));
+
        cab.setChecked(sharedPreferences.getBoolean("cab" , false));
         bus.setChecked(sharedPreferences.getBoolean("bus" , true));
         mess.setChecked(sharedPreferences.getBoolean("mess" , true));
