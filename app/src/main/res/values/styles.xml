@@ -5,9 +5,8 @@
         <!-- Customize your theme here. -->
 
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="android:windowBackground">@color/Background</item>
-        
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/Background</item>
 
 
     </style>
@@ -21,10 +20,11 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 
 
-</style>
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.NoActionBar.NoActionBar">
@@ -34,10 +34,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
-    <item name="android:windowBackground">@color/Background</item>
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowBackground">@color/Background</item>
     </style>
-
 
 
     <style name="NoActionBar" parent="Theme.AppCompat">

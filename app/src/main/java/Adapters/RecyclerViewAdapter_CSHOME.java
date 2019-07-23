@@ -15,19 +15,19 @@ import com.lambda.iith.dashboard.R;
 import java.util.ArrayList;
 
 
-public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdapter.ViewHolder>{
+public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerViewAdapter_CSHOME.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mCourse = new ArrayList<>();
-    private ArrayList<String> mTime = new ArrayList<>();
+    private ArrayList<String> mNames = new ArrayList<>();
+    private ArrayList<String> mEmails = new ArrayList<>();
 
 
     private Context mContext;
 
-    public HomeTimeTableAdapter(Context context, ArrayList<String> Names, ArrayList<String> Emails  ) {
-        mCourse = Names;
+    public RecyclerViewAdapter_CSHOME(Context context, ArrayList<String> Names, ArrayList<String> Emails  ) {
+        mNames = Names;
 
-        mTime = Emails;
+        mEmails = Emails;
         mContext = context;
     }
 
@@ -36,7 +36,7 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.timetable_home_recycler, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cs_entry_home, viewGroup, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -47,8 +47,8 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
 
 
 
-        holder.course.setText(mCourse.get(position));
-        holder.time.setText(mTime.get(position));
+        holder.Name.setText(mNames.get(position));
+        holder.email.setText("Email: " + mEmails.get(position));
 
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -62,22 +62,22 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
 
     @Override
     public int getItemCount() {
-        return mCourse.size();
+        return mNames.size();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
 
-        TextView course , time;
+        TextView Name , mobile , email;
         ConstraintLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            course= itemView.findViewById(R.id.CourseCode);
+            Name= itemView.findViewById(R.id.name);
 
-            time = itemView.findViewById(R.id.CourseTime);
+            email = itemView.findViewById(R.id.email);
             parentLayout = itemView.findViewById(R.id.ParentLayout);
         }
     }

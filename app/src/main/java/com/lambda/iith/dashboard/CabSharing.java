@@ -59,12 +59,14 @@ public class CabSharing extends AppCompatActivity {
     private int CabID;
     private RequestQueue queue;
     private SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cab_sharing);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         textView = findViewById(R.id.CAbType);
         recyclerView = (RecyclerView) findViewById(R.id.Recycler);
         flag = 0;
@@ -76,6 +78,7 @@ public class CabSharing extends AppCompatActivity {
         }
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharing.this);
+
         startTime = sharedPref.getString("startTime","    NA      NA  " );
         endTime = sharedPref.getString("endTime","    NA      NA  " );
         CabID = sharedPref.getInt("Route",100 );

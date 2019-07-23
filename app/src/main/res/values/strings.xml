@@ -77,6 +77,7 @@
 
     </string-array>
     <string name="title_activity_skip_login">SkipLogin</string>
+    <string name="title_activity_settings">Settings</string>
 
 
 </resources>
