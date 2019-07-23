@@ -20,9 +20,12 @@
             android:layout_height="150dp"
             android:layout_below="@+id/cardview2"
             android:layout_centerHorizontal="true"
-            app:cardBackgroundColor="#202020"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            app:cardBackgroundColor="#2E2F31"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
             tools:layout_editor_absoluteX="11dp"
             tools:layout_editor_absoluteY="182dp">
 
@@ -38,21 +41,24 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
-        </android.support.v7.widget.CardView>
 
-        <Space
-            android:id="@+id/space1"
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/Timetable_Recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardview2"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_centerHorizontal="true"
-            app:cardBackgroundColor="#202020"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp"
+            android:layout_marginBottom="15dp"
+            app:cardBackgroundColor="@color/brandedsurface"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
             tools:layout_editor_absoluteX="11dp"
             tools:layout_editor_absoluteY="16dp">
 
@@ -96,20 +102,17 @@
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 
-        <Space
-            android:id="@+id/space2"
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
         <android.support.v7.widget.CardView
             android:id="@+id/cardview3"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_below="@+id/cardview1"
             android:layout_centerHorizontal="true"
-            app:cardBackgroundColor="#202020"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp"
+            android:layout_marginBottom="15dp"
+            app:cardBackgroundColor="@color/brandedsurface"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
             tools:layout_editor_absoluteX="13dp"
             tools:layout_editor_absoluteY="508dp">
 
@@ -127,20 +130,17 @@
                 android:textStyle="bold" />
         </android.support.v7.widget.CardView>
 
-        <Space
-            android:id="@+id/space3"
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
         <android.support.v7.widget.CardView
             android:id="@+id/cardview4"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_below="@+id/cardview2"
             android:layout_centerHorizontal="true"
-            app:cardBackgroundColor="#202020"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp"
+            android:layout_marginBottom="15dp"
+            app:cardBackgroundColor="@color/brandedsurface"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
             tools:layout_editor_absoluteX="5dp"
             tools:layout_editor_absoluteY="343dp">
 
@@ -158,20 +158,17 @@
                 android:textStyle="bold" />
         </android.support.v7.widget.CardView>
 
-        <Space
-            android:id="@+id/space4"
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
         <android.support.v7.widget.CardView
             android:id="@+id/cardview5"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_below="@+id/cardview2"
             android:layout_centerHorizontal="true"
-            app:cardBackgroundColor="#202020"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp"
+            android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="@color/brandedsurface"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
             tools:layout_editor_absoluteX="5dp"
             tools:layout_editor_absoluteY="343dp">
 

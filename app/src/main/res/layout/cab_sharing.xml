@@ -11,19 +11,17 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView3"
-        android:layout_width="0dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="190dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="12dp"
         android:background="#12FFFFFF"
-        app:cardBackgroundColor="#202020"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/brandedsurface"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
         app:cardPreventCornerOverlap="true"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView45"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
@@ -40,19 +38,10 @@
                 android:gravity="center_horizontal"
                 android:text="@string/cs_time"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="24sp"
+                android:textSize="21sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <Space
-                android:id="@+id/space6"
-                android:layout_width="180dp"
-                android:layout_height="17dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/textView8"
-                app:layout_constraintStart_toStartOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <TextView
                 android:id="@+id/CS_Time1"
@@ -71,7 +60,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="9dp"
                 android:layout_marginEnd="8dp"
-                android:text=" TO "
+                android:text=" to "
                 android:textColor="@color/onSurface"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,8 +85,8 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:text="@string/cs_Heading1"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
@@ -108,41 +97,32 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="185dp"
         android:text="@string/cs_Heading2"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView45"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="11dp"
+        android:layout_width="191dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="39dp"
         android:background="#12FFFFFF"
-        app:cardBackgroundColor="#202020"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/brandedsurface"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
         app:cardPreventCornerOverlap="false"
-        app:layout_constraintEnd_toStartOf="@+id/cardView3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <Space
-                android:id="@+id/space4"
-                android:layout_width="195dp"
-                android:layout_height="19dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/CS_Date" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -154,7 +134,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/cs_date"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="24sp"
+                android:textSize="21sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -177,14 +157,15 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="0dp"
+        android:layout_width="390dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="162dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="45dp"
-        app:cardBackgroundColor="#202020"
-        app:layout_constraintBottom_toTopOf="@+id/Recycler"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="139dp"
+        android:layout_marginEnd="8dp"
+        app:cardBackgroundColor="@color/brandedsurface"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -195,24 +176,36 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/cab_type_rgia_to_iith"
-            android:textColor="@color/onBackground"
+            android:textColor="@color/onSurface"
             android:textSize="24sp" />
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/Recycler"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.CardView
+        android:id="@+id/Card12"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="240dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="90dp"
-        android:background="#202020"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="100dp"
+
+        android:scrollbars="horizontal"
+        app:cardBackgroundColor="@color/brandedsurface"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/Recycler"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:visibility="visible" />
+
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

@@ -20,7 +20,7 @@ public class HomeScreenFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_screen , container , false);
         cardView2 = (CardView) view.findViewById(R.id.cardview3);
-        space1 = (Space) view.findViewById(R.id.space2);
+
 
         //cardView2.setVisibility(View.GONE);
         //space1.setVisibility(View.GONE);

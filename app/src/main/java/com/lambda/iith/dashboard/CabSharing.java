@@ -1,6 +1,6 @@
 package com.lambda.iith.dashboard;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -38,7 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 
 import Adapters.RecyclerViewAdapter;
@@ -142,8 +142,8 @@ public class CabSharing extends AppCompatActivity {
         time2.setText(endTime.substring(11,16));
 
         if(CabID == 0){
-            cab.setText( "RGIA -> IITH");
-        }else if(CabID==1){cab.setText( "IITH -> RGIA");
+            cab.setText( "Cab : RGIA to IITH");
+        }else if(CabID==1){cab.setText( "Cab : IITH to RGIA");
         }else{ cab.setText("NA");}
 
         //Updating Entries
