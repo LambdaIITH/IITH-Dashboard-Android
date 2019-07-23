@@ -45,22 +45,20 @@ import Adapters.RecyclerViewAdapter;
 
 public class CabSharing extends AppCompatActivity {
 
-    private FloatingActionButton register , Cancel , Snooze;
-    private  FloatingActionMenu floatingActionMenu;
+
     private ImageButton refresh;
     public int flag;
     public static RecyclerView recyclerView;
-    String data ="";
-    String dataParsed = "";
+
     private TextView textView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+
     public static ArrayList <String> mNames = new ArrayList<>();
     public static ArrayList <String> mEmails= new ArrayList<>();
     private String email , startTime , endTime;
     private TextView Date , time1 , time2 , cab;
     private int CabID;
     private RequestQueue queue;
+    private SharedPreferences sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +75,7 @@ public class CabSharing extends AppCompatActivity {
             email = user.getEmail().toString();
         }
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharing.this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharing.this);
         startTime = sharedPref.getString("startTime","    NA      NA  " );
         endTime = sharedPref.getString("endTime","    NA      NA  " );
         CabID = sharedPref.getInt("Route",100 );
@@ -119,9 +117,36 @@ public class CabSharing extends AppCompatActivity {
             startActivity(new Intent(CabSharing.this , CabSharingRegister.class));
        }
    });
+
+
+   FloatingActionButton floatingActionButton1 = findViewById(R.id.menu_item2);
+   floatingActionButton1.setOnClickListener(new View.OnClickListener() {
+       @Override
+       public void onClick(View v) {
+           DeleteBooking();
+           refresh();
+       }
+   });
+
     }
 
     private void refresh(){
+        //Updating Booking Info
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharing.this);
+        startTime = sharedPref.getString("startTime","    NA      NA  " );
+        endTime = sharedPref.getString("endTime","    NA      NA  " );
+        CabID = sharedPref.getInt("Route",100 );
+
+        Date.setText(startTime.substring(0,10));
+        time1.setText(startTime.substring(11,16));
+        time2.setText(endTime.substring(11,16));
+
+        if(CabID == 0){
+            cab.setText( "RGIA -> IITH");
+        }else if(CabID==1){cab.setText( "IITH -> RGIA");
+        }else{ cab.setText("NA");}
+
+        //Updating Entries
         String url = "http://13.233.90.143/query";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -151,7 +176,7 @@ public class CabSharing extends AppCompatActivity {
                                 }
 
                             }
-                            updaterecycler(mNames , mEmails);
+                            UpdateRecycler(mNames , mEmails);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (ParseException e) {
@@ -236,7 +261,7 @@ public class CabSharing extends AppCompatActivity {
     }
 
 
-    private void updaterecycler(ArrayList <String> Names , ArrayList <String> Emails ){
+    private void UpdateRecycler(ArrayList <String> Names , ArrayList <String> Emails ){
 
 
 
@@ -245,7 +270,22 @@ public class CabSharing extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    private void DeleteBooking(){
 
+        //Deleting Locally
+        SharedPreferences.Editor edit = sharedPref.edit();
+        edit.remove("startTime");
+        edit.remove("endTime");
+        edit.remove("Route");
+        edit.putBoolean("Registered" , false);
+        edit.commit();
+
+        //Deleting from server
+
+
+
+
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -255,8 +295,11 @@ public class CabSharing extends AppCompatActivity {
     }
 
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh();
+    }
 }
 
 

@@ -97,94 +97,105 @@ public class CabSharingRegister extends AppCompatActivity {
         Book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    // Name, email address, and profile photo Url
-                    name = user.getDisplayName().toString();
-                    email = user.getEmail().toString();
-
-
-                }
-                int route ;
-                if (toggleButton.isChecked()) {
-                    route = 0;
-                }else{ route=1;}
-
-
-                start = date.getText().toString() + "T" + from.getText().toString() + ":00.321+05:30";
-                end = date2.getText().toString() + "T" + to.getText().toString() + ":00.321+05:30";
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharingRegister.this);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("startTime", start);
-                editor.putString("endTime", end);
-                editor.putInt("Route" , route);
-                editor.commit();
-
-                if (checkBox.isChecked()) {
-                    Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
+                if (sharedPref.getBoolean("Registered", false)) {
+                    Toast.makeText(getApplication().getBaseContext(), "Please delete previous booking before proceeding",
                             Toast.LENGTH_SHORT).show();
-                }else{
-                    try {
 
-                        String URL = "http://13.233.90.143/publish";
-                        JSONObject jsonBody = new JSONObject();
-                        jsonBody.put("Name", name);
-                        jsonBody.put("RollNo", email);
-                        jsonBody.put("StartTime", start);
-                        jsonBody.put("EndTime", end);
-                        jsonBody.put("RouteID", route);
-                        final String requestBody = jsonBody.toString();
-                        System.out.println(requestBody);
-
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
-                                        Toast.LENGTH_SHORT).show();
-                                Log.i("VOLLEY", response);
-                            }
-                        }, new Response.ErrorListener() {
+                } else {
 
 
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e("VOLLEY", error.toString());
-                            }
-                        }) {
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
-                            }
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null) {
+                        // Name, email address, and profile photo Url
+                        name = user.getDisplayName().toString();
+                        email = user.getEmail().toString();
 
-                            @Override
-                            public byte[] getBody() throws AuthFailureError {
-                                try {
-                                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                                } catch (UnsupportedEncodingException uee) {
-                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                                    return null;
-                                }
-                            }
 
-                            @Override
-                            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                                String responseString = "";
-                                if (response != null) {
-                                    responseString = String.valueOf(response.statusCode);
-                                    // can get more details such as response.headers
-                                }
-                                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                            }
-                        };
-
-                        queue.add(stringRequest);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
+                    int route;
+                    if (toggleButton.isChecked()) {
+                        route = 1;
+                    } else {
+                        route = 0;
+                    }
 
-                startActivity(new Intent(CabSharingRegister.this , CabSharing.class));
+
+                    start = date.getText().toString() + "T" + from.getText().toString() + ":00.321+05:30";
+                    end = date2.getText().toString() + "T" + to.getText().toString() + ":00.321+05:30";
+
+                    editor.putBoolean("Registered", true);
+                    editor.putString("startTime", start);
+                    editor.putString("endTime", end);
+                    editor.putInt("Route", route);
+                    editor.commit();
+
+                    if (checkBox.isChecked()) {
+                        Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+
+                            String URL = "http://13.233.90.143/publish";
+                            JSONObject jsonBody = new JSONObject();
+                            jsonBody.put("Name", name);
+                            jsonBody.put("RollNo", email);
+                            jsonBody.put("StartTime", start);
+                            jsonBody.put("EndTime", end);
+                            jsonBody.put("RouteID", route);
+                            final String requestBody = jsonBody.toString();
+                            System.out.println(requestBody);
+
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                    Log.i("VOLLEY", response);
+                                }
+                            }, new Response.ErrorListener() {
+
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("VOLLEY", error.toString());
+                                }
+                            }) {
+                                @Override
+                                public String getBodyContentType() {
+                                    return "application/json; charset=utf-8";
+                                }
+
+                                @Override
+                                public byte[] getBody() throws AuthFailureError {
+                                    try {
+                                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                    } catch (UnsupportedEncodingException uee) {
+                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                        return null;
+                                    }
+                                }
+
+                                @Override
+                                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                    String responseString = "";
+                                    if (response != null) {
+                                        responseString = String.valueOf(response.statusCode);
+                                        // can get more details such as response.headers
+                                    }
+                                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                }
+                            };
+
+                            queue.add(stringRequest);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    onBackPressed();
+                }
             }
 
 
