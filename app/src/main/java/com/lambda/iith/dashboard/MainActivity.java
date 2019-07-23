@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(MainActivity.this , SignIn.class));
+                        startActivity(new Intent(MainActivity.this , SkipLogin.class));
                     }
                 });
     }

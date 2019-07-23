@@ -49,8 +49,7 @@ public class MessMenu extends Fragment  {
          htext4 = (TextView)rootview. findViewById(R.id.dinner);
          htext5 = (TextView)rootview.findViewById(R.id.gg2);
          htext6 = (TextView)rootview.findViewById(R.id.gg4);
-         b1 = (Button) rootview.findViewById(R.id.b1);
-         b2 = (Button) rootview.findViewById(R.id.b2);
+
 
 
         final String[] daysArray = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
@@ -120,29 +119,6 @@ public class MessMenu extends Fragment  {
 
          });
 
-
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                b2.setBackgroundColor(Color.BLACK);
-                b2.setTextColor(Color.WHITE);
-                b1.setBackgroundColor(Color.WHITE);
-                b1.setTextColor(Color.BLACK);
-                Toast.makeText(getActivity(),"You are in UDH",Toast.LENGTH_SHORT).show();
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                b2.setBackgroundColor(Color.WHITE);
-                b2.setTextColor(Color.BLACK);
-                b1.setBackgroundColor(Color.BLACK);
-                b1.setTextColor(Color.WHITE);
-                Toast.makeText(getActivity(),"You are in LDH",Toast.LENGTH_SHORT).show();
-            }
-        });
 
         /*im1.setTag(1);
         im1.setOnClickListener(new View.OnClickListener() {

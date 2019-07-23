@@ -43,56 +43,43 @@
         <TextView
             android:id="@+id/gg4"
             android:layout_width="100dp"
-            android:layout_height="31dp"
+            android:layout_height="35dp"
             android:layout_marginLeft="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:gravity="center"
             android:text="day"
             android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center"
 
-            android:background="@drawable/rounded_button" />
+            android:textSize="15dp" />
 
         <ImageButton
             android:id="@+id/imageView2"
 
             android:layout_width="40dp"
-            android:layout_height="31dp"
+            android:layout_height="35dp"
 
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="23dp"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentRight="false"
             android:layout_marginLeft="1dp"
 
-            android:background="@drawable/rounded_button4"
+            android:layout_marginRight="23dp"
 
+            android:background="@drawable/rounded_button4"
             android:onClick="showPopup1"
             app:srcCompat="@drawable/select_days"
             tools:ignore="MissingConstraints" />
 
-        <Button
-            android:id="@+id/b1"
-            android:layout_width="60dp"
-            android:layout_height="31dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="9dp"
-            android:text="UDH"
-            android:textSize="15dp"
-            android:textColor="#000"
-            android:background="@drawable/rounded_button2"
-            />
-        <Button
-            android:id="@+id/b2"
-            android:layout_width="60dp"
-            android:layout_height="31dp"
-            android:layout_marginTop="9dp"
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
 
-            android:text="LDH"
-            android:background="@drawable/rounded_button4"
-            android:textSize="15dp"
-            android:layout_marginRight="13dp"/>
+            android:layout_gravity="right|end"
+            android:layout_marginLeft="120dp"
+            android:background="@drawable/rounded_corner"
+            android:text="ToggleButton"
+            android:textOff="UDH"
+            android:textOn="LDH" />
 
     </LinearLayout>
 

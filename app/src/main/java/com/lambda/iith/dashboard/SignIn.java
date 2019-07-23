@@ -36,8 +36,12 @@ public class SignIn extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        
         button = (SignInButton) findViewById(R.id.sign_in_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

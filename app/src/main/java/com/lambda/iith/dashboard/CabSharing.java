@@ -75,6 +75,8 @@ public class CabSharing extends AppCompatActivity {
             // Name, email address, and profile photo Url
 
             email = user.getEmail().toString();
+            String string = user.getIdToken(true).toString();
+            System.out.println("HEY"+string);
         }
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharing.this);

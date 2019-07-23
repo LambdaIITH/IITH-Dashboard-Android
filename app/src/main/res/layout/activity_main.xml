@@ -16,7 +16,7 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#ED111111"
@@ -24,7 +24,7 @@
         app:headerLayout="@layout/nav_header_main"
         app:itemIconTint="@color/common_google_signin_btn_text_dark_default"
         app:itemTextColor="#F8FFFFFF"
-        app:menu="@menu/activity_main_drawer" >
+        app:menu="@menu/activity_main_drawer">
 
     </android.support.design.widget.NavigationView>
 

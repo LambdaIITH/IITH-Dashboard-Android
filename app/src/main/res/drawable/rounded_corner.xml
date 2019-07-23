@@ -4,7 +4,7 @@
         android:width="1dp"
         android:color="#0B0A0C" />
 
-    <solid android:color="#202020" />
+    <solid android:color="@color/brandedsurface" />
 
     <padding
         android:left="1dp"
