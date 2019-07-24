@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,8 +38,11 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,8 +57,8 @@ public class CabSharingRegister extends AppCompatActivity {
     private Button Book ;
     public View view;
     private ImageButton img;
-    private RequestQueue queue;
-    private  String name , email , start , end;
+    public static RequestQueue queue ;
+    private  String name , email , start , end , idToken;
     private ToggleButton toggleButton;
     private CheckBox checkBox;
     @Override
@@ -113,6 +117,7 @@ public class CabSharingRegister extends AppCompatActivity {
                         email = user.getEmail().toString();
 
 
+
                     }
                     int route;
                     if (toggleButton.isChecked()) {
@@ -137,13 +142,16 @@ public class CabSharingRegister extends AppCompatActivity {
                     } else {
                         try {
 
-                            String URL = "http://13.233.90.143/publish";
+                            String URL = "http://www.iith.dev/publish";
                             JSONObject jsonBody = new JSONObject();
-                            jsonBody.put("Name", name);
-                            jsonBody.put("RollNo", email);
+                            //jsonBody.put("Name" , name);
+
+                            jsonBody.put("Email", email);
                             jsonBody.put("StartTime", start);
                             jsonBody.put("EndTime", end);
                             jsonBody.put("RouteID", route);
+                            System.out.println("ID1" +MainActivity.idToken);
+                            jsonBody.put("token", MainActivity.idToken);
                             final String requestBody = jsonBody.toString();
                             System.out.println(requestBody);
 
@@ -159,6 +167,8 @@ public class CabSharingRegister extends AppCompatActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplication().getBaseContext(), "Booking Unuccessfull",
+                                            Toast.LENGTH_SHORT).show();
                                     Log.e("VOLLEY", error.toString());
                                 }
                             }) {
