@@ -22,11 +22,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private  TextView Nav_Bar_Header; //Navigation Bar Header i.e User Name
     private  TextView Nav_Bar_Email; //Navigation Bar email
     private  ImageView Nav_Bar_DP; //DP in navigation bar
+    public static String idToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,16 @@ public class MainActivity extends AppCompatActivity
             name = user.getDisplayName().toString();
             email = user.getEmail().toString();
             photoUrl = user.getPhotoUrl().toString();
+            user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                @Override
+                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                    if (task.isSuccessful()) {
+                        idToken = task.getResult().getToken();
+
+                    }
+                }
+            });
+
 
 
         }
@@ -192,7 +206,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_lost_found) {
 
 
-            startActivity(new Intent(MainActivity.this , Main2Activity.class));
+            Toast.makeText(getBaseContext() , "Coming Soon"  , Toast.LENGTH_SHORT).show();
 
 
 

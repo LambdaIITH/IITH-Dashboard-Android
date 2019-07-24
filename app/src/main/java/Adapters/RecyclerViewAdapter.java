@@ -18,14 +18,14 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mNames = new ArrayList<>();
+
     private ArrayList<String> mEmails = new ArrayList<>();
 
 
     private Context mContext;
 
-    public RecyclerViewAdapter(Context context, ArrayList<String> Names, ArrayList<String> Emails  ) {
-        mNames = Names;
+    public RecyclerViewAdapter(Context context,  ArrayList<String> Emails  ) {
+
 
         mEmails = Emails;
         mContext = context;
@@ -47,8 +47,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
 
-        holder.Name.setText(mNames.get(position));
-        holder.email.setText("Email: " + mEmails.get(position));
+
+        holder.Name.setText(mEmails.get(position));
 
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return mNames.size();
+        return mEmails.size();
     }
 
 
@@ -77,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             Name= itemView.findViewById(R.id.name);
 
-            email = itemView.findViewById(R.id.email);
+            //email = itemView.findViewById(R.id.email);
             parentLayout = itemView.findViewById(R.id.ParentLayout);
         }
     }
