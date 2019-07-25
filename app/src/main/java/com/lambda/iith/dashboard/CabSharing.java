@@ -198,15 +198,25 @@ public class CabSharing extends AppCompatActivity {
 
                             for (int i = 0; i < JA.length(); i++) {
                                 JSONObject JO = (JSONObject) JA.get(i);
+                                if (JO.getString("Email").equals(email) && !sharedPref.getBoolean("Registered", false)) {
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    System.out.println("DGGFD");
+                                    editor.putString("startTime", JO.getString("StartTime"));
+                                    editor.putString("endTime", JO.getString("EndTime"));
+                                    editor.putBoolean("Registered", true);
+                                    editor.putInt("Route", JO.getInt("RouteID"));
+                                    editor.commit();
+                                    recreate();
 
+                                    }
 
                                 SimpleDateFormat format1 = new SimpleDateFormat("YYYY-mm-dd:HH:MM");
-                                java.util.Date T1 = format1.parse(startTime.substring(0,10) +":" + startTime.substring(11,16));
-                                java.util.Date T2 = format1.parse(endTime.substring(0,10) +":" + endTime.substring(11,16));
-                                java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0,10) +":" +JO.getString("StartTime").substring(11,16));
-                                java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0,10)+":" +JO.getString("EndTime").substring(11,16));
+                                java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
+                                java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
+                                java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
+                                java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
                                 System.out.println(T3.toString() + T1.toString());
-                                if ( (JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0,10)).equals(startTime.substring(0,10)) && ((T3.compareTo(T1) >=0 && T3.compareTo(T2) <=0) || (T4.compareTo(T1)>=0 && T4.compareTo(T2)<=0 ))  ) {
+                                if ((JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0, 10)).equals(startTime.substring(0, 10)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0))) {
 
                                     JA2.put(JO);
 
@@ -216,23 +226,23 @@ public class CabSharing extends AppCompatActivity {
                             }
 
 
+                            SharedPreferences.Editor edit = sharedPref.edit();
+                            edit.putString("CabShares", JA2.toString());
+                            System.out.println("Hello" + JA2.toString());
+                            edit.commit();
+
+
+                            ParseJSON();
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                        SharedPreferences.Editor edit = sharedPref.edit();
-                        edit.putString("CabShares" , JA2.toString());
-                        System.out.println("Hello" +JA2.toString());
-                        edit.commit();
-
-
-                        ParseJSON();
-
-
                     }
 
-                }, new Response.ErrorListener() {
+                    }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(CabSharing.this , "Disconnected, Unable to get Shares" , Toast.LENGTH_SHORT).show();
