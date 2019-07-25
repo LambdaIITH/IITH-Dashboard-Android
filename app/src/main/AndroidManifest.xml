@@ -45,7 +45,7 @@
         <activity
             android:name=".CabSharingRegister"
             android:label="@string/title_activity_cab_sharing_register2"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".MainActivity"
