@@ -2,7 +2,10 @@ package com.lambda.iith.dashboard;
 
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +18,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,9 +37,17 @@ import com.google.firebase.auth.GetTokenResult;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class MainActivity extends AppCompatActivity
@@ -41,11 +59,17 @@ public class MainActivity extends AppCompatActivity
     public String name;
     public  String email;
     public String photoUrl;
+    private ImageButton MasterRefresh;
+    private SharedPreferences sharedPreferences;
     private BottomNavigationView bottomNavigationView;
     private  TextView Nav_Bar_Header; //Navigation Bar Header i.e User Name
     private  TextView Nav_Bar_Email; //Navigation Bar email
     private  ImageView Nav_Bar_DP; //DP in navigation bar
     public static String idToken;
+    int a;
+    private RequestQueue queue,queue2,queue3;
+    private CountDownTimer mCountDownTimer;
+    private FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,16 +77,33 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initiate();
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+        fragmentManager = getSupportFragmentManager();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setOnCreateContextMenuListener(this);
+        mCountDownTimer = new CountDownTimer(3500, 2000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+            }
 
+            @Override
+            public void onFinish() {
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commit();
+
+            }
+        };
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -71,7 +112,30 @@ public class MainActivity extends AppCompatActivity
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
+        MasterRefresh = findViewById(R.id.MainRefresh);
+        MasterRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                refresh();
+                mCountDownTimer.start();
+
+
+                //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+
+
+
+
+            }
+        });
+        queue = Volley.newRequestQueue(MainActivity.this);
+        queue2 = Volley.newRequestQueue(MainActivity.this);
+        queue3= Volley.newRequestQueue(MainActivity.this);
+        refresh();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -111,25 +175,32 @@ public class MainActivity extends AppCompatActivity
             Toolbar toolbar = findViewById(R.id.toolbar);
 
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
+
             switch (menuItem.getItemId()) {
                 case R.id.nav_home: {
+                    a=1;
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new HomeScreenFragment()).commit();
+
                     return  true;
                 }
 
                 case R.id.nav_acads:{
+                    a=2;
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Timetable()).commit();
+
                     return  true;
                 }
 
                 case R.id.nav_bus :{
+                    a=3;
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
+
                     return  true;
                 }
 
                 case R.id.nav_mess:{
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
+                    a=4;
                     return  true;
                 }
 
@@ -264,7 +335,110 @@ public class MainActivity extends AppCompatActivity
 
 
 
+private void refresh(){
+    String url = "https://jsonblob.com/api/jsonBlob/835519fb-ae2b-11e9-8313-bf8495d5f167";
 
+    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    JSONArray JA = null;
+                    // Display the first 500 characters of the response string.
+                    try {
+                        JA = new JSONArray(response);
+
+
+                        SharedPreferences.Editor edit = sharedPreferences.edit();
+                        edit.putString("ToIITH", JA.getString(1));
+                        edit.putString("FromIITH" , JA.getString(0));
+                        edit.commit();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+        }
+
+    });
+    String url2 = "https://jsonblob.com/api/6336df25-aeb3-11e9-99ce-c9fa198f2f2e";
+    String url3 = "https://jsonblob.com/api/c2d3dd6e-aebc-11e9-99ce-116fae627a57";
+    MainActivity.initiate();
+
+
+    StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    JSONArray JA = null;
+                    // Display the first 500 characters of the response string.
+
+
+
+
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putString("UDH", response);
+
+                    edit.commit();
+
+
+
+                }
+
+
+
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+        }
+
+    });
+    StringRequest stringRequest3 = new StringRequest(Request.Method.GET, url3,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    JSONArray JA = null;
+                    // Display the first 500 characters of the response string.
+
+
+
+
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putString("LDH", response);
+
+                    edit.commit();
+
+
+
+                }
+
+
+
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+        }
+
+    });
+
+    queue.add(stringRequest);
+    queue2.add(stringRequest2);
+
+    queue3.add(stringRequest3);
+
+
+
+
+}
 
 
 

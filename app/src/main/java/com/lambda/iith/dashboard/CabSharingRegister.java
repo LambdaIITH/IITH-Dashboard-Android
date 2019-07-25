@@ -122,7 +122,7 @@ public class CabSharingRegister extends AppCompatActivity {
                     start = date.getText().toString() + "T" + from.getText().toString() + ":00.321+05:30";
                     end = date2.getText().toString() + "T" + to.getText().toString() + ":00.321+05:30";
 
-                    editor.putBoolean("Registered", true);
+
                     editor.putString("startTime", start);
                     editor.putString("endTime", end);
                     editor.putInt("Route", route);
