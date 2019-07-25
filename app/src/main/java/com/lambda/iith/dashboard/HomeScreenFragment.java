@@ -3,6 +3,7 @@ package com.lambda.iith.dashboard;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Space;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -30,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ public class HomeScreenFragment extends Fragment {
     private CardView bus , mess ,timetable ,cab ;
     private Space space1;
     private RecyclerView CabSharing;
+    private TextView mess1;
     private ArrayList <String> mNames = new ArrayList<>();
     private ArrayList <String> mEmails = new ArrayList<>();
     private View view;
@@ -73,7 +77,7 @@ public class HomeScreenFragment extends Fragment {
         });
 
         
-        
+        mess1 = view.findViewById(R.id.menu_home);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         System.out.println(sharedPref.getBoolean("cab", false) && sharedPref.getBoolean("Registered" , false));
         cabCardMake(sharedPref.getBoolean("cab" , false)&& sharedPref.getBoolean("Registered" , false));
@@ -203,8 +207,85 @@ public class HomeScreenFragment extends Fragment {
         }
     }
 
-    private void messmake(boolean b){
-        if(b){mess.setVisibility(View.VISIBLE);}
+    private void messmake(boolean b)  {
+        if(b) {
+            mess.setVisibility(View.VISIBLE);
+            try {
+            String data = sharedPref.getString("UDH" , MainActivity.UDH);
+            JSONArray Data = new JSONArray(data);
+            int day = Calendar.getInstance().DAY_OF_WEEK;
+
+
+
+
+                String string1 = "10:30:00";
+                Date time1 = new SimpleDateFormat("HH:mm:ss").parse(string1);
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.setTime(time1);
+
+                String string2 = "14:30:00";
+                Date time2 = new SimpleDateFormat("HH:mm:ss").parse(string2);
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.setTime(time2);
+
+                String string3 = "18:30:00";
+                Date time3 = new SimpleDateFormat("HH:mm:ss").parse(string3);
+                Calendar calendar3 = Calendar.getInstance();
+                calendar3.setTime(time3);
+
+                String string4 = "22:30:00";
+                Date time4 = new SimpleDateFormat("HH:mm:ss").parse(string4);
+                Calendar calendar4 = Calendar.getInstance();
+                calendar4.setTime(time4);
+
+
+                Calendar calendarn = Calendar.getInstance();
+                Date d = calendarn.getTime();
+
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                String formattedDate = dateFormat.format(d);
+                Date timen = new SimpleDateFormat("HH:mm:ss").parse(formattedDate);
+                JSONObject JO = Data.getJSONObject(day-1);
+                //JSONObject JO2 = Data.getJSONObject(day);
+
+                if (timen.before(time1)) {
+
+                    mess1.setText("Today's Breakfast \n \n" + JO.getString("Breakfast"));
+
+                }
+                else if (timen.after(calendar1.getTime()) && timen.before(calendar2.getTime())) {
+                    //checkes whether the current time is between 10:30:00 and 14:30:00.
+                    mess1.setText("Today's Lunch \n" + JO.getString("Lunch"));
+
+                }
+                else if (timen.after(calendar2.getTime()) && timen.before(calendar3.getTime())) {
+                    mess1.setText("Today's Snacks \n" + JO.getString("Snacks"));
+
+                }
+                else if (timen.after(calendar3.getTime()) && timen.before(calendar4.getTime())) {
+                    mess1.setText("Today's Dinner \n" + JO.getString("Dinner"));
+
+                }
+                else if (timen.after(time4)){
+
+
+                    mess1.setText("Tomorrow's Breakfast \n \n" + JO.getString("Breakfast"));
+
+
+                }
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
         else {
             mess.setVisibility(View.GONE);
         }

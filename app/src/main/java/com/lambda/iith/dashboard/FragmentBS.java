@@ -25,22 +25,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.prefs.PreferenceChangeEvent;
 
 import Adapters.BSAdapter;
-import Adapters.RecyclerViewAdapter;
 
 
 public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -63,7 +56,7 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         spinner2.setOnItemSelectedListener(this);
         r1 = view.findViewById(R.id.r1);
         r2 = view.findViewById(R.id.r2);
-        toggleButton = view.findViewById(R.id.toggleButton);
+        toggleButton = view.findViewById(R.id.messToggle);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -104,19 +97,28 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
 
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String url2 = "https://jsonblob.com/api/52c1d535-ae67-11e9-8313-edad9df606f1";
+
         String url = "https://jsonblob.com/api/jsonBlob/835519fb-ae2b-11e9-8313-bf8495d5f167";
+
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        JSONArray JA = null;
                         // Display the first 500 characters of the response string.
+                        try {
+                            JA = new JSONArray(response);
+
 
                         SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("FromIITH", response);
-                        System.out.println(response);
+                        edit.putString("ToIITH", JA.getString(1));
+                        edit.putString("FromIITH" , JA.getString(0));
                         edit.commit();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
 
@@ -129,30 +131,8 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
             }
 
         });
-        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
 
-                        SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("ToIITH", response);
-                        System.out.println("SFD" + response);
-                        edit.commit();
-
-                    }
-
-
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-
-        });
         queue.add(stringRequest);
-        queue.add(stringRequest2);
 
 
 

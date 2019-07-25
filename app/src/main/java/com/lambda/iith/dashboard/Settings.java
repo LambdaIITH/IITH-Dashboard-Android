@@ -11,20 +11,44 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class Settings extends AppCompatActivity {
 
   private SharedPreferences sharedPreferences;
   private SharedPreferences.Editor edit;
   private CheckBox timetable ,cab , bus , mess;
+  private RadioGroup mess_select;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mess_select = findViewById(R.id.Def);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+        if (sharedPreferences.getInt("MESSDEF" , 1) == 0) {
+            mess_select.check(R.id.MLDH);
+        }else{mess_select.check(R.id.MUDH);}
+
+        mess_select.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if(checkedId == R.id.MUDH){
+                        SharedPreferences.Editor editor= sharedPreferences.edit();
+                        editor.putInt("MESSDEF" , 1);
+                        editor.commit();
+                    }
+                    else{SharedPreferences.Editor editor= sharedPreferences.edit();
+                        editor.putInt("MESSDEF" , 0);
+                        editor.commit();}
+                }
+            });
+
+
        edit =  sharedPreferences.edit();
        timetable = findViewById(R.id.TimeTable);
        cab = findViewById(R.id.CabSharing);
