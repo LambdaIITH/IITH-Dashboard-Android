@@ -71,70 +71,7 @@ dinner = rootview.findViewById(R.id.dinner);
 
 
         queue = Volley.newRequestQueue(getContext());
-        String url = "https://jsonblob.com/api/6336df25-aeb3-11e9-99ce-c9fa198f2f2e";
-        String url2 = "https://jsonblob.com/api/c2d3dd6e-aebc-11e9-99ce-116fae627a57";
-        MainActivity.initiate();
         parse("UDH" , MainActivity.UDH);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray JA = null;
-                        // Display the first 500 characters of the response string.
-
-
-
-
-                            SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putString("UDH", response);
-
-                            edit.commit();
-
-
-
-                    }
-
-
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-
-        });
-        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray JA = null;
-                        // Display the first 500 characters of the response string.
-
-
-
-
-                        SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("LDH", response);
-
-                        edit.commit();
-
-
-
-                    }
-
-
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-
-        });
-
-        queue.add(stringRequest);
-        queue.add(stringRequest2);
 
         messToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
