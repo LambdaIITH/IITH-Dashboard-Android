@@ -213,7 +213,7 @@ public class HomeScreenFragment extends Fragment {
             try {
             String data = sharedPref.getString("UDH" , MainActivity.UDH);
             JSONArray Data = new JSONArray(data);
-            int day = Calendar.getInstance().DAY_OF_WEEK;
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
 
 
@@ -246,7 +246,7 @@ public class HomeScreenFragment extends Fragment {
                 String formattedDate = dateFormat.format(d);
                 Date timen = new SimpleDateFormat("HH:mm:ss").parse(formattedDate);
                 JSONObject JO = Data.getJSONObject(day-1);
-                //JSONObject JO2 = Data.getJSONObject(day);
+                JSONObject JO2 = Data.getJSONObject(day);
 
                 if (timen.before(time1)) {
 
@@ -269,7 +269,7 @@ public class HomeScreenFragment extends Fragment {
                 else if (timen.after(time4)){
 
 
-                    mess1.setText("Tomorrow's Breakfast \n \n" + JO.getString("Breakfast"));
+                    mess1.setText("Tomorrow's Breakfast \n \n" + JO2.getString("Breakfast"));
 
 
                 }
