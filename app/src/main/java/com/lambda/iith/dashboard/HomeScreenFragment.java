@@ -12,7 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Space;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +33,8 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import Adapters.RecyclerViewAdapter_CSHOME;
 
@@ -43,7 +48,10 @@ public class HomeScreenFragment extends Fragment {
     private ArrayList <String> mEmails = new ArrayList<>();
     private View view;
     private String email;
+    private int flag;
     private SharedPreferences sharedPref;
+    private TextView t1,t2,t3,t4;
+    private ToggleButton toggleButton;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,7 +60,20 @@ public class HomeScreenFragment extends Fragment {
         cab = view.findViewById(R.id.CabCard);
         timetable = view.findViewById(R.id.TimetableCard);
         bus = view.findViewById(R.id.BusCard);
+        t1 = view.findViewById(R.id.toLing);
+        t2 = view.findViewById(R.id.toODF);
+        toggleButton = view.findViewById(R.id.toggleButton2);
+        t3 = view.findViewById(R.id.toLing2);
+        t4 = view.findViewById(R.id.toODF2);
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                busmake(true);
+            }
+        });
 
+        
+        
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         System.out.println(sharedPref.getBoolean("cab", false) && sharedPref.getBoolean("Registered" , false));
         cabCardMake(sharedPref.getBoolean("cab" , false)&& sharedPref.getBoolean("Registered" , false));
@@ -66,7 +87,117 @@ public class HomeScreenFragment extends Fragment {
         return view;
     }
     private void busmake(boolean b){
-        if(b){bus.setVisibility(View.VISIBLE);}
+        if(b){
+            String string;
+            String temp;
+            bus.setVisibility(View.VISIBLE);
+            try {
+                JSONObject JO = null;
+                if(toggleButton.isChecked()){
+                JO = new JSONObject(sharedPref.getString("ToIITH", "{\"LAB\":\"02:00 ,02:30 ,03:15 ,04:00 ,04:45 ,05:30 ,06:15 ,07:00 ,07:30 ,08:00 ,08:30 ,13:15 ,14:30 ,15:00 ,19:45 ,20:30,\",\"LINGAMPALLY\":\"09:15 ,13:15 ,15:00 ,17:00 ,19:15 ,22:15,\",\"ODF\":\"08:20 , 09:30 ,11:30 ,12:30 ,14:00 ,15:30 ,17:00 ,19:35 ,20:30 ,21:00 ,22:00 ,23:00,\",\"SANGAREDDY\":\"08:45 ,13:45 ,18:00 ,18:40 ,22:00,\",\"LINGAMPALLYW\":\"09:15 ,13:15 ,15:00 ,17:00 ,19:15 ,22:15,\",\"ODFS\":\"08:00 ,09:15 ,11:30 ,12:30 ,14:00 ,15:30 ,17:00 ,18:30 ,19:45 ,20:30 ,21:30 ,23:00,\"}"));}
+                else{JO = new JSONObject(sharedPref.getString("FromIITH", "{  \"LAB\": \"01:45 ,02:15 ,03:00 ,03:45 ,04:30 ,05:15 ,06:00 ,06:45 ,07:15 ,07:45 ,08:15 ,13:00 ,14:15 ,14:45 ,19:30 ,20:15,\",  \"LINGAMPALLY\": \"11:30 ,13:15 ,14:45 ,17:45 ,19:00 ,20:45,\",  \"ODF\": \"09:00 ,10:30 ,12:10 ,13:10 ,14:45 ,17:45 ,18:00 ,19:00 ,20:15 ,21:00 ,22:00 ,23:00,\",  \"SANGAREDDY\": \"08:30 ,13:30 ,17:45 ,18:25 ,20:40,\",  \"LINGAMPALLYW\": \"10:30 ,12:30 ,14:45 ,17:45 ,19:00 ,20:45,\",  \"ODFS\": \"08:40 ,10:15 ,12:10 ,13:15 ,14:45 ,16:10 ,17:45 ,19:10 ,20:30 ,21:10 ,22:10 ,23:30,\"}"));}
+                Date date = Calendar.getInstance().getTime();
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY:MM:dd");
+                String da = dateFormat.format(Calendar.getInstance().getTime());
+               if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) ==1 ){
+                string = JO.getString("LINGAMPALLYW");}
+               else{string = JO.getString("LINGAMPALLY");}
+
+                temp = "";
+                for (int i = 0; i < string.length(); i++) {
+                    if (string.substring(i, i + 1).equals(",")) {
+                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
+                        //t1.setText(format1.format(date));
+                        java.util.Date T1 = format1.parse(da + ":" + temp.trim());
+
+                        if (T1.compareTo(date) > 0) {
+                            t1.setText(temp);
+                            break;
+                        }
+                        temp="";
+                        continue;
+                    }
+
+                    temp += string.substring(i, i + 1);
+
+
+                }
+                if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) ==1 ){
+                string = JO.getString("ODFS");}
+                else{string = JO.getString("ODF");}
+                temp = "";
+                for (int i = 0; i < string.length(); i++) {
+                    if (string.substring(i, i + 1).equals(",")) {
+                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");;
+                        java.util.Date T1 = format1.parse(da +":"+ temp.trim());
+
+                        if (T1.compareTo(date) > 0) {
+                            t2.setText(temp);
+                            break;
+                        }
+                        temp="";
+                        continue;
+                    }
+
+                    temp += string.substring(i, i + 1);
+
+
+
+                }
+
+
+                //String da = dateFormat.format(Calendar.getInstance().getTime());
+                string = JO.getString("LAB");
+                temp = "";
+                for (int i = 0; i < string.length(); i++) {
+                    if (string.substring(i, i + 1).equals(",")) {
+                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");;
+                        java.util.Date T1 = format1.parse(da + temp.trim());
+
+                        if (T1.compareTo(date) > 0) {
+                            t3.setText(temp);
+                            break;
+                        }
+                        temp="";
+                        continue;
+                    }
+
+                    temp += string.substring(i, i + 1);
+
+
+                }
+                string = JO.getString("SANGAREDDY");
+                temp = "";
+                flag =  0;
+                for (int i = 0; i < string.length(); i++) {
+                    if (string.substring(i, i + 1).equals(",")) {
+                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");;
+                        t4.setText(temp);
+
+                        java.util.Date T1 = format1.parse(da + temp.trim());
+
+                        if (T1.compareTo(date) > 0) {
+
+                            break;
+                        }
+                        temp = "";
+                        continue;
+                    }
+
+                    temp += string.substring(i, i + 1);
+
+
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
         else {
             bus.setVisibility(View.GONE);
         }
