@@ -21,9 +21,8 @@
         ></item>
 
     <item
-        android:id="@+id/Thrusday"
-        android:title="Thrusday"
-        ></item>
+        android:id="@+id/Thursday"
+        android:title="Thursday"></item>
     <item
         android:id="@+id/Friday"
         android:title="Friday"

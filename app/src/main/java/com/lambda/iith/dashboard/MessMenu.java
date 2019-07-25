@@ -1,9 +1,10 @@
 package com.lambda.iith.dashboard;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,24 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,32 +42,130 @@ import java.util.Date;
 
 
 public class MessMenu extends Fragment  {
+    private SharedPreferences sharedPreferences;
 
     ImageButton im1,im2;
+    private RequestQueue queue;
     ScrollView hscrollViewMain;
     TextView htext1,htext2,htext3,htext4,htext5,htext6;
+    private JSONObject j1,j2,j3,j4,j5,j6,j7;
     Button b1,b2;
+    private int day;
+    MenuItem itemSel;
+    private ToggleButton messToggle;
+    private String[] daysArray = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
+    private TextView breakfast , lunch ,snacks ,dinner;
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootview = inflater.inflate(R.layout.mess_menu,container,false);
         //im1 =(ImageButton) rootview.findViewById(R.id.imageView1);
         im2 = (ImageButton) rootview.findViewById(R.id.imageView2);
-        final MediaPlayer sound = MediaPlayer.create(getActivity(),R.raw.buttonclick);
 
-       hscrollViewMain = (ScrollView)rootview.findViewById(R.id.scrollViewMain);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+messToggle = rootview.findViewById(R.id.messToggle);
+
+breakfast = rootview.findViewById(R.id.breakfast);
+lunch = rootview.findViewById(R.id.lunch);
+snacks = rootview.findViewById(R.id.snacks);
+dinner = rootview.findViewById(R.id.dinner);
+
+
+        queue = Volley.newRequestQueue(getContext());
+        String url = "https://jsonblob.com/api/6336df25-aeb3-11e9-99ce-c9fa198f2f2e";
+        String url2 = "https://jsonblob.com/api/c2d3dd6e-aebc-11e9-99ce-116fae627a57";
+        MainActivity.initiate();
+        parse("UDH" , MainActivity.UDH);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray JA = null;
+                        // Display the first 500 characters of the response string.
+
+
+
+
+                            SharedPreferences.Editor edit = sharedPreferences.edit();
+                            edit.putString("UDH", response);
+
+                            edit.commit();
+
+
+
+                    }
+
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+
+        });
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray JA = null;
+                        // Display the first 500 characters of the response string.
+
+
+
+
+                        SharedPreferences.Editor edit = sharedPreferences.edit();
+                        edit.putString("LDH", response);
+
+                        edit.commit();
+
+
+
+                    }
+
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+
+        });
+
+        queue.add(stringRequest);
+        queue.add(stringRequest2);
+
+        messToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(messToggle.isChecked()){
+                    parse("LDH" ,MainActivity.LDH );
+                }
+                else{ parse("UDH" , MainActivity.UDH);}
+
+
+                check(itemSel);
+            }
+        });
+
+
+
+
+        hscrollViewMain = (ScrollView)rootview.findViewById(R.id.scrollViewMain);
 
          htext1 = (TextView)rootview. findViewById(R.id.gg1);
          htext2 = (TextView)rootview. findViewById(R.id.lunch);
          htext3 = (TextView)rootview. findViewById(R.id.evening);
-         htext4 = (TextView)rootview. findViewById(R.id.dinner);
+         htext4 = (TextView)rootview. findViewById(R.id.textiewxyz);
          htext5 = (TextView)rootview.findViewById(R.id.gg2);
          htext6 = (TextView)rootview.findViewById(R.id.gg4);
 
 
 
-        final String[] daysArray = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
+
         Calendar calendar = Calendar.getInstance();
-        final int day = calendar.get(Calendar.DAY_OF_WEEK);
+        day = calendar.get(Calendar.DAY_OF_WEEK);
         htext6.setText(daysArray[day-1]);
 
         hscrollViewMain.post(new Runnable() {
@@ -120,25 +231,7 @@ public class MessMenu extends Fragment  {
          });
 
 
-        /*im1.setTag(1);
-        im1.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View rootview) {
 
-                    if(htext6.getText().equals("(Currently in UDH)" )){
-                        htext6.setText("(Currently in LDH)");
-                        im1.setTag(0);
-                    }
-
-            else{
-                 htext6.setText("(Currently in UDH)");
-                 im1.setTag(1);
-             }
-
-
-
-         }
-        });*/
         im2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View rootview) {
@@ -148,90 +241,26 @@ public class MessMenu extends Fragment  {
                 Spannable span = new SpannableString(daysArray[day-1]);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 PopupMenu popup = new PopupMenu(getActivity().getApplicationContext(), im2);
+
                 //popup.getMenuInflater().inflate(R.menu.mess_menu1,popup.getMenu());
                 popup.inflate(R.menu.mess_menu1);
                 MenuItem item = popup.getMenu().getItem(day-1);
+
+
                 item.setTitle(span);
 
                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-
-                        if (item.getItemId()== R.id.Monday){
-                          if(daysArray[day-1] != "Monday"){
-                              htext5.setText("Monday's Menu");
-                              htext6.setText("Monday");
-                          }
-                          else {
-                              htext5.setText("Today's Menu");
-                              htext6.setText(daysArray[day-1]);
-                          }
-                        }
-                        if (item.getItemId()== R.id.Tuesday){
-                            if(daysArray[day-1] != "Tuesday"){
-                                htext5.setText("Tuesday's Menu");
-                                htext6.setText("Tuesday");
-                            }
-                            else {
-                                htext5.setText("Today's Menu");
-                                htext6.setText(daysArray[day-1]);
-                            }
-                        }
-                        if (item.getItemId()== R.id.Wednesday){
-                            if(daysArray[day-1] != "Wednesday"){
-                                htext5.setText("Wednesday's Menu");
-                                htext6.setText("Wednesday");
-                            }
-                            else {
-                                htext5.setText("Today's Menu");
-                                htext6.setText(daysArray[day-1]);
-                            }
-                        }
-                        if (item.getItemId()== R.id.Thrusday){
-                            if(daysArray[day-1] != "Thrusday"){
-                                htext5.setText("Thrusday's Menu");
-                                htext6.setText("Thrusday");
-                            }
-                            else {
-                                htext5.setText("Today's Menu");
-                                htext6.setText(daysArray[day-1]);
-                            }
-                        }
-                        if (item.getItemId()== R.id.Friday){
-                            if(daysArray[day-1] != "Friday"){
-                                htext5.setText("Friday's Menu");
-                                htext6.setText("Friday");
-                            }
-                            else {
-                                htext5.setText("Today's Menu");
-                                htext6.setText(daysArray[day-1]);
-                            }
-                        }
-                        if (item.getItemId()== R.id.Saturday){
-                            if(daysArray[day-1] != "Saturday"){
-                                htext5.setText("Saturday's Menu");
-                                htext6.setText("Saturday");
-                            }
-                            else {
-                                htext5.setText("Today's Menu");
-                                htext6.setText(daysArray[day-1]);
-                            }
-                        }
-                        if (item.getItemId()== R.id.Sunday){
-                            if(daysArray[day-1] != "Sunday"){
-                                htext5.setText("Sunday's Menu");
-                                htext6.setText("Sunday");
-                            }
-                            else {
-                                htext5.setText("Today's Menu");
-                                htext6.setText(daysArray[day-1]);
-                            }
-                        }
+                        check(item);
+                        itemSel = item;
 
                         return false;
                     }
                 });
+
+
 
                 popup.show();
 
@@ -242,16 +271,107 @@ public class MessMenu extends Fragment  {
 
 
 
+        if (messToggle.isChecked()){
+            parse("LDH" , "NULL");
+        } else {
+            parse("UDH" , "NULL");
+        }
 
+        PopupMenu popup = new PopupMenu(getActivity().getApplicationContext(), im2);
 
+        popup.getMenuInflater().inflate(R.menu.mess_menu1,popup.getMenu());
+        popup.inflate(R.menu.mess_menu1);
+        itemSel = popup.getMenu().getItem(day-1);
+        check(itemSel);
         return rootview;
     }
 
 
 
+private void putData(JSONObject j2) throws JSONException {
+    breakfast.setText(j2.getString("Breakfast"));
+    lunch.setText(j2.getString("Lunch"));
+    snacks.setText(j2.getString("Snacks"));
+    dinner.setText(j2.getString("Dinner"));
+}
+private void check(MenuItem item){
+
+    try {
+        if (item.getItemId() == R.id.Monday) {
+
+                htext5.setText("Monday's Menu");
+                htext6.setText("Monday");
+                putData(j2);
 
 
 
+        }
+        if (item.getItemId() == R.id.Tuesday) {
+
+                htext5.setText("Tuesday's Menu");
+                htext6.setText("Tuesday");
+                putData(j3);
+
+        }
+        if (item.getItemId() == R.id.Wednesday) {
+
+                htext5.setText("Wednesday's Menu");
+                htext6.setText("Wednesday");
+                putData(j4);
+
+        }
+        if (item.getItemId() == R.id.Thursday) {
+            System.out.println("item.getItemId()");
+
+                htext5.setText("Thursday's Menu");
+                htext6.setText("Thursday");
+                putData(j5);
+
+        }
+        if (item.getItemId() == R.id.Friday) {
+
+                htext5.setText("Friday's Menu");
+                htext6.setText("Friday");
+                putData(j6);
+
+        }
+        if (item.getItemId() == R.id.Saturday) {
+
+                htext5.setText("Saturday's Menu");
+                htext6.setText("Saturday");
+                putData(j7);
+
+
+        }
+        if (item.getItemId() == R.id.Sunday) {
+
+                htext5.setText("Sunday's Menu");
+                htext6.setText("Sunday");
+                putData(j1);
+
+        }
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+}
+
+private void parse(String string , String def){
+    try{
+        JSONArray JA = new JSONArray(sharedPreferences.getString(string , def));
+        j1 = JA.getJSONObject(0);
+        j2 = JA.getJSONObject(1);
+        j3 = JA.getJSONObject(2);
+        j4 = JA.getJSONObject(3);
+        j5 = JA.getJSONObject(4);
+        j6 = JA.getJSONObject(5);
+        j7 = JA.getJSONObject(6);
+
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+}
 
 
 }

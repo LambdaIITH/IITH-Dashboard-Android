@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
+    public static String LDH;
+    public static String UDH;
     public String name;
     public  String email;
     public String photoUrl;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        initiate();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -255,6 +257,134 @@ public class MainActivity extends AppCompatActivity
 
         // Commit the Fragment replace action.
         fragmentTransaction.commit();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void initiate(){
+           UDH = "[\n" +
+                   "  {\n" +
+                   "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Aloo Paratha, Pudina chutney and curd \\n Extras: Omelet(UDH), Boiled Egg, cornflakes, Bananas\",\n" +
+                   "    \"Lunch\": \"Green salad, Roti(with and without ghee), rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad , Mixed Dal , Crispy veg , Bhendi do pyaza ,\\n Extras:Egg burji-20/-, Paneer Kadaiwala-30/-, Chicken curry-35/- \",\n" +
+                   "    \"Snacks\": \"Milk, tea, coffee \\n Extras : Pav Bhaji(2 pieces)-10/-\",\n" +
+                   "    \"Dinner\": \"Green salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Thotakura pappu , Manchurian Dry,Tomato brinjal salan \\n Extras: Paneer pulao-60/-, Chicken biryani-60/-, Fruit bowl(150 Grams)-30/-\"\n" +
+                   "  },\n" +
+                   "  {\n" +
+                   "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Poha, Upma with cocunut chutney \\n Extras: Omelet(UDH), Boiled Egg, cornflakes, Bananas\",\n" +
+                   "    \"Lunch\": \"Green salad, Roti(with and without ghee), rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad , Dal Tadka    Aloo black channa\\tMutter masala ,\\n Extras:Egg masala-20/-, Babycorn adraki-25/-, Fish curry-45/- \",\n" +
+                   "    \"Snacks\": \"Milk, tea, coffee \\n Extras : Bread Pakoda(1 piece)-15/-\",\n" +
+                   "    \"Dinner\": \"Green salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Channa dal fry    Yam(Kanda) fry\\tKadai veg\\tGhee chapathi(sub for phulka) \\n Extras: Egg burji-20/-, Paneer butter masala-30/-, Pepper Chicken-45/-, Kheema fry-60/-, Double ka meetha-10/-\"\n" +
+                   "  },\n" +
+                   "  {\n" +
+                   "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Uttapam with Chutney and Sambar\\n Extras: Omelet(UDH), Boiled Egg, cornflakes, Bananas\",\n" +
+                   "    \"Lunch\": \"Green salad, Roti(with and without ghee), rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad , Palak dal    Dondakaya fry\\tAloo methi curry ,\\n Extras:Egg burji-20/-, Palak paneer-30/- , Butter chicken-40/- \",\n" +
+                   "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Corn (200 grams)-15/-\",\n" +
+                   "    \"Dinner\": \"Green salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,CRajma    Cabbage poriyal\\tVeg Chatpata\\tGhee chapathi(sub for phulka) \\n Extras: Egg masala-20/-, Crispy Corn-30/-, Chicken curry-35/-, Prawns fry-50/- , Fruit bowl(150 Grams)-30/-\"\n" +
+                   "  },\n" +
+                   "  {\n" +
+                   "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Pongal and Vada with Chutney, Sambar, \\n Extras: Omelet(UDH), Boiled Egg, cornflakes, Bananas\",\n" +
+                   "    \"Lunch\": \"Green salad, Roti(with and without ghee), rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad ,Tomato dal    Palak channa dry\\tDum aloo banarasi \\n Extras:Egg burji-20/-, Chilli Paneer-40/- , Chicken 65-45/-\",\n" +
+                   "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Onion Pakoda(50 gm)-10/-\",\n" +
+                   "    \"Dinner\": \"Green salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Methi dal    Gobi 65\\tBottle guard curry \\n Extras: Paneer pulao-60/-, Chicken biryani-60/-, Fruit bowl(150 Grams)-30/-\"\n" +
+                   "  },\n" +
+                   "  {\n" +
+                   "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Poori with aloo subzi/ Chole subzi, \\n Extras:Boiled Egg, cornflakes, Bananas\",\n" +
+                   "    \"Lunch\": \"Green salad, Roti(with and without ghee), rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad ,TMasoor dal    Bhendi peanut ,  fry\\tMix veg curry \\n Extras:Egg masala-20/-, Veg biryani-45/-, Chicken Chettinadu-40/-\",\n" +
+                   "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Samosa(100 gm)-10/-\",\n" +
+                   "    \"Dinner\": \"Green salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Dal makhani    Raw banana fry, \\tDhai Baingan , Methi/pudina chapathi(sub for phulka) \\n Extras: Egg burji-20/-, Babycorn Manchuria-30/-, Kadai chicken-40/-, Fish curry-45/-, Gajar ka halwa-10/-\"\n" +
+                   "  },\n" +
+                   "  {\n" +
+                   "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Veg and normal idli, groundnut/Coconut Chutney \\n Extras:Omelet(UDH),Boiled Egg, cornflakes, Bananas\",\n" +
+                   "    \"Lunch\": \"Green salad, Roti(with and without ghee), rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad ,Vegetable dal    Veg jalfrezi\\tAvial \\n Extras:Egg burji-20/-, Paneer hariyali masala- 30/-,Chilli Chicken-45/-\",\n" +
+                   "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Mirchi Bhaji(2 pieces)-10/-\",\n" +
+                   "    \"Dinner\": \"Green salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Dal panchmel    Bhendi jaipuri\\tAloo gobi masala \\n Extras: Egg masala-20/-, Palak paneer-30/-, Butter chicken-40/-, Mutton curry-50/-, Fruit bowl-30/-\"\n" +
+                   "  },\n" +
+                   "  {\n" +
+                   "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Masala dosa/ Onion dosa, peanut / coconut chutney, sambar \\n Extras:Omelet(UDH),Boiled Egg, cornflakes, Bananas\",\n" +
+                   "    \"Lunch\": \"Green salad, Roti(with and without ghee), rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad ,Malai dal    Aloo deep fry\\tKadai Veg \\n Extras:Egg burji-20/-, Mushroom biryani-50/-, Chicken hariyali masala-40/-\",\n" +
+                   "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Vada Pav(1 piece) - 10/-\",\n" +
+                   "    \"Dinner\": \"Green salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Dal fry    Gobi mutter Adraki\\tChole masala\\tBhatura(Substitute for phulka) \\n Extras: Paneer hariyali masala-40/-, Chicken 65-45/-, Punjabi fish-40/-, Gulab jamun-10/-\"\n" +
+                   "  }\n" +
+                   "]";
+
+            LDH ="[\n" +
+                    "  {\n" +
+                    "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Aloo Paratha, Pudina chutney and curd \\n Extras:  Boiled Egg, cornflakes, Bananas\",\n" +
+                    "    \"Lunch\": \"Salad, Roti, rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad ,Dal Panchmel,Dondakaya fry(Tindora fry),Corn palak masala,\\n Extras:Egg burji-20/-, Paneer Kadaiwala-30/-, Chicken curry-35/- \",\n" +
+                    "    \"Snacks\": \"Milk, tea, coffee \\n Extras : Pav Bhaji(2 pieces)-10/-\",\n" +
+                    "    \"Dinner\": \"Salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle,Dal fry,Gobi 65,Tomato brinjal salan \\n Extras: Paneer pulao-60/-, Chicken biryani-60/-, Fruit bowl(150 Grams)-30/-\"\n" +
+                    "  },\n" +
+                    "  {\n" +
+                    "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Pongal and Vada with Chutney ,Sambar \\n Extras:  Boiled Egg, cornflakes, Bananas\",\n" +
+                    "    \"Lunch\": \"Salad, Roti, rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad , Methi dal    Veg Jalfrezi\\tRidge gourd with milk curry ,\\n Extras:Egg masala-20/-, Babycorn adraki-25/-, Fish curry-45/- \",\n" +
+                    "    \"Snacks\": \"Milk, tea, coffee \\n Extras : Bread Pakoda(1 piece)-15/-\",\n" +
+                    "    \"Dinner\": \"Salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Gongura dal    Aloo palak dry\\tMutter do pyaza\\tMethi/pudina chapathi(sub for phulka) \\n Extras: Egg burji-20/-, Paneer butter masala-30/-, Pepper Chicken-45/-, Kheema fry-60/-, Double ka meetha-10/-\"\n" +
+                    "  },\n" +
+                    "  {\n" +
+                    "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Pessarattu(Poha alternate weeks), upma with Coconut chutney\\n Extras: Omelet(UDH, LDH), Boiled Egg, cornflakes, Bananas\",\n" +
+                    "    \"Lunch\": \"Salad, Roti, rice, sambar, Curd(100ml),Papad, Chutney, vegetable salad , Dal Makhani    Bhendi peanut fry\\tmix veg curry ,\\n Extras:Egg burji-20/-, Palak paneer-30/- , Butter chicken-40/- \",\n" +
+                    "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Corn (200 grams)-15/-\",\n" +
+                    "    \"Dinner\": \"Salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Chana dal    Raw banana fry\\tDum Aloo curry\\tGhee chapathi(sub for phulka) \\n Extras: Egg masala-20/-, Crispy Corn-30/-, Chicken curry-35/-, Prawns fry-50/- , Fruit bowl(150 Grams)-30/-\"\n" +
+                    "  },\n" +
+                    "  {\n" +
+                    "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee, Veg and normal idli, groundnut/Coconut Chutney \\n Extras: Boiled Egg, cornflakes, Bananas\",\n" +
+                    "    \"Lunch\": \"Salad, roti, rice, sambar, Curd (100ml), Papad, Chutney, vegetable salad ,Dosakaya pappu    Cluster Beans\\tMeal maker with thin gravy \\n Extras:Egg burji-20/-, Chilli Paneer-40/- , Chicken 65-45/-\",\n" +
+                    "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Onion Pakoda(50 gm)-10/-\",\n" +
+                    "    \"Dinner\": \"Salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,lasooni dal tadka    Crispy Veg\\tMalai Kofta \\n Extras: Paneer pulao-60/-, Chicken biryani-60/-, Fruit bowl(150 Grams)-30/-\"\n" +
+                    "  },\n" +
+                    "  {\n" +
+                    "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Uttapam with Chutney and Sambar, \\n Extras:Omelet(LDH), Boiled Egg, cornflakes, Bananas\",\n" +
+                    "    \"Lunch\": \"Salad, roti, rice, sambar, Curd (100ml), Papad, Chutney, vegetable salad ,Mango dal    Yam(Kanda) fry\\tKadai veg \\n Extras:Egg masala-20/-, Veg biryani-45/-, Chicken Chettinadu-40/-\",\n" +
+                    "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Samosa(100 gm)-10/-\",\n" +
+                    "    \"Dinner\": \"Salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Rajma   Aloo deep fry, \\tDhai Baingan \\n Extras: Egg burji-20/-, Babycorn Manchuria-30/-, Kadai chicken-40/-, Fish curry-45/-, Gajar ka halwa-10/-\"\n" +
+                    "  },\n" +
+                    "  {\n" +
+                    "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Poori With Aloo/Chana Sabji \\n Extras:Omelet(LDH),Boiled Egg, cornflakes, Bananas\",\n" +
+                    "    \"Lunch\": \"Salad, roti, rice, sambar, Curd (100ml), Papad, Chutney, vegetable salad ,Dal fry    Cauliflower dry\\tTomato drumstick curry \\n Extras:Egg burji-20/-, Paneer hariyali masala- 30/-,Chilli Chicken-45/-\",\n" +
+                    "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Mirchi Bhaji(2 pieces)-10/-\",\n" +
+                    "    \"Dinner\": \"Salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Palak dal    Veg Manchurian\\tAvial \\n Extras: Egg masala-20/-, Palak paneer-30/-, Butter chicken-40/-, Mutton curry-50/-, Fruit bowl-30/-\"\n" +
+                    "  },\n" +
+                    "  {\n" +
+                    "    \"Breakfast\": \"Milk(untoned), toasted (white & wheat) bread, Jam, Butter, tea and coffee ,Masala dosa, peanut / coconut chutney, sambar \\n Extras:Omelet(LDH),Boiled Egg, cornflakes, Bananas\",\n" +
+                    "    \"Lunch\": \"Salad, roti, rice, sambar, Curd (100ml), Papad, Chutney, vegetable salad ,Tomato Pappu    Bhendi dry\\tVeg chatpata \\n Extras:Egg burji-20/-, Mushroom biryani-50/-, Chicken hariyali masala-40/-\",\n" +
+                    "    \"Snacks\": \"Milk, tea, coffee \\n Extras :Vada Pav(1 piece) - 10/-\",\n" +
+                    "    \"Dinner\": \"Salad, Phulka(with and without ghee), rice, rasam, curd(100ml),Fryums,Pickle ,Masoor dal   Beans Poriyal\\tChole masala\\tBhatura(sub for Phulka) \\n Extras: Paneer hariyali masala-40/-, Chicken 65-45/-, Punjabi fish-40/-, Gulab jamun-10/-\"\n" +
+                    "  }\n" +
+                    "]";
 
     }
 
