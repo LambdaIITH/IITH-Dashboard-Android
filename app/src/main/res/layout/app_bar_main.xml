@@ -28,7 +28,19 @@
                 android:layout_marginEnd="10dp"
                 android:background="#00FFFFFF"
                 app:srcCompat="@mipmap/refresh" />
+
+            <ImageButton
+                android:id="@+id/TimeTableRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginEnd="10dp"
+                android:background="#00FFFFFF"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/sync" />
+
         </android.support.v7.widget.Toolbar>
+
 
     </android.support.design.widget.AppBarLayout>
 
@@ -62,5 +74,15 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addcourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="60dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:srcCompat="@mipmap/baseline_add_black_48" />
 
 </android.support.design.widget.CoordinatorLayout>

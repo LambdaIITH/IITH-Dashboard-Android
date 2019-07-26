@@ -1,5 +1,7 @@
 package com.lambda.iith.dashboard;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity
     public static String UDH;
     public String name;
     public  String email;
+    private int t;
     public String photoUrl;
     private ImageButton MasterRefresh;
     private SharedPreferences sharedPreferences;
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         initiate();
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -133,6 +138,7 @@ public class MainActivity extends AppCompatActivity
         MasterRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
 
 
                 refresh();
@@ -149,9 +155,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
-            fetchData();
-        }
+        //if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
+          //  fetchData();
+        //}
         queue = Volley.newRequestQueue(MainActivity.this);
         queue2 = Volley.newRequestQueue(MainActivity.this);
         queue3= Volley.newRequestQueue(MainActivity.this);
@@ -181,7 +187,10 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
+        if (sharedPreferences.getBoolean("firstrun", true)) {
+            fetchData();
+            sharedPreferences.edit().putBoolean("firstrun", false).commit();
+        }
 
 
 
@@ -199,6 +208,9 @@ public class MainActivity extends AppCompatActivity
             switch (menuItem.getItemId()) {
                 case R.id.nav_home: {
                     a=1;
+                    MasterRefresh.setVisibility(View.VISIBLE);
+                    findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
+                    findViewById(R.id.addcourse).setVisibility(View.GONE);
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new HomeScreenFragment()).commit();
 
                     return  true;
@@ -206,19 +218,66 @@ public class MainActivity extends AppCompatActivity
 
                 case R.id.nav_acads:{
                     a=2;
+
+                    final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    fetchData();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+
+                    findViewById(R.id.TimeTableRefresh).setVisibility(View.VISIBLE);
+                    MasterRefresh.setVisibility(View.GONE);
+                    t=0;
+                    findViewById(R.id.TimeTableRefresh).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(t==0){
+                                Toast.makeText(getApplicationContext() , "Syncing with server will delete all local data \n Press again to confirm " , Toast.LENGTH_SHORT).show();
+                                t=1;
+                            }
+                            else if(t==1){
+                                fetchData();
+                            }
+
+                        }
+                    });
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Timetable()).commit();
+                    findViewById(R.id.addcourse).setVisibility(View.VISIBLE);
+                    findViewById(R.id.addcourse).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(MainActivity.this , AddCourse.class));
+                        }
+                    });
+
 
                     return  true;
                 }
 
                 case R.id.nav_bus :{
                     a=3;
+                    MasterRefresh.setVisibility(View.VISIBLE);
+                    findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
+                    findViewById(R.id.addcourse).setVisibility(View.GONE);
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
 
                     return  true;
                 }
 
                 case R.id.nav_mess:{
+                    findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
+                    MasterRefresh.setVisibility(View.VISIBLE);
+                    findViewById(R.id.addcourse).setVisibility(View.GONE);
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
                     a=4;
                     return  true;

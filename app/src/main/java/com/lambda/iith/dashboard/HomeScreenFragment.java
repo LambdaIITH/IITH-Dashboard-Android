@@ -250,7 +250,9 @@ public class HomeScreenFragment extends Fragment {
                 String formattedDate = dateFormat.format(d);
                 Date timen = new SimpleDateFormat("HH:mm:ss").parse(formattedDate);
                 JSONObject JO = Data.getJSONObject(day-1);
-                JSONObject JO2 = Data.getJSONObject(day);
+                System.out.println(day);
+
+                JSONObject JO2 = Data.getJSONObject(day%7);
 
                 if (timen.before(time1)) {
 
