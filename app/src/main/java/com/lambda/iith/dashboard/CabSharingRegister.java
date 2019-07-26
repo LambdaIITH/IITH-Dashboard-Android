@@ -94,7 +94,7 @@ public class CabSharingRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharingRegister.this);
-                SharedPreferences.Editor editor = sharedPref.edit();
+                final SharedPreferences.Editor editor = sharedPref.edit();
                 if (sharedPref.getBoolean("Registered", false)) {
                     Toast.makeText(getApplication().getBaseContext(), "Please delete previous booking before proceeding",
                             Toast.LENGTH_SHORT).show();
@@ -126,9 +126,10 @@ public class CabSharingRegister extends AppCompatActivity {
                     editor.putString("startTime", start);
                     editor.putString("endTime", end);
                     editor.putInt("Route", route);
-                    editor.commit();
+
 
                     if (checkBox.isChecked()) {
+                        editor.commit();
                         Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
                                 Toast.LENGTH_SHORT).show();
                     } else {
@@ -152,6 +153,7 @@ public class CabSharingRegister extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
                                             Toast.LENGTH_SHORT).show();
+                                    editor.commit();
                                     Log.i("VOLLEY", response);
                                 }
                             }, new Response.ErrorListener() {
@@ -195,6 +197,7 @@ public class CabSharingRegister extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+
 
                     onBackPressed();
                 }

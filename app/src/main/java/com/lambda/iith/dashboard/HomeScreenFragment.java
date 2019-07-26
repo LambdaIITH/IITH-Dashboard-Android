@@ -210,8 +210,12 @@ public class HomeScreenFragment extends Fragment {
     private void messmake(boolean b)  {
         if(b) {
             mess.setVisibility(View.VISIBLE);
+            String data;
             try {
-            String data = sharedPref.getString("UDH" , MainActivity.UDH);
+                if(sharedPref.getInt("MESSDEF" , 1) == 1){
+            data = sharedPref.getString("UDH" , MainActivity.UDH);}
+                else{data = sharedPref.getString("LDH" , MainActivity.LDH);}
+
             JSONArray Data = new JSONArray(data);
             int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
