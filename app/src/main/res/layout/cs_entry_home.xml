@@ -20,15 +20,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="15dp"
-        android:text="Mobile"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/name"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

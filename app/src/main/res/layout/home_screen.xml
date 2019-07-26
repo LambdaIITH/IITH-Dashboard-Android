@@ -50,6 +50,7 @@
                 android:scrollbars="vertical" />
         </android.support.v7.widget.CardView>
 
+
         <android.support.v7.widget.CardView
             android:id="@+id/BusCard"
             android:layout_width="match_parent"
@@ -77,32 +78,117 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
+
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scrollbarAlwaysDrawHorizontalTrack="false">
 
-                <android.support.design.widget.TabLayout
-                    android:layout_width="match_parent"
+
+                <TextView
+                    android:id="@+id/toLing2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/viewPager"
-                    tools:layout_editor_absoluteX="0dp" />
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="50dp"
+                    android:text=" N/A "
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toStartOf="@+id/toODF2"
+                    app:layout_constraintStart_toEndOf="@+id/toODF"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="invisible"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="85dp">
+                <TextView
+                    android:id="@+id/toODF2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="25dp"
+                    android:text=" N/A "
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                </android.support.v4.view.ViewPager>
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="34dp"
+                    android:text="Maingate"
+                    app:layout_constraintEnd_toStartOf="@+id/textView24"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="Sangareddy"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="13dp"
+                    android:text="Lingampally"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toLing" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginTop="100dp"
+                    android:text="ODF"
+                    app:layout_constraintStart_toEndOf="@+id/textView5"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/toLing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="60dp"
+                    android:text=" N/A "
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/toODF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="60dp"
+                    android:text="  N/A "
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/toLing"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/rounded_corner"
+                    android:text="ToggleButton"
+                    android:textOff="From IITH"
+                    android:textOn="To IITH"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </android.support.constraint.ConstraintLayout>
+
+
         </android.support.v7.widget.CardView>
+
 
         <android.support.v7.widget.CardView
             android:id="@+id/MessCard"
@@ -131,6 +217,28 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/menu_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="14dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="TextView" />
+                </LinearLayout>
+            </ScrollView>
+
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView

@@ -47,10 +47,10 @@
     <string name="type_prompt">Choose Bus Type</string>
 
     <string-array name="busType">
-        <item>Maingate-Hostel</item>
-        <item>Lingampally-IITH</item>
-        <item>Minibuses</item>
-        <item>ODF-Kandi</item>
+        <item>Maingate</item>
+        <item>Lingampally</item>
+        <item>Sangareddy</item>
+        <item>ODF</item>
     </string-array>
     <string name="title_activity_cab_sharing_register2">CabSharing</string>
     <string name="title_activity_mess_menu_date">MessMenu</string>
