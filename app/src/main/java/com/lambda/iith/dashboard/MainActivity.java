@@ -29,10 +29,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +51,11 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -67,6 +77,10 @@ public class MainActivity extends AppCompatActivity
     private  ImageView Nav_Bar_DP; //DP in navigation bar
     public static String idToken;
     int a;
+    private List<String> courseList ;
+    private List<String> courseSegmentList;
+    private List<String> slotList;
+    private ArrayList<String> CourseName;
     private RequestQueue queue,queue2,queue3;
     private CountDownTimer mCountDownTimer;
     private FragmentManager fragmentManager;
@@ -95,12 +109,13 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFinish() {
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                 Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.detach(fragment);
                 ft.attach(fragment);
                 ft.commit();
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
             }
         };
@@ -121,10 +136,11 @@ public class MainActivity extends AppCompatActivity
 
 
                 refresh();
+                //fetchData();
                 mCountDownTimer.start();
 
 
-                //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
 
 
 
@@ -132,6 +148,10 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
+            fetchData();
+        }
         queue = Volley.newRequestQueue(MainActivity.this);
         queue2 = Volley.newRequestQueue(MainActivity.this);
         queue3= Volley.newRequestQueue(MainActivity.this);
@@ -439,7 +459,75 @@ private void refresh(){
 
 
 }
+    private String getUID() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (user!= null) {
+            return user.getUid();
+
+        }else {
+            return null;
+        }
+
+    }
+    private void fetchData() {
+        String UUID = getUID();
+
+        DocumentReference users = FirebaseFirestore.getInstance().document("users/"+UUID);
+        users.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    courseList = (List<String>) documentSnapshot.get("identifiedCourses");
+                    System.out.println("HFfd");
+                    courseSegmentList = (List<String>) documentSnapshot.get("identifiedSegments");
+                    slotList = (List<String>) documentSnapshot.get("identifiedSlots");
+
+                }
+                CourseName = new ArrayList<>();
+                System.out.println("FDF" + courseList.size());
+
+                for (int j = 0; j < courseList.size(); j++) {
+                    CourseName.add("Name");
+                }
+
+              saveArrayList(courseList , "CourseList");
+
+                saveArrayList(courseSegmentList , "Segment");
+
+                saveArrayList(slotList , "SlotList");
+                saveArrayList2(CourseName , "CourseName");
+
+
+
+
+            }
+        });
+
+
+
+
+
+
+
+
+    }
+    private void saveArrayList(List<String> list, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+    private void saveArrayList2(ArrayList<String> list, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
 
 
 

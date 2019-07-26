@@ -51,5 +51,16 @@
         app:itemIconTint="#F1EEEE"
         app:itemTextColor="#F8FFFFFF"
         app:menu="@menu/bottom_navigation" />
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

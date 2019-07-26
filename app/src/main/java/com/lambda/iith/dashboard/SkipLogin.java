@@ -1,7 +1,9 @@
 package com.lambda.iith.dashboard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +15,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,11 +37,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 public class SkipLogin extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private SignInButton button;
+    private RequestQueue queue, queue2, queue3;
+    private SharedPreferences sharedPreferences;
 
     public final static int RC_SIGN_IN = 0;
 
@@ -40,6 +54,10 @@ public class SkipLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skip_login);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        queue2 = Volley.newRequestQueue(getApplicationContext());
+        queue3 = Volley.newRequestQueue(getApplicationContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("IITH Dashboard");
@@ -54,7 +72,7 @@ public class SkipLogin extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-
+        MainActivity.initiate();
         fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationSL);
@@ -78,7 +96,7 @@ public class SkipLogin extends AppCompatActivity {
                         //toolbar.setTitle("Bus");
                         return true;
                     }
-                    case R.id.login:{
+                    case R.id.login: {
                         signIn();
                     }
 
@@ -89,6 +107,7 @@ public class SkipLogin extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -119,11 +138,12 @@ public class SkipLogin extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser!=null) {
+        if (currentUser != null) {
             startActivity(new Intent(SkipLogin.this, MainActivity.class));
         }
 
@@ -151,5 +171,99 @@ public class SkipLogin extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+    private void refresh() {
+        String url = "https://jsonblob.com/api/jsonBlob/835519fb-ae2b-11e9-8313-bf8495d5f167";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray JA = null;
+                        // Display the first 500 characters of the response string.
+                        try {
+                            JA = new JSONArray(response);
+
+
+                            SharedPreferences.Editor edit = sharedPreferences.edit();
+                            edit.putString("ToIITH", JA.getString(1));
+                            edit.putString("FromIITH", JA.getString(0));
+                            edit.commit();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        String url2 = "https://jsonblob.com/api/6336df25-aeb3-11e9-99ce-c9fa198f2f2e";
+        String url3 = "https://jsonblob.com/api/c2d3dd6e-aebc-11e9-99ce-116fae627a57";
+        MainActivity.initiate();
+
+
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray JA = null;
+                        // Display the first 500 characters of the response string.
+
+
+                        SharedPreferences.Editor edit = sharedPreferences.edit();
+                        edit.putString("UDH", response);
+
+                        edit.commit();
+
+
+                    }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        StringRequest stringRequest3 = new StringRequest(Request.Method.GET, url3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray JA = null;
+                        // Display the first 500 characters of the response string.
+
+
+                        SharedPreferences.Editor edit = sharedPreferences.edit();
+                        edit.putString("LDH", response);
+
+                        edit.commit();
+
+
+                    }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        queue.add(stringRequest);
+        queue2.add(stringRequest2);
+
+        queue3.add(stringRequest3);
+
+
     }
 }
