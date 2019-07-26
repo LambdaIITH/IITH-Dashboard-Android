@@ -70,7 +70,7 @@
             tools:ignore="MissingConstraints" />
 
         <ToggleButton
-            android:id="@+id/toggleButton"
+            android:id="@+id/messToggle"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
 
@@ -94,6 +94,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+        
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,15 +113,35 @@
                 android:id="@+id/gg1"
                 tools:ignore="MissingConstraints" />
 
-            <ListView
+            <android.support.v7.widget.CardView
                 android:id="@+id/list_mess_menu"
                 android:layout_width="343dp"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/gg1"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rounded_button3"
-                android:layout_marginBottom="1dp"></ListView>
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:scrollbars="vertical"
+                app:cardBackgroundColor="@color/brandedsurface"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp">
+
+                <TextView
+                    android:id="@+id/breakfast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -133,18 +156,38 @@
                 android:text="Lunch Menu"
                 android:textSize="20dp"
                 android:textColor="#ffffff"
-                android:id="@+id/lunch"
+                android:id="@+id/lunchV"
                 tools:ignore="MissingConstraints" />
 
-            <ListView
+            <android.support.v7.widget.CardView
                 android:id="@+id/list_lunch_menu"
                 android:layout_width="343dp"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/lunch"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rounded_button3"
-                android:layout_marginBottom="1dp"></ListView>
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:scrollbars="vertical"
+                app:cardBackgroundColor="@color/brandedsurface"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp">
+
+                <TextView
+                    android:id="@+id/lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </android.support.v7.widget.CardView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,15 +204,35 @@
                 android:id="@+id/evening"
                 tools:ignore="MissingConstraints" />
 
-            <ListView
+            <android.support.v7.widget.CardView
                 android:id="@+id/list_evening_menu"
                 android:layout_width="343dp"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/evening"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rounded_button3"
-                android:layout_marginBottom="1dp"></ListView>
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:scrollbars="vertical"
+                app:cardBackgroundColor="@color/brandedsurface"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp">
+
+                <TextView
+                    android:id="@+id/snacks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
@@ -184,18 +247,38 @@
                 android:text="Dinner Menu"
                 android:textSize="20dp"
                 android:textColor="#ffffff"
-                android:id="@+id/dinner"
+                android:id="@+id/textiewxyz"
                 tools:ignore="MissingConstraints" />
 
-            <ListView
+            <android.support.v7.widget.CardView
                 android:id="@+id/list_dinner_menu"
                 android:layout_width="343dp"
-                android:layout_height="150dp"
-                android:layout_below="@id/dinner"
-                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textiewxyz"
                 android:layout_gravity="center"
-                android:background="@drawable/rounded_button3"
-                android:layout_marginBottom="1dp"></ListView>
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:scrollbars="vertical"
+                app:cardBackgroundColor="@color/brandedsurface"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp">
+
+                <TextView
+                    android:id="@+id/dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="dinner"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </android.support.v7.widget.CardView>
         </LinearLayout>
 
     </ScrollView>

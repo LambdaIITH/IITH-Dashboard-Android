@@ -24,8 +24,8 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
 
     private Context mContext;
 
-    public RecyclerViewAdapter_CSHOME(Context context, ArrayList<String> Names, ArrayList<String> Emails  ) {
-        mNames = Names;
+    public RecyclerViewAdapter_CSHOME(Context context, ArrayList<String> Emails  ) {
+
 
         mEmails = Emails;
         mContext = context;
@@ -47,8 +47,8 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
 
 
 
-        holder.Name.setText(mNames.get(position));
-        holder.email.setText("Email: " + mEmails.get(position));
+
+        holder.Name.setText( mEmails.get(position));
 
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +62,7 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return mNames.size();
+        return mEmails.size();
     }
 
 
@@ -77,7 +77,7 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
 
             Name= itemView.findViewById(R.id.name);
 
-            email = itemView.findViewById(R.id.email);
+           // email = itemView.findViewById(R.id.email);
             parentLayout = itemView.findViewById(R.id.ParentLayout);
         }
     }

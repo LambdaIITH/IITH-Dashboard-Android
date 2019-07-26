@@ -14,13 +14,16 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/brandedsurface"
             app:navigationIcon="@mipmap/baseline_arrow_back_white_24"
             app:popupTheme="@style/PopupOverlay"
             app:title="Cab Sharing">
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/cab_sharing_register" />
+
+    <include
+        layout="@layout/cab_sharing_register"
+        android:background="@color/brandedsurface" />
 
 </android.support.design.widget.CoordinatorLayout>

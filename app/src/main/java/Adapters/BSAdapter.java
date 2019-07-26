@@ -15,7 +15,7 @@ import com.lambda.iith.dashboard.R;
 import java.util.ArrayList;
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class BSAdapter extends RecyclerView.Adapter<BSAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
 
@@ -24,7 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext;
 
-    public RecyclerViewAdapter(Context context,  ArrayList<String> Emails  ) {
+    public BSAdapter(Context context, ArrayList<String> Emails  ) {
 
 
         mEmails = Emails;
@@ -36,7 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cs_entry, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.bs_entry, viewGroup, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
