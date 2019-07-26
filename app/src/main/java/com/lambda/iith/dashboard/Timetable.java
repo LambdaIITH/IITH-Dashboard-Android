@@ -59,10 +59,15 @@ public class Timetable extends Fragment {
 
         View view =inflater.inflate(R.layout.recycler_view_timetable, container, false);
         myRV = (RecyclerView) view.findViewById(R.id.timetable_rv);
+
         lectureList = new ArrayList<>(72);
         Lecture lec = new Lecture();
         lec.setCourse("IDP");
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if(sharedPreferences.getBoolean("TimeTableLaunch" , true)){
+            Toast.makeText(getContext() , "Longpress cards to put course name" , Toast.LENGTH_SHORT).show();
+            sharedPreferences.edit().putBoolean("TimeTableLaunch" , false).commit();
+        }
 
         lec.setCourseId("ID1025");
 
@@ -286,11 +291,36 @@ public class Timetable extends Fragment {
 
 
 
+public static void addCourse(String name , String code , String slot , String segment){
+        courseList.add(code);
+        courseSegmentList.add(segment);
+        slotList.add(slot);
+        CourseName.add(name);
+    saveArrayList(courseList , "CourseList");
+
+    saveArrayList(courseSegmentList , "Segment");
+
+    saveArrayList(slotList , "SlotList");
+    saveArrayList2(CourseName , "CourseName");
+
+
+}
 
 
 
+public static void Delete(String CourseID){
+    int n = courseList.size();
+    for(int i=0 ; i<n ; i++){
+        if(courseList.get(i) == CourseID ){
+            courseList.remove(i);
+            courseSegmentList.remove(i);
+            slotList.remove(i);
+            CourseName.remove(i);
+        }
 
+    }
 
+}
 public static void saveArrayList(List<String> list, String key){
        ;
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -308,11 +338,11 @@ private static void saveArrayList2(ArrayList<String> list, String key){
         editor.apply();     // This line is IMPORTANT !!!
         }
 
-
-
-
-
-
-
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (sharedPreferences.getString("CourseList" , "NULL").equals("NULL"))
+            Toast.makeText(getContext() ,"Use AIMS helper to load data" , Toast.LENGTH_SHORT).show();
+    }
+}
 

@@ -182,7 +182,8 @@ public class CabSharing extends AppCompatActivity {
         }else{ cab.setText("NA");}
 
         //Updating Entries
-        String url = "http://www.iith.dev/query";
+        String url = "https://www.IITh.dev/query";
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -358,7 +359,7 @@ public class CabSharing extends AppCompatActivity {
         //Deleting Locally
 
     try{
-        String URL = "http://www.iith.dev/delete";
+        String URL = "https://www.iith.dev/delete";
         JSONObject jsonBody = new JSONObject();
         //jsonBody.put("Name" , name);
 

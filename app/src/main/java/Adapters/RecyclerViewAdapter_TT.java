@@ -49,17 +49,20 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
         myViewHolder.courseName.setText(lectures.get(i).getCourse());
         myViewHolder.courseID.setText(lectures.get(i).getCourseId());
 
-        myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+
+        myViewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onLongClick(View v) {
                 Toast.makeText(mContext,"Clicked",Toast.LENGTH_SHORT).show();
                 myViewHolder.courseID.setVisibility(View.GONE);
+                myViewHolder.del.setVisibility(View.VISIBLE);
                 myViewHolder.courseName.setVisibility(View.GONE);
                 myViewHolder.editname.setVisibility(View.VISIBLE);
                 myViewHolder.save.setVisibility(View.VISIBLE);
-
+                return true;
             }
         });
+
 
         myViewHolder.save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,8 +72,22 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
                 myViewHolder.courseName.setVisibility(View.VISIBLE);
                 myViewHolder.editname.setVisibility(View.GONE);
                 myViewHolder.save.setVisibility(View.GONE);
+                myViewHolder.del.setVisibility(View.GONE);
                 myViewHolder.courseName.setText(myViewHolder.editname.getText().toString());
 
+            }
+        });
+
+        myViewHolder.del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Timetable.Delete(myViewHolder.courseID.getText().toString());
+                myViewHolder.courseID.setVisibility(View.VISIBLE);
+                myViewHolder.courseName.setVisibility(View.VISIBLE);
+                myViewHolder.editname.setVisibility(View.GONE);
+                myViewHolder.save.setVisibility(View.GONE);
+                myViewHolder.del.setVisibility(View.GONE);
+                myViewHolder.courseName.setText(myViewHolder.editname.getText().toString());
             }
         });
     }
@@ -86,7 +103,7 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
         TextView courseID;
         CardView cardView;
         EditText editname;
-        Button save;
+        Button save , del;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -95,6 +112,7 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
             save = itemView.findViewById(R.id.saver);
             courseID = (TextView) itemView.findViewById(R.id.courseCodeID);
             cardView = (CardView) itemView.findViewById(R.id.cardView_TT);
+            del = itemView.findViewById(R.id.DeleteCourse);
 
         }
     }

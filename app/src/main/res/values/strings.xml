@@ -52,6 +52,24 @@
         <item>Sangareddy</item>
         <item>ODF</item>
     </string-array>
+
+    <string-array name="slots">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
     <string name="title_activity_cab_sharing_register2">CabSharing</string>
     <string name="title_activity_mess_menu_date">MessMenu</string>
     <string name="title_activity_cab_type">CabType</string>
@@ -78,6 +96,7 @@
     </string-array>
     <string name="title_activity_skip_login">SkipLogin</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_add_course">AddCourse</string>
 
 
 </resources>

@@ -135,7 +135,7 @@ public class CabSharingRegister extends AppCompatActivity {
                     } else {
                         try {
 
-                            String URL = "http://www.iith.dev/publish";
+                            String URL = "https://www.IITh.dev/publish";
                             JSONObject jsonBody = new JSONObject();
                             //jsonBody.put("Name" , name);
 
