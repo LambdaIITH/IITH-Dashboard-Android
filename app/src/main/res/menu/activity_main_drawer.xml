@@ -23,6 +23,10 @@
                 android:icon="@mipmap/settings"
                 android:title="@string/action_settings" />
             <item
+                android:id="@+id/about"
+                android:icon="@android:drawable/ic_menu_help"
+                android:title="About" />
+            <item
                 android:id="@+id/logout"
                 android:icon="@mipmap/baseline_exit_to_app_black_48"
                 android:title="@string/menu_logout" />

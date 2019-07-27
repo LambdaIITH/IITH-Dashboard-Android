@@ -88,6 +88,7 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
                 myViewHolder.save.setVisibility(View.GONE);
                 myViewHolder.del.setVisibility(View.GONE);
                 myViewHolder.courseName.setText(myViewHolder.editname.getText().toString());
+                Toast.makeText(mContext , "Deleted , Please reopen this tab " , Toast.LENGTH_SHORT).show();
             }
         });
     }

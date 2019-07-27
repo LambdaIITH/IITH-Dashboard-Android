@@ -33,6 +33,8 @@ public class AddCourse extends AppCompatActivity {
         e2 = findViewById(R.id.cid);
         add = findViewById(R.id.ADDCOURSE);
         spinner = findViewById(R.id.spinnerslot);
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

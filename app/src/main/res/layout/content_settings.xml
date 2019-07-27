@@ -15,6 +15,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="29dp"
         android:checked="true"
+        android:enabled="false"
         android:text="  Timetable"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"

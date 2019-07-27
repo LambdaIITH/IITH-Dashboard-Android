@@ -158,7 +158,7 @@ public class CabSharing extends AppCompatActivity {
        @Override
        public void onClick(View v) {
            DeleteBooking();
-           refresh();
+
        }
    });
 
@@ -182,7 +182,7 @@ public class CabSharing extends AppCompatActivity {
         }else{ cab.setText("NA");}
 
         //Updating Entries
-        String url = "https://www.IITh.dev/query";
+        String url = "https://iith.dev/query";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -359,7 +359,7 @@ public class CabSharing extends AppCompatActivity {
         //Deleting Locally
 
     try{
-        String URL = "https://www.iith.dev/delete";
+        String URL = "https://iith.dev/delete";
         JSONObject jsonBody = new JSONObject();
         //jsonBody.put("Name" , name);
 
@@ -377,6 +377,13 @@ public class CabSharing extends AppCompatActivity {
             public void onResponse(String response) {
                 Toast.makeText(getApplication().getBaseContext(), "Deleted Successfully",
                         Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor edit = sharedPref.edit();
+                edit.remove("startTime");
+                edit.remove("endTime");
+                edit.remove("Route");
+                edit.putBoolean("Registered" , false);
+                edit.commit();
+                refresh();
                 Log.i("VOLLEY", response);
             }
         }, new Response.ErrorListener() {
@@ -415,18 +422,18 @@ public class CabSharing extends AppCompatActivity {
             }
         };
 
-
-        queue.add(stringRequest);
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-
         SharedPreferences.Editor edit = sharedPref.edit();
+        queue.add(stringRequest);
         edit.remove("startTime");
         edit.remove("endTime");
         edit.remove("Route");
         edit.putBoolean("Registered" , false);
         edit.commit();
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+
 }
 
         //Deleting from server
