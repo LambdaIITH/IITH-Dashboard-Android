@@ -24,9 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="31dp"
+        android:autoText="true"
         android:ems="10"
+        android:hint="Course Name"
         android:inputType="textPersonName"
-        android:text="Course Name"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,9 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="25dp"
+        android:autoText="true"
         android:ems="10"
+        android:hint="Course ID"
         android:inputType="textPersonName"
-        android:text="Course ID"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/cname" />
 

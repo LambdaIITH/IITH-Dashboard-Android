@@ -135,7 +135,7 @@ public class CabSharingRegister extends AppCompatActivity {
                     } else {
                         try {
 
-                            String URL = "https://www.IITh.dev/publish";
+                            String URL = "https://iith.dev/publish";
                             JSONObject jsonBody = new JSONObject();
                             //jsonBody.put("Name" , name);
 
@@ -145,15 +145,16 @@ public class CabSharingRegister extends AppCompatActivity {
                             jsonBody.put("RouteID", route);
                             System.out.println("ID1" +MainActivity.idToken);
                             jsonBody.put("token", MainActivity.idToken);
+
+                            editor.commit();
                             final String requestBody = jsonBody.toString();
                             System.out.println(requestBody);
 
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
-                                            Toast.LENGTH_SHORT).show();
-                                    editor.commit();
+                                    Toast.makeText(getApplication().getBaseContext(), "Booked Successfully" , Toast.LENGTH_SHORT).show();
+
                                     Log.i("VOLLEY", response);
                                 }
                             }, new Response.ErrorListener() {

@@ -76,6 +76,16 @@ public class Timetable extends Fragment {
         courseSegmentList = getArrayList("Segment");
         slotList = getArrayList("SlotList");
         CourseName = getArrayList("CourseName");
+        if(courseList == null){
+            courseList = new ArrayList<>();
+            courseSegmentList = new ArrayList<>();
+            slotList = new ArrayList<>();
+            CourseName = new ArrayList<>();
+            courseList.add(" ");
+            courseSegmentList.add("12");
+            slotList.add("Z");
+            CourseName.add(" ");
+        }
 
 
 
@@ -263,6 +273,12 @@ public class Timetable extends Fragment {
 
     public static void edit(String CourseCode ,String Name){
         int n = courseList.size();
+    saveArrayList(courseList , "CourseList");
+
+    saveArrayList(courseSegmentList , "Segment");
+
+    saveArrayList(slotList , "SlotList");
+    saveArrayList2(CourseName , "CourseName");
         for(int i=0 ; i<n ; i++){
             if(courseList.get(i) == CourseCode ){
                 CourseName.set(i ,Name );
@@ -296,6 +312,7 @@ public static void addCourse(String name , String code , String slot , String se
         courseSegmentList.add(segment);
         slotList.add(slot);
         CourseName.add(name);
+
     saveArrayList(courseList , "CourseList");
 
     saveArrayList(courseSegmentList , "Segment");
@@ -318,7 +335,16 @@ public static void Delete(String CourseID){
             CourseName.remove(i);
         }
 
+
+
     }
+
+    saveArrayList(courseList , "CourseList");
+
+    saveArrayList(courseSegmentList , "Segment");
+
+    saveArrayList(slotList , "SlotList");
+    saveArrayList2(CourseName , "CourseName");
 
 }
 public static void saveArrayList(List<String> list, String key){

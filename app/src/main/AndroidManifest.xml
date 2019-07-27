@@ -14,9 +14,13 @@
         android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".About"
+            android:label="@string/title_activity_about"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
             android:name=".AddCourse"
             android:label="@string/title_activity_add_course"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".Settings"
             android:label="@string/title_activity_settings"

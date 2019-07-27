@@ -83,7 +83,7 @@ public class HomeScreenFragment extends Fragment {
         cabCardMake(sharedPref.getBoolean("cab" , false)&& sharedPref.getBoolean("Registered" , false));
         busmake(sharedPref.getBoolean("bus" , true));
         messmake(sharedPref.getBoolean("mess" , true));
-        timetablemake(sharedPref.getBoolean("timetable" , true));
+        //timetablemake(sharedPref.getBoolean("timetable" , true));
 
 
         //cardView2.setVisibility(View.GONE);

@@ -355,6 +355,8 @@ public class MainActivity extends AppCompatActivity
         {
 
             startActivity(new Intent(MainActivity.this , CabSharing.class));
+
+
         } else if (id == R.id.nav_lost_found) {
 
 
@@ -371,6 +373,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_Settings){
         startActivity(new Intent(MainActivity.this ,Settings.class));}
+
+        else if (id == R.id.about){
+            startActivity(new Intent(MainActivity.this , About.class));
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
