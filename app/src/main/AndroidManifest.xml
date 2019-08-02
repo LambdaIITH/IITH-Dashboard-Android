@@ -8,8 +8,8 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="IITH DashBoard"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="DashBoard"
+        android:roundIcon="@mipmap/slice1"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true">
@@ -28,14 +28,10 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".SkipLogin"
-            android:label="IITH Dashboard"
+            android:label="Dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".CabSharing"
@@ -57,7 +53,13 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
     </application>
 
 </manifest>

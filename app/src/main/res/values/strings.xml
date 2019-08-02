@@ -52,6 +52,35 @@
         <item>Sangareddy</item>
         <item>ODF</item>
     </string-array>
+    <string-array name="TimetableView">
+        <item>Daily</item>
+        <item>Weekly</item>
+
+    </string-array>
+
+    <string-array name="BusToggle">
+        <item>Weekday</item>
+        <item>Weekend</item>
+
+    </string-array>
+    <string-array name="BusToggleHome">
+        <item>From IITH</item>
+        <item>To IITH</item>
+
+    </string-array>
+
+    <string-array name="MessToggle">
+        <item>LDH</item>
+        <item>UDH</item>
+
+    </string-array>
+
+    <string-array name="Segments">
+        <item>1-2</item>
+        <item>3-4</item>
+        <item>5-6</item>
+
+    </string-array>
 
     <string-array name="slots">
         <item>A</item>

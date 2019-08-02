@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 
+import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +49,7 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
     private int toggle = 0;
     private String item;
     private RequestQueue queue;
+    private MultiStateToggleButton bustoggle;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,15 +60,15 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         r1 = view.findViewById(R.id.r1);
         r2 = view.findViewById(R.id.r2);
         final AtomicInteger requestsCounter = new AtomicInteger(0);
-        toggleButton = view.findViewById(R.id.messToggle);
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (toggleButton.isChecked()){
-                    toggle = 1;
-                }
-                else {toggle=0;}
 
+
+        bustoggle = view.findViewById(R.id.BusToggle);
+        bustoggle.setValue(0);
+
+        bustoggle.setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                toggle = value;
                 if (item.equals("Lingampally") && toggle == 0) {
                     display("LINGAMPALLY", "IITH to Lingampally" , "Lingampally to IITH");
                 }

@@ -142,10 +142,7 @@ public class SkipLogin extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            startActivity(new Intent(SkipLogin.this, MainActivity.class));
-        }
+
 
     }
 

@@ -1,22 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:scrollbars="horizontal|vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/timetable_rv"
+    xmlns:mstb="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbarStyle="outsideInset"
-        android:scrollbars="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="45dp"
+        android:scrollbars="horizontal|vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/timetable_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
 
-</ScrollView>
+    </ScrollView>
+
+    <Spinner
+        android:id="@+id/segmentselect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/Segments" />
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Segment" />
+
+    <org.honorato.multistatetogglebutton.MultiStateToggleButton
+        android:id="@+id/timetableView"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="35dp"
+        mstb:mstbPrimaryColor="@android:color/holo_blue_dark"
+        mstb:mstbSecondaryColor="@color/brandedsurface"
+
+        mstb:values="@array/TimetableView" />
+
+
+</RelativeLayout>

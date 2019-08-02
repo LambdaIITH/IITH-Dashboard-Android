@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.honorato.multistatetogglebutton.MultiStateToggleButton;
+import org.honorato.multistatetogglebutton.ToggleButton;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +53,7 @@ public class MessMenu extends Fragment  {
     Button b1,b2;
     private int day;
     MenuItem itemSel;
-    private ToggleButton messToggle;
+    private MultiStateToggleButton messToggle;
     private String[] daysArray = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
     private TextView breakfast , lunch ,snacks ,dinner;
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -62,8 +63,8 @@ public class MessMenu extends Fragment  {
         im2 = (ImageButton) rootview.findViewById(R.id.imageView2);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-messToggle = rootview.findViewById(R.id.messToggle);
-
+    messToggle = rootview.findViewById(R.id.MessToggle);
+    messToggle.setValue(1);
 breakfast = rootview.findViewById(R.id.breakfast);
 lunch = rootview.findViewById(R.id.lunch);
 snacks = rootview.findViewById(R.id.snacks);
@@ -71,12 +72,19 @@ dinner = rootview.findViewById(R.id.dinner);
 
 
         queue = Volley.newRequestQueue(getContext());
-        parse("UDH" , MainActivity.UDH);
 
-        messToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+
+        if (messToggle.getValue() == 0){
+            parse("LDH" , "NULL");
+        } else {
+            parse("UDH" , "NULL");
+        }
+        messToggle.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(messToggle.isChecked()){
+            public void onValueChanged(int value) {
+                if(value==0){
                     parse("LDH" ,MainActivity.LDH );
                 }
                 else{ parse("UDH" , MainActivity.UDH);}
@@ -85,6 +93,7 @@ dinner = rootview.findViewById(R.id.dinner);
                 check(itemSel);
             }
         });
+
 
 
 
@@ -207,12 +216,6 @@ dinner = rootview.findViewById(R.id.dinner);
         });
 
 
-
-        if (messToggle.isChecked()){
-            parse("LDH" , "NULL");
-        } else {
-            parse("UDH" , "NULL");
-        }
 
         PopupMenu popup = new PopupMenu(getActivity().getApplicationContext(), im2);
 

@@ -16,8 +16,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -45,6 +48,7 @@ import com.google.gson.Gson;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -63,8 +67,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener  {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
     public static String LDH;
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     public String photoUrl;
     private ImageButton MasterRefresh;
     private SharedPreferences sharedPreferences;
-    private BottomNavigationView bottomNavigationView;
+    public static BottomNavigationView bottomNavigationView;
     private  TextView Nav_Bar_Header; //Navigation Bar Header i.e User Name
     private  TextView Nav_Bar_Email; //Navigation Bar email
     private  ImageView Nav_Bar_DP; //DP in navigation bar
@@ -87,7 +92,10 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<String> CourseName;
     private RequestQueue queue,queue2,queue3;
     private CountDownTimer mCountDownTimer;
+    private SwipeRefreshLayout pullToRefresh;
     private FragmentManager fragmentManager;
+    private GestureDetectorCompat mDetector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,10 +148,10 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
 
-
+                mCountDownTimer.start();
                 refresh();
                 //fetchData();
-                mCountDownTimer.start();
+
 
 
 
@@ -154,6 +162,20 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setRefreshing(false);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pullToRefresh.setRefreshing(false);
+
+                refresh();
+                mCountDownTimer.start();// your code
+
+
+            }
+        });
+
 
         //if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
           //  fetchData();
@@ -209,6 +231,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_home: {
                     a=1;
                     MasterRefresh.setVisibility(View.VISIBLE);
+                    pullToRefresh.setEnabled(true);
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new HomeScreenFragment()).commit();
@@ -236,7 +259,10 @@ public class MainActivity extends AppCompatActivity
 
 
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.VISIBLE);
+                    pullToRefresh.setEnabled(false);
+                    pullToRefresh.setRefreshing(false);
                     MasterRefresh.setVisibility(View.GONE);
+
                     t=0;
                     findViewById(R.id.TimeTableRefresh).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -252,6 +278,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     });
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Timetable()).commit();
+
                     findViewById(R.id.addcourse).setVisibility(View.VISIBLE);
                     findViewById(R.id.addcourse).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -269,6 +296,8 @@ public class MainActivity extends AppCompatActivity
                     MasterRefresh.setVisibility(View.VISIBLE);
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
+                    pullToRefresh.setEnabled(true);
+
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
 
                     return  true;
@@ -278,6 +307,8 @@ public class MainActivity extends AppCompatActivity
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
                     MasterRefresh.setVisibility(View.VISIBLE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
+                    pullToRefresh.setEnabled(true);
+
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
                     a=4;
                     return  true;
@@ -714,6 +745,7 @@ private void refresh(){
                     "]";
 
     }
+
 
 
 }
