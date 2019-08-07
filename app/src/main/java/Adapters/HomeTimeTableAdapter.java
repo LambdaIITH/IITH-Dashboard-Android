@@ -14,20 +14,23 @@ import com.lambda.iith.dashboard.R;
 
 import java.util.ArrayList;
 
+import Model.Lecture;
+
 
 public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mCourse = new ArrayList<>();
-    private ArrayList<String> mTime = new ArrayList<>();
-
+    private ArrayList<Lecture> mCourse = new ArrayList<>();
+    private ArrayList<String> mTime1 = new ArrayList<>();
+    private ArrayList<String> mTime2 = new ArrayList<>();
 
     private Context mContext;
 
-    public HomeTimeTableAdapter(Context context, ArrayList<String> Names, ArrayList<String> Emails  ) {
+    public HomeTimeTableAdapter(Context context, ArrayList<Lecture> Names, ArrayList<String> Emails  , ArrayList<String> Time2 ) {
         mCourse = Names;
 
-        mTime = Emails;
+        mTime1 = Emails;
+        mTime2 = Time2;
         mContext = context;
     }
 
@@ -47,17 +50,11 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
 
 
 
-        holder.course.setText(mCourse.get(position));
-        holder.time.setText(mTime.get(position));
+        holder.course.setText(mCourse.get(position).getCourse());
+        holder.time.setText(mTime1.get(position) +" to " + mTime2.get(position));
 
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-            }
-        });
     }
 
     @Override
@@ -75,7 +72,7 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
         public ViewHolder(View itemView) {
             super(itemView);
 
-            course= itemView.findViewById(R.id.CourseCode);
+            course= itemView.findViewById(R.id.CourseName);
 
             time = itemView.findViewById(R.id.CourseTime);
             parentLayout = itemView.findViewById(R.id.ParentLayout);

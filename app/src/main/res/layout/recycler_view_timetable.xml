@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:text="Segment" />
 
@@ -56,10 +56,10 @@
         android:layout_height="35dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="35dp"
-        mstb:mstbPrimaryColor="@android:color/holo_blue_dark"
-        mstb:mstbSecondaryColor="@color/brandedsurface"
+        android:layout_marginEnd="15dp"
 
+        mstb:mstbPrimaryColor="@color/toggle"
+        mstb:mstbSecondaryColor="@color/brandedsurface"
         mstb:values="@array/TimetableView" />
 
 

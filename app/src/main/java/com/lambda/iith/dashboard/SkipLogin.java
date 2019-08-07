@@ -53,10 +53,13 @@ public class SkipLogin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_skip_login);
+        MainActivity.initiate();
         queue = Volley.newRequestQueue(getApplicationContext());
         queue2 = Volley.newRequestQueue(getApplicationContext());
         queue3 = Volley.newRequestQueue(getApplicationContext());
+        refresh();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,7 +75,7 @@ public class SkipLogin extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        MainActivity.initiate();
+
         fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationSL);
@@ -141,6 +144,11 @@ public class SkipLogin extends AppCompatActivity {
 
     @Override
     public void onStart() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser!=null) {
+            startActivity(new Intent(SkipLogin.this , MainActivity.class));
+        }
+
         super.onStart();
 
 

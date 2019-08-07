@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -47,6 +48,7 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
     private RecyclerView r1,r2;
     private ToggleButton toggleButton;
     private int toggle = 0;
+    private TextView Head1 , Head2;
     private String item;
     private RequestQueue queue;
     private MultiStateToggleButton bustoggle;
@@ -59,7 +61,9 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
 
         r1 = view.findViewById(R.id.r1);
         r2 = view.findViewById(R.id.r2);
-        final AtomicInteger requestsCounter = new AtomicInteger(0);
+        Head1 = view.findViewById(R.id.List1Head);
+        Head2 = view.findViewById(R.id.List2Head);
+
 
 
         bustoggle = view.findViewById(R.id.BusToggle);
@@ -166,7 +170,7 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
     private void display(String s1 , String s2 , String s3){
         ArrayList <String> mArray = new ArrayList<>();
         ArrayList <String> mArray2 = new ArrayList<>();
-        mArray.add(s2);
+        Head1.setText(s2);
         System.out.println("TMKC");
         try {
             String string = JO.getString(s1);
@@ -190,7 +194,7 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
             e.printStackTrace();
         }
 
-        mArray2.add(s3);
+        Head2.setText(s3);
         System.out.println("TMKC");
         try {
             String string = JO2.getString(s1);

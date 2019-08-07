@@ -6,7 +6,18 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Settings"
+    tools:layout_editor_absoluteY="81dp"
     tools:showIn="@layout/activity_settings">
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="160dp"
+        android:text="Current Segment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MessMenu" />
 
     <CheckBox
         android:id="@+id/TimeTable"
@@ -26,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="18dp"
         android:checked="true"
         android:text="  Bus Schedule"
         android:textSize="18sp"
@@ -38,8 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="27dp"
-        android:enabled="false"
+        android:layout_marginTop="18dp"
+        android:enabled="true"
         android:text="  CabSharing"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="18dp"
         android:checked="true"
         android:text="  Mess Menu"
         android:textSize="18sp"
@@ -72,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="25dp"
         android:text="Default Mess"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MessMenu" />
@@ -101,4 +112,23 @@
             android:layout_weight="1"
             android:text="LDH" />
     </RadioGroup>
+
+    <Spinner
+        android:id="@+id/DefaultSeg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:entries="@array/Segments"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView32"
+        app:layout_constraintStart_toEndOf="@+id/textView32" />
+
+    <CheckBox
+        android:id="@+id/CoursenameSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="27dp"
+        android:text="Show Course Name in timetable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DefaultSeg" />
 </android.support.constraint.ConstraintLayout>

@@ -9,28 +9,48 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Switch;
 
 public class Settings extends AppCompatActivity {
 
   private SharedPreferences sharedPreferences;
   private SharedPreferences.Editor edit;
-  private CheckBox timetable ,cab , bus , mess;
+  private CheckBox timetable ,cab , bus , mess , courseName;
   private RadioGroup mess_select;
+  private Spinner SegDef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        courseName = findViewById(R.id.CoursenameSelect);
         mess_select = findViewById(R.id.Def);
+        SegDef = findViewById(R.id.DefaultSeg);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
         if (sharedPreferences.getInt("MESSDEF" , 1) == 0) {
             mess_select.check(R.id.MLDH);
         }else{mess_select.check(R.id.MUDH);}
+
+        courseName.setChecked(sharedPreferences.getBoolean("Cname" , true));
+
+        courseName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (courseName.isChecked()){
+                    sharedPreferences.edit().putBoolean("Cname" , true).commit();
+                }
+                else {
+                    sharedPreferences.edit().putBoolean("Cname" , false).commit();
+                }
+            }
+        });
 
         mess_select.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -55,7 +75,56 @@ public class Settings extends AppCompatActivity {
        mess = findViewById(R.id.MessMenu);
        bus = findViewById(R.id.BusSchedule);
 
-           cab.setEnabled(sharedPreferences.getBoolean("Registered",false));
+        String seg = sharedPreferences.getString("DefaultSegment" , "12");
+           if(seg.equals("12")) {
+
+               SegDef.setSelection(0);
+
+
+           }
+            else if(seg.equals("34")){
+
+                SegDef.setSelection(1);
+
+            }
+
+            else if(seg.equals("56")){
+
+                SegDef.setSelection(2);
+
+            }
+
+
+
+
+
+        SegDef.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(SegDef.getItemAtPosition(position).equals("1-2")){
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putString("DefaultSegment" , "12");
+                    edit.commit();
+                }
+
+                else if(SegDef.getItemAtPosition(position).equals("3-4")){
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putString("DefaultSegment" , "34");
+                    edit.commit();
+                }
+
+                else if(SegDef.getItemAtPosition(position).equals("5-6")){
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putString("DefaultSegment" , "56");
+                    edit.commit();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
        cab.setChecked(sharedPreferences.getBoolean("cab" , false));
         bus.setChecked(sharedPreferences.getBoolean("bus" , true));

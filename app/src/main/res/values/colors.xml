@@ -3,6 +3,7 @@
     <color name="colorPrimary">#2E2F31</color>
     <color name="colorPrimaryDark">#202020</color>
     <color name="colorAccent">#000000</color>
+    <color name = "toggle">#BB86FC</color>
     <color name="Background">#222222</color>
     <color name="Surface">#121212</color>
     <color name="onPrimary">#000000</color>

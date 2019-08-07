@@ -1,6 +1,8 @@
 package Adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +21,7 @@ import com.lambda.iith.dashboard.R;
 import com.lambda.iith.dashboard.Timetable;
 
 import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
 
 import Model.Lecture;
 
@@ -45,27 +48,58 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        Boolean b = sharedPreferences.getBoolean("Cname" , true);
         final int j = i;
         myViewHolder.courseName.setText(lectures.get(i).getCourse());
         myViewHolder.courseID.setText(lectures.get(i).getCourseId());
-        if (myViewHolder.courseID.getText().toString() == "9\nto\n10" || myViewHolder.courseID.getText().toString() == "10\nto\n11"|| myViewHolder.courseID.getText().toString() == "11\nto\n12"||myViewHolder.courseID.getText().toString() == "12\nto\n13"||myViewHolder.courseID.getText().toString() == "14:30\nto\n16" ||myViewHolder.courseID.getText().toString() == "16\nto\n17:30" ||myViewHolder.courseID.getText().toString() == "17:30\nto\n19" ||myViewHolder.courseID.getText().toString() == "19\nto\n20:30"){
+        if (myViewHolder.courseID.getText().toString() == "9" || myViewHolder.courseID.getText().toString() == "10"|| myViewHolder.courseID.getText().toString() == "11"||myViewHolder.courseID.getText().toString() == "12"||myViewHolder.courseID.getText().toString() == "14:30" ||myViewHolder.courseID.getText().toString() == "16" ||myViewHolder.courseID.getText().toString() == "17:30" ||myViewHolder.courseID.getText().toString() == "19"){
 
            myViewHolder.Time.setVisibility(View.VISIBLE);
            myViewHolder.dayText.setText(myViewHolder.courseID.getText().toString());
+           if(!b){
+               ViewGroup.LayoutParams params = myViewHolder.Time.getLayoutParams();
+               myViewHolder.courseName.setVisibility(View.GONE);
+               params.height = (int) (50 * scale + 0.5f);
+               params.width = (int) (35 * scale + 0.5f);
+               myViewHolder.Time.setLayoutParams(params);
+           }
 
         }
-        else if ( myViewHolder.courseID.getText().toString() == "Monday" || myViewHolder.courseID.getText().toString() == "Tuesday"|| myViewHolder.courseID.getText().toString() == "Wednesday"||myViewHolder.courseID.getText().toString() == "Thursday"||myViewHolder.courseID.getText().toString() == "Friday" ){
+        else if ( myViewHolder.courseID.getText().toString() == "MON" || myViewHolder.courseID.getText().toString() == "TUE"|| myViewHolder.courseID.getText().toString() == "WED"||myViewHolder.courseID.getText().toString() == "THU"||myViewHolder.courseID.getText().toString() == "FRI" ){
 
             myViewHolder.Day.setVisibility(View.VISIBLE);
             myViewHolder.timeText.setText(myViewHolder.courseID.getText().toString());
+            if(!b){
+                ViewGroup.LayoutParams params = myViewHolder.Day.getLayoutParams();
+                myViewHolder.courseName.setVisibility(View.GONE);
+                params.height = (int) (50 * scale + 0.5f);
+                params.width = (int) (80 * scale + 0.5f);
+                myViewHolder.Day.setLayoutParams(params);
+            }
 
         }
         else if(myViewHolder.courseID.getText().toString() == "Day"){
            myViewHolder.blank.setVisibility(View.VISIBLE);
+            if(!b){
+                ViewGroup.LayoutParams params = myViewHolder.blank.getLayoutParams();
+                myViewHolder.courseName.setVisibility(View.GONE);
+                params.height = (int) (50 * scale + 0.5f);
+                params.width = (int) (35 * scale + 0.5f);
+                myViewHolder.blank.setLayoutParams(params);
+            }
         }
 
         else{
             myViewHolder.cardView.setVisibility(View.VISIBLE);
+            if(!b){
+                ViewGroup.LayoutParams params = myViewHolder.cardView.getLayoutParams();
+                myViewHolder.courseName.setVisibility(View.GONE);
+                params.height = (int) (50 * scale + 0.5f);
+                params.width = (int) (80 * scale + 0.5f);
+                myViewHolder.cardView.setLayoutParams(params);
+            }
         }
 
 
@@ -94,10 +128,13 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
             public void onClick(View v) {
                 Timetable.edit(myViewHolder.courseID.getText().toString() , myViewHolder.editname.getText().toString());
                 myViewHolder.editname.setVisibility(View.GONE);
-
+                myViewHolder.courseID.setVisibility(View.VISIBLE);
+                myViewHolder.courseName.setVisibility(View.VISIBLE);
             myViewHolder.save.setVisibility(View.GONE);
             myViewHolder.del.setVisibility(View.GONE);
             myViewHolder.courseName.setText(myViewHolder.editname.getText().toString());
+
+
 
         }
     });

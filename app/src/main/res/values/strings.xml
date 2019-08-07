@@ -53,8 +53,8 @@
         <item>ODF</item>
     </string-array>
     <string-array name="TimetableView">
-        <item>Daily</item>
-        <item>Weekly</item>
+        <item>Day</item>
+        <item>Week</item>
 
     </string-array>
 

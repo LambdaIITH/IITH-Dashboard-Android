@@ -112,7 +112,7 @@ public class Timetable extends Fragment {
             slotList.add("Z");
             CourseName.add(" ");
         }
-
+        segment = view.findViewById(R.id.segmentselect);
 
 
         //for (int i = 0; i < 72; i++) {
@@ -124,7 +124,26 @@ public class Timetable extends Fragment {
 
         mapData();
 
-        segment = view.findViewById(R.id.segmentselect);
+        String seg = sharedPreferences.getString("DefaultSegment" , "12");
+        if(seg.equals("12")) {
+
+            segment.setSelection(0);
+
+
+        }
+        else if(seg.equals("34")){
+
+           segment.setSelection(1);
+
+        }
+
+        else if(seg.equals("56")){
+
+            segment.setSelection(2);
+
+        }
+
+
        segment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
            @Override
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -280,16 +299,16 @@ public class Timetable extends Fragment {
         lectureList.clear();
 
         lectureList.add(create("Day" , ""));
-        lectureList.add(create("9\nto\n10" , ""));
-        lectureList.add((create("10\nto\n11" , "")));
-        lectureList.add(create("11\nto\n12" , ""));
-        lectureList.add(create("12\nto\n13" , ""));
-        lectureList.add(create("14:30\nto\n16" , ""));
-        lectureList.add(create("16\nto\n17:30" , ""));
-        lectureList.add(create("17:30\nto\n19" , ""));
-        lectureList.add(create("19\nto\n20:30" , ""));
+        lectureList.add(create("9" , ""));
+        lectureList.add((create("10" , "")));
+        lectureList.add(create("11" , ""));
+        lectureList.add(create("12" , ""));
+        lectureList.add(create("14:30" , ""));
+        lectureList.add(create("16" , ""));
+        lectureList.add(create("17:30" , ""));
+        lectureList.add(create("19" , ""));
 
-        lectureList.add(create("Monday", ""));
+        lectureList.add(create("MON", ""));
         lectureList.add(course.get("A") );
         lectureList.add(course.get("B") );
         lectureList.add(course.get("C") );
@@ -300,7 +319,7 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("X") );
 
 
-        lectureList.add(create("Tuesday", ""));
+        lectureList.add(create("TUE", ""));
         lectureList.add(course.get("D") );
         lectureList.add(course.get("E") );
         lectureList.add(course.get("F") );
@@ -311,7 +330,7 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("Z") );
 
 
-        lectureList.add(create("Wednesday", ""));
+        lectureList.add(create("WED", ""));
         lectureList.add(course.get("B") );
         lectureList.add(course.get("C") );
         lectureList.add(course.get("A") );
@@ -321,7 +340,7 @@ public class Timetable extends Fragment {
         lectureList.add(create("" , "") );
         lectureList.add(create("" , "") );
 
-        lectureList.add(create("Thursday", ""));
+        lectureList.add(create("THU", ""));
         lectureList.add(course.get("C") );
         lectureList.add(course.get("A") );
         lectureList.add(course.get("B") );
@@ -330,7 +349,8 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("P") );
         lectureList.add(course.get("W") );
         lectureList.add(course.get("X") );
-        lectureList.add(create("Friday", ""));
+
+        lectureList.add(create("FRI", ""));
         lectureList.add(course.get("E") );
         lectureList.add(course.get("F") );
         lectureList.add(course.get("D") );

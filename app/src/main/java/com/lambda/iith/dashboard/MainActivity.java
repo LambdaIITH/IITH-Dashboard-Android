@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity
     public static BottomNavigationView bottomNavigationView;
     private  TextView Nav_Bar_Header; //Navigation Bar Header i.e User Name
     private  TextView Nav_Bar_Email; //Navigation Bar email
-    private  ImageView Nav_Bar_DP; //DP in navigation bar
     public static String idToken;
     int a;
     private List<String> courseList ;
@@ -91,10 +90,10 @@ public class MainActivity extends AppCompatActivity
     private List<String> slotList;
     private ArrayList<String> CourseName;
     private RequestQueue queue,queue2,queue3;
-    private CountDownTimer mCountDownTimer;
+    private CountDownTimer mCountDownTimer ;
     private SwipeRefreshLayout pullToRefresh;
     private FragmentManager fragmentManager;
-    private GestureDetectorCompat mDetector;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setOnCreateContextMenuListener(this);
-        mCountDownTimer = new CountDownTimer(3500, 2000) {
+        mCountDownTimer = new CountDownTimer(3000, 2000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
@@ -132,6 +131,8 @@ public class MainActivity extends AppCompatActivity
 
             }
         };
+
+
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -177,9 +178,9 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        //if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
-          //  fetchData();
-        //}
+        if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
+            fetchData();
+        }
         queue = Volley.newRequestQueue(MainActivity.this);
         queue2 = Volley.newRequestQueue(MainActivity.this);
         queue3= Volley.newRequestQueue(MainActivity.this);
@@ -267,13 +268,22 @@ public class MainActivity extends AppCompatActivity
                     findViewById(R.id.TimeTableRefresh).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(t==0){
-                                Toast.makeText(getApplicationContext() , "Syncing with server will delete all local data \n Press again to confirm " , Toast.LENGTH_SHORT).show();
-                                t=1;
-                            }
-                            else if(t==1){
-                                fetchData();
-                            }
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                            alert.setTitle("Warning");
+                            alert.setMessage("This will clear any changes you made and restore your timetable to the AIMS version. Press Sync to proceed or cancel to discontinue");
+                            alert.setPositiveButton("Sync", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mCountDownTimer.start();
+                                    fetchData();
+
+                                }
+                            });
+
+                            alert.setNegativeButton("Cancel" , null);
+                            alert.show();
+
+
 
                         }
                     });
@@ -328,6 +338,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            this.finishAffinity();
         }
     }
 
@@ -417,10 +428,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser==null) {
-            startActivity(new Intent(MainActivity.this, SignIn.class));
-        }
 
         super.onStart();
 
@@ -581,11 +588,19 @@ private void refresh(){
 
                 }
                 CourseName = new ArrayList<>();
-                System.out.println("FDF" + courseList.size());
+                try {
 
-                for (int j = 0; j < courseList.size(); j++) {
-                    CourseName.add("Name");
+
+                    System.out.println("FDF" + courseList.size());
+
+                    for (int j = 0; j < courseList.size(); j++) {
+                        CourseName.add("Name");
+                    }
+
+                } catch (Exception e){
+
                 }
+
 
               saveArrayList(courseList , "CourseList");
 
@@ -599,6 +614,8 @@ private void refresh(){
 
             }
         });
+
+
 
 
 
@@ -624,11 +641,6 @@ private void refresh(){
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-
-
-
-
-
 
 
 

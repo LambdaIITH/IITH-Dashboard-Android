@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:mstb="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:nestedScrollingEnabled="true"
     android:scrollbarAlwaysDrawVerticalTrack="false"
     android:scrollbars="vertical">
 
@@ -21,8 +21,6 @@
             android:id="@+id/TimetableCard"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_below="@+id/BusCard"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
             android:visibility="gone"
@@ -50,6 +48,9 @@
                 android:id="@+id/Timetable_Recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:scrollbars="vertical" />
         </android.support.v7.widget.CardView>
 
@@ -58,9 +59,8 @@
             android:id="@+id/BusCard"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardBackgroundColor="@color/brandedsurface"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
@@ -92,99 +92,102 @@
                     android:id="@+id/toLing2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginEnd="50dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginBottom="13dp"
                     android:text=" N/A "
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toStartOf="@+id/toODF2"
-                    app:layout_constraintStart_toEndOf="@+id/toODF"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toTopOf="@+id/textView23"
+                    app:layout_constraintStart_toStartOf="@+id/textView23" />
 
                 <TextView
                     android:id="@+id/toODF2"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginEnd="25dp"
+                    android:layout_marginStart="13dp"
                     android:text=" N/A "
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView24"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginEnd="34dp"
                     android:text="Maingate"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView24"
                     app:layout_constraintEnd_toStartOf="@+id/textView24"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/textView7"
+                    app:layout_constraintTop_toTopOf="@+id/textView24" />
 
                 <TextView
                     android:id="@+id/textView24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="10dp"
                     android:text="Sangareddy"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/textView23"
+                    app:layout_constraintTop_toBottomOf="@+id/toODF2" />
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="3dp"
                     android:text="Lingampally"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView7"
+                    app:layout_constraintEnd_toStartOf="@+id/textView7"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/toLing" />
+                    app:layout_constraintTop_toTopOf="@+id/textView7" />
 
                 <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginTop="100dp"
-                    android:text="ODF"
+                    android:layout_marginEnd="9dp"
+                    android:text=" ODF"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView23"
+                    app:layout_constraintEnd_toStartOf="@+id/textView23"
                     app:layout_constraintStart_toEndOf="@+id/textView5"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/textView23" />
 
                 <TextView
                     android:id="@+id/toLing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="13dp"
                     android:text=" N/A "
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toTopOf="@+id/textView5"
+                    app:layout_constraintEnd_toEndOf="@+id/textView5" />
 
                 <TextView
                     android:id="@+id/toODF"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="60dp"
-                    android:text="  N/A "
+                    android:layout_marginStart="31dp"
+                    android:layout_marginBottom="13dp"
+                    android:text=" N/A "
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/toLing"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toTopOf="@+id/textView7"
+                    app:layout_constraintStart_toEndOf="@+id/textView5" />
 
                 <org.honorato.multistatetogglebutton.MultiStateToggleButton
                     android:id="@+id/BusToggleHome"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_alignParentEnd="false"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp"
 
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    mstb:mstbPrimaryColor="@android:color/holo_blue_dark"
+                    mstb:mstbPrimaryColor="@color/toggle"
                     mstb:mstbSecondaryColor="@color/brandedsurface"
                     mstb:values="@array/BusToggleHome" />
 
@@ -198,10 +201,7 @@
             android:id="@+id/MessCard"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_below="@+id/TimetableCard"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
-            android:clickable="true"
             android:visibility="gone"
             app:cardBackgroundColor="@color/brandedsurface"
             app:cardCornerRadius="10dp"
@@ -223,11 +223,13 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
-            <ScrollView
+            <android.support.v4.widget.NestedScrollView
                 android:id="@+id/MessScroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true">
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -244,7 +246,7 @@
                         android:layout_marginBottom="10dp"
                         android:text="TextView" />
                 </LinearLayout>
-            </ScrollView>
+            </android.support.v4.widget.NestedScrollView>
 
         </android.support.v7.widget.CardView>
 
@@ -252,8 +254,6 @@
             android:id="@+id/CabCard"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_below="@+id/BusCard"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:visibility="gone"
             app:cardBackgroundColor="@color/brandedsurface"

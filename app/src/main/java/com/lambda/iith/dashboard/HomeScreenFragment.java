@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,8 +20,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import android.widget.Space;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
@@ -40,14 +45,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
+import Adapters.HomeTimeTableAdapter;
+import Adapters.RecyclerViewAdapter2_TT;
 import Adapters.RecyclerViewAdapter_CSHOME;
+import Model.Lecture;
 
 public class HomeScreenFragment extends Fragment {
 
@@ -60,12 +71,30 @@ public class HomeScreenFragment extends Fragment {
     private ArrayList<String> mEmails = new ArrayList<>();
     private View view;
     private String email;
+    private String UUID;
+    private String Seg = "12";
+    private MultiStateToggleButton timetableView;
+    private HashMap<String, HashMap<String, Lecture>> courseMap = new HashMap<>();
+    private HashMap<String , Lecture> Mapper;
+    private RecyclerView myRV;
+    public static SharedPreferences sharedPreferences;
+    public static ArrayList<String> courseList;
+    private int k = 1;
+    public static ArrayList<String> courseSegmentList;
+    public static ArrayList<String> slotList;
+    public static ArrayList<String> CourseName;
+    private ScrollView scrollView1 ;
+    private HorizontalScrollView scrollView2;
+    private Spinner segment;
     private int flag;
-    private SharedPreferences sharedPref, sharedPreferences;
-    private TextView t1, t2, t3, t4;
+    private SharedPreferences sharedPref;
+    private TextView t1, t2, t3, t4 , mealName;
     private MultiStateToggleButton toggleButton;
     private RequestQueue queue, queue2, queue3;
-    private ScrollView MessScroll;
+    private NestedScrollView MessScroll;
+    private ArrayList<Lecture> lectures1 = new ArrayList<>();
+    private ArrayList<String> T1 = new ArrayList<>();
+    private ArrayList<String> T2 = new ArrayList<>();
 
     @Nullable
     @Override
@@ -74,20 +103,31 @@ public class HomeScreenFragment extends Fragment {
         queue = Volley.newRequestQueue(getContext());
         queue2 = Volley.newRequestQueue(getContext());
         queue3 = Volley.newRequestQueue(getContext());
-        mess = (CardView) view.findViewById(R.id.MessCard);
+        mess =  view.findViewById(R.id.MessCard);
+        myRV = view.findViewById(R.id.Timetable_Recycler);
         MessScroll = view.findViewById(R.id.MessScroll);
+        mealName = view.findViewById(R.id.textView15);
         cab = view.findViewById(R.id.CabCard);
-        MessScroll.setOnClickListener(new View.OnClickListener() {
+        mess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragmentlayout, new Timetable()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_mess);
+            }
+        });
+
+        myRV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acads);
             }
         });
         timetable = view.findViewById(R.id.TimetableCard);
         timetable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragmentlayout, new Timetable()).commit();
+
                 MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acads);
             }
         });
@@ -128,17 +168,31 @@ public class HomeScreenFragment extends Fragment {
 
 
         mess1 = view.findViewById(R.id.menu_home);
+        mess1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_mess);
+
+            }
+        });
+
+        mealName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_mess);
+            }
+        });
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         sharedPreferences = sharedPref;
-        System.out.println(sharedPref.getBoolean("cab", false) && sharedPref.getBoolean("Registered", false));
-        cabCardMake(sharedPref.getBoolean("cab", false) && sharedPref.getBoolean("Registered", false));
+        System.out.println(sharedPref.getBoolean("cab", false));
+        cabCardMake(sharedPref.getBoolean("cab", true));
         busmake(sharedPref.getBoolean("bus", true));
         messmake(sharedPref.getBoolean("mess", true));
         timetablemake(sharedPref.getBoolean("timetable" , true));
 
 
-        //cardView2.setVisibility(View.GONE);
-        //space1.setVisibility(View.GONE);
         return view;
     }
 
@@ -315,23 +369,26 @@ public class HomeScreenFragment extends Fragment {
                 JSONObject JO2 = Data.getJSONObject(day % 7);
 
                 if (timen.before(time1)) {
-
-                    mess1.setText("Today's Breakfast \n \n" + JO.getString("Breakfast"));
+                    mealName.setText("Today's Breakfast");
+                    mess1.setText(JO.getString("Breakfast"));
 
                 } else if (timen.after(calendar1.getTime()) && timen.before(calendar2.getTime())) {
                     //checkes whether the current time is between 10:30:00 and 14:30:00.
-                    mess1.setText("Today's Lunch \n" + JO.getString("Lunch"));
+                    mealName.setText("Today's Lunch");
+                    mess1.setText(JO.getString("Lunch"));
 
                 } else if (timen.after(calendar2.getTime()) && timen.before(calendar3.getTime())) {
-                    mess1.setText("Today's Snacks \n" + JO.getString("Snacks"));
+                    mealName.setText("Today's Snacks");
+                    mess1.setText(JO.getString("Snacks"));
 
                 } else if (timen.after(calendar3.getTime()) && timen.before(calendar4.getTime())) {
-                    mess1.setText("Today's Dinner \n" + JO.getString("Dinner"));
+                    mealName.setText("Today's Dinner");
+                    mess1.setText(JO.getString("Dinner"));
 
                 } else if (timen.after(time4)) {
+                    mealName.setText("Tomorrow's Breakfast");
 
-
-                    mess1.setText("Tomorrow's Breakfast \n \n" + JO2.getString("Breakfast"));
+                    mess1.setText(JO2.getString("Breakfast"));
 
 
                 }
@@ -350,8 +407,26 @@ public class HomeScreenFragment extends Fragment {
 
     private void timetablemake(boolean b) {
         if (b) {
-            timetable.setVisibility(View.VISIBLE);
-        } else {
+            try {
+
+
+                timetable.setVisibility(View.VISIBLE);
+                courseList = getArrayList("CourseList");
+                courseSegmentList = getArrayList("Segment");
+                slotList = getArrayList("SlotList");
+                CourseName = getArrayList("CourseName");
+                if(courseList != null) {
+                    mapData();
+                    daily(sharedPref.getString("DefaultSegment" , "12"));
+                }
+            } catch (Exception e) {
+
+            }
+        }
+
+
+
+         else {
             timetable.setVisibility(View.GONE);
         }
     }
@@ -459,98 +534,228 @@ public class HomeScreenFragment extends Fragment {
         timetablemake(sharedPref.getBoolean("timetable", true));
     }
 
+    private ArrayList<String> getArrayList(String key){
+        SharedPreferences prefs = sharedPref;
+        Gson gson = new Gson();
+        String json = prefs.getString(key, null);
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+    private Lecture create(String id , String name){
+        Lecture lecture = new Lecture();
+        lecture.setCourseId(id);
+        lecture.setCourse(name);
+        return lecture;
+    }
+    private void mapData() {
 
-    private void refresh() {
-        String url = "https://jsonblob.com/api/jsonBlob/835519fb-ae2b-11e9-8313-bf8495d5f167";
+        int n = courseList.size();
+        HashMap <String , Lecture> HM  = new HashMap<>();
+        HashMap <String , Lecture> HM2  = new HashMap<>();
+        HashMap <String , Lecture> HM3  = new HashMap<>();
+        HM.put("A" , create("",""));
+        HM.put("B" ,create("",""));
+        HM.put("C" , create("",""));
+        HM.put("D" , create("",""));
+        HM.put("E" , create("",""));
+        HM.put("F" , create("",""));
+        HM.put("G" , create("",""));
+        HM.put("P" , create("",""));
+        HM.put("Q" , create("",""));
+        HM.put("R" , create("",""));
+        HM.put("S" , create("",""));
+        HM.put("W" , create("",""));
+        HM.put("X" , create("",""));
+        HM.put("Y" , create("",""));
+        HM.put("Z" , create("",""));
+        HM2.put("A" , create("",""));
+        HM2.put("B" ,create("",""));
+        HM2.put("C" , create("",""));
+        HM2.put("D" , create("",""));
+        HM2.put("E" , create("",""));
+        HM2.put("F" , create("",""));
+        HM2.put("G" , create("",""));
+        HM2.put("P" , create("",""));
+        HM2.put("Q" , create("",""));
+        HM2.put("R" , create("",""));
+        HM2.put("S" , create("",""));
+        HM2.put("W" , create("",""));
+        HM2.put("X" , create("",""));
+        HM2.put("Y" , create("",""));
+        HM2.put("Z" , create("",""));
+        HM3.put("A" , create("",""));
+        HM3.put("B" ,create("",""));
+        HM3.put("C" , create("",""));
+        HM3.put("D" , create("",""));
+        HM3.put("E" , create("",""));
+        HM3.put("F" , create("",""));
+        HM3.put("G" , create("",""));
+        HM3.put("P" , create("",""));
+        HM3.put("Q" , create("",""));
+        HM3.put("R" , create("",""));
+        HM3.put("S" , create("",""));
+        HM3.put("W" , create("",""));
+        HM3.put("X" , create("",""));
+        HM3.put("Y" , create("",""));
+        HM3.put("Z" , create("",""));
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray JA = null;
-                        // Display the first 500 characters of the response string.
-                        try {
-                            JA = new JSONArray(response);
+        courseMap.put("12" ,HM);
+        courseMap.put("34" ,HM2);
+        courseMap.put("56" ,HM3);
+
+        for (int i = 0; i < n; i++) {
+            System.out.println(i);
+
+            if (courseSegmentList.get(i).contains("12")) {
+                //courseMap.put("12",new HashMap<String, String>());
+
+                HashMap <String , Lecture> h1 = (courseMap.get("12"));
+                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
+                (courseMap.get("12")).get(slotList.get(i)).setCourseId(courseList.get(i));
+
+            }
+            if (courseSegmentList.get(i).contains("34")) {
+                HashMap <String , Lecture> h1 = (courseMap.get("34"));
+                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
+                (courseMap.get("34")).get(slotList.get(i)).setCourseId(courseList.get(i));
+            }
+            if (courseSegmentList.get(i).contains("56")) {
+                HashMap <String , Lecture> h1 = (courseMap.get("56"));
+                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
+                (courseMap.get("56")).get(slotList.get(i)).setCourseId(courseList.get(i));
+            }
+        }
+
+    }
+
+    private void daily(String segment){
+        lectures1.clear();
+        T1.clear();
+        T2.clear();
 
 
-                            SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putString("ToIITH", JA.getString(1));
-                            edit.putString("FromIITH", JA.getString(0));
-                            edit.commit();
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        System.out.println("DAY" + day);
+        switch (day){
+            case 2: {
+                dailyCreate("ABCDPQWX"  , segment);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                return;
 
-                    }
+            }
+            case 3: {
+                dailyCreate("DEFGRSYZ", segment) ;
+
+                return;
+            }
+            case 4:{
+                dailyCreate("BCAGF", segment) ;
+
+                return;
+            }
+            case 5:{
+                dailyCreate("CABEQBWX", segment) ;
+
+                return;
+            }
+            case 6:{
+                dailyCreate("EFDGSRYZ", segment);
+
+                return;
+            }
+            case 7:{
+                dailyCreate("", segment);}
 
 
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+            case 1: {
+                dailyCreate("", segment);
+
+
             }
 
-        });
-        String url2 = "https://jsonblob.com/api/6336df25-aeb3-11e9-99ce-c9fa198f2f2e";
-        String url3 = "https://jsonblob.com/api/c2d3dd6e-aebc-11e9-99ce-116fae627a57";
-        MainActivity.initiate();
 
 
-        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray JA = null;
-                        // Display the first 500 characters of the response string.
+        }
 
-
-                        SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("UDH", response);
-
-                        edit.commit();
-
-
-                    }
-
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
-            }
-
-        });
-        StringRequest stringRequest3 = new StringRequest(Request.Method.GET, url3,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray JA = null;
-                        // Display the first 500 characters of the response string.
-
-
-                        SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("LDH", response);
-
-                        edit.commit();
-
-
-                    }
-
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
-            }
-
-        });
-
-        queue.add(stringRequest);
-        queue2.add(stringRequest2);
-
-        queue3.add(stringRequest3);
 
 
     }
+
+
+
+    private void dailyCreate(String string , String segment ) {
+
+
+        HashMap<String, Lecture> course = courseMap.get(segment);
+
+        System.out.println("ADSD" + course);
+        ArrayList<ArrayList<String>> time = new ArrayList<>();
+        ArrayList<String> t = new ArrayList<>();
+        ArrayList<String> t1 = new ArrayList<>();
+        ArrayList<String> t2 = new ArrayList<>();
+        ArrayList<String> t3 = new ArrayList<>();
+        ArrayList<String> t4 = new ArrayList<>();
+        ArrayList<String> t5 = new ArrayList<>();
+        ArrayList<String> t6 = new ArrayList<>();
+        ArrayList<String> t7 = new ArrayList<>();
+        t.add("09:00");
+        t.add("10:00");
+        time.add(t);
+
+        t1.add("10:00");
+        t1.add("11:00");
+        time.add(t1);
+
+        t2.add("11:00");
+        t2.add("12:00");
+        time.add(t2);
+
+        t3.add("12:00");
+        t3.add("13:00");
+        time.add(t3);
+
+        t4.add("14:30");
+        t4.add("16:00");
+        time.add(t4);
+
+        t5.add("16:00");
+        t5.add("17:30");
+        time.add(t5);
+
+        t6.add("17:30");
+        t6.add("19:00");
+        time.add(t6);
+
+        t7.add("19:00");
+        t7.add("20:30");
+        time.add(t7);
+
+
+
+        System.out.println(string);
+
+
+        for (int i = 0; i < string.length(); i++) {
+
+            System.out.println(string.substring(i, i + 1));
+            System.out.println(course.get(string.substring(i, i + 1)));
+
+
+            if (!course.get(string.substring(i, i + 1)).getCourseId().equals("")) {
+
+
+
+                lectures1.add(course.get(string.substring(i, i + 1)));
+                T1.add(time.get(i).get(0));
+                T2.add(time.get(i).get(1));
+            }
+        }
+        HomeTimeTableAdapter adapter = new HomeTimeTableAdapter(getContext() , lectures1 , T1 , T2);
+        myRV.setAdapter(adapter);
+        LinearLayoutManager layout = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);
+        myRV.setLayoutManager(layout);
+        return;
+    }
+
+
 }

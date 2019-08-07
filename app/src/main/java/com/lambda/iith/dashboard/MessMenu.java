@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -15,11 +16,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -45,42 +48,43 @@ import java.util.Date;
 public class MessMenu extends Fragment  {
     private SharedPreferences sharedPreferences;
 
-    ImageButton im1,im2;
     private RequestQueue queue;
-    ScrollView hscrollViewMain;
-    TextView htext1,htext2,htext3,htext4,htext5,htext6;
+    NestedScrollView hscrollViewMain;
+    TextView htext1,htext2,htext3,htext4,htext6;
     private JSONObject j1,j2,j3,j4,j5,j6,j7;
-    Button b1,b2;
+
     private int day;
-    MenuItem itemSel;
+
+    private Spinner MessDay;
     private MultiStateToggleButton messToggle;
-    private String[] daysArray = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
+
     private TextView breakfast , lunch ,snacks ,dinner;
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootview = inflater.inflate(R.layout.mess_menu,container,false);
-        //im1 =(ImageButton) rootview.findViewById(R.id.imageView1);
-        im2 = (ImageButton) rootview.findViewById(R.id.imageView2);
+
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
     messToggle = rootview.findViewById(R.id.MessToggle);
-    messToggle.setValue(1);
-breakfast = rootview.findViewById(R.id.breakfast);
-lunch = rootview.findViewById(R.id.lunch);
-snacks = rootview.findViewById(R.id.snacks);
-dinner = rootview.findViewById(R.id.dinner);
+    messToggle.setValue(sharedPreferences.getInt("MESSDEF" , 1));
+    breakfast = rootview.findViewById(R.id.breakfast);
+    lunch = rootview.findViewById(R.id.lunch);
+    snacks = rootview.findViewById(R.id.snacks);
+    dinner = rootview.findViewById(R.id.dinner);
 
 
         queue = Volley.newRequestQueue(getContext());
 
 
+        MessDay = rootview.findViewById(R.id.MessDaySelect);
 
 
         if (messToggle.getValue() == 0){
-            parse("LDH" , "NULL");
+            parse("LDH" , MainActivity.LDH);
         } else {
-            parse("UDH" , "NULL");
+            parse("UDH" , MainActivity.UDH);
         }
+
         messToggle.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
@@ -89,8 +93,9 @@ dinner = rootview.findViewById(R.id.dinner);
                 }
                 else{ parse("UDH" , MainActivity.UDH);}
 
+                MessDay.setSelection(MessDay.getSelectedItemPosition());
 
-                check(itemSel);
+
             }
         });
 
@@ -98,21 +103,64 @@ dinner = rootview.findViewById(R.id.dinner);
 
 
 
-        hscrollViewMain = (ScrollView)rootview.findViewById(R.id.scrollViewMain);
+        hscrollViewMain = rootview.findViewById(R.id.scrollViewMain);
 
          htext1 = (TextView)rootview. findViewById(R.id.gg1);
          htext2 = (TextView)rootview. findViewById(R.id.lunch);
          htext3 = (TextView)rootview. findViewById(R.id.evening);
          htext4 = (TextView)rootview. findViewById(R.id.textiewxyz);
-         htext5 = (TextView)rootview.findViewById(R.id.gg2);
-         htext6 = (TextView)rootview.findViewById(R.id.gg4);
 
+
+        MessDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    if (position == 0) {
+
+                        putData(j2);
+                    }
+                    if (position == 1) {
+
+                        putData(j3);
+                    }
+                    if (position == 2) {
+
+                        putData(j4);
+                    }
+                    if (position == 3) {
+
+                        putData(j5);
+                    }
+                    if (position == 4) {
+
+                        putData(j6);
+                    }
+                    if (position == 5) {
+
+                        putData(j7);
+                    }
+                    if (position == 6) {
+
+                        putData(j1);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
 
         Calendar calendar = Calendar.getInstance();
         day = calendar.get(Calendar.DAY_OF_WEEK);
-        htext6.setText(daysArray[day-1]);
+
 
         hscrollViewMain.post(new Runnable() {
              @Override
@@ -178,51 +226,14 @@ dinner = rootview.findViewById(R.id.dinner);
 
 
 
-        im2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View rootview) {
-                final String[] daysArray = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
-                Calendar calendar = Calendar.getInstance();
-                final int day = calendar.get(Calendar.DAY_OF_WEEK);
-                Spannable span = new SpannableString(daysArray[day-1]);
-                span.setSpan(new ForegroundColorSpan(Color.RED), 0, span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                PopupMenu popup = new PopupMenu(getActivity().getApplicationContext(), im2);
 
-                //popup.getMenuInflater().inflate(R.menu.mess_menu1,popup.getMenu());
-                popup.inflate(R.menu.mess_menu1);
-                MenuItem item = popup.getMenu().getItem(day-1);
-
-
-                item.setTitle(span);
-
-               popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        check(item);
-                        itemSel = item;
-
-                        return false;
-                    }
-                });
+    int day = calendar.get(Calendar.DAY_OF_WEEK);
+    MessDay.setSelection((day-2)%7);
 
 
 
-                popup.show();
 
 
-
-            }
-        });
-
-
-
-        PopupMenu popup = new PopupMenu(getActivity().getApplicationContext(), im2);
-
-        popup.getMenuInflater().inflate(R.menu.mess_menu1,popup.getMenu());
-        popup.inflate(R.menu.mess_menu1);
-        itemSel = popup.getMenu().getItem(day-1);
-        check(itemSel);
         return rootview;
     }
 
@@ -234,67 +245,11 @@ private void putData(JSONObject j2) throws JSONException {
     snacks.setText(j2.getString("Snacks"));
     dinner.setText(j2.getString("Dinner"));
 }
-private void check(MenuItem item){
-
-    try {
-        if (item.getItemId() == R.id.Monday) {
-
-                htext5.setText("Monday's Menu");
-                htext6.setText("Monday");
-                putData(j2);
 
 
 
-        }
-        if (item.getItemId() == R.id.Tuesday) {
-
-                htext5.setText("Tuesday's Menu");
-                htext6.setText("Tuesday");
-                putData(j3);
-
-        }
-        if (item.getItemId() == R.id.Wednesday) {
-
-                htext5.setText("Wednesday's Menu");
-                htext6.setText("Wednesday");
-                putData(j4);
-
-        }
-        if (item.getItemId() == R.id.Thursday) {
-            System.out.println("item.getItemId()");
-
-                htext5.setText("Thursday's Menu");
-                htext6.setText("Thursday");
-                putData(j5);
-
-        }
-        if (item.getItemId() == R.id.Friday) {
-
-                htext5.setText("Friday's Menu");
-                htext6.setText("Friday");
-                putData(j6);
-
-        }
-        if (item.getItemId() == R.id.Saturday) {
-
-                htext5.setText("Saturday's Menu");
-                htext6.setText("Saturday");
-                putData(j7);
 
 
-        }
-        if (item.getItemId() == R.id.Sunday) {
-
-                htext5.setText("Sunday's Menu");
-                htext6.setText("Sunday");
-                putData(j1);
-
-        }
-
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-}
 
 private void parse(String string , String def){
     try{
