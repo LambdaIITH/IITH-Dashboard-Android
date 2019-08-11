@@ -60,7 +60,8 @@
         android:layout_gravity="bottom"
         android:background="#202020"
         android:foregroundGravity="clip_horizontal"
-        app:itemIconTint="#F1EEEE"
+        android:scrollbarSize="1dp"
+        app:itemIconTint="@color/toggle"
         app:itemTextColor="#F8FFFFFF"
         app:menu="@menu/bottom_navigation" />
     <RelativeLayout
@@ -80,9 +81,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="65dp"
         android:clickable="true"
         android:visibility="gone"
+        app:backgroundTint="@color/toggle"
         app:srcCompat="@mipmap/baseline_add_black_48" />
 
 </android.support.design.widget.CoordinatorLayout>

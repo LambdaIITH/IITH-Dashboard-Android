@@ -4,20 +4,20 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@mipmap/home"
-        android:title="Home" />
+        android:title="." />
 
     <item
         android:id="@+id/nav_acads"
         android:icon="@mipmap/timetable"
-        android:title="Timetable" />
+        android:title="." />
 
     <item
         android:id="@+id/nav_bus"
         android:icon="@mipmap/baseline_directions_bus_black_18dp"
-        android:title="Bus" />
+        android:title="." />
     <item
         android:id="@+id/nav_mess"
         android:icon="@mipmap/baseline_restaurant_menu_black_48"
-        android:title="@string/title_activity_mess_menu_date" />
+        android:title="." />
 
 </menu>

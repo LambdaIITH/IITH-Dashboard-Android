@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Adapters.BSAdapter;
@@ -103,7 +104,10 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
             }
         });
 
-
+        int Day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        if(Day == 7 || Day ==1 ){
+            bustoggle.setValue(1);
+        }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         try {

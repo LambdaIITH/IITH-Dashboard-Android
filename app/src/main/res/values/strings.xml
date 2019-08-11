@@ -19,7 +19,7 @@
     <string name="csr_from">From</string>
     <string name="csr_date">Date</string>
     <string name="csr_to">To</string>
-    <string name="csr_check1">Secret Booking</string>
+    <string name="csr_check1">Don\'t show my booking to others</string>
     <string name="csr_check2">Recieve Notifications</string>
     <string name="csr_book">Book</string>
     <string name="csr_cancel">Cancel</string>
@@ -121,6 +121,18 @@
         <item>Friday</item>
         <item>Saturday</item>
         <item>Sunday</item>
+
+    </string-array>
+
+    <string-array name="day_short">
+        <item>S</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+
 
     </string-array>
     <string name="title_activity_skip_login">SkipLogin</string>

@@ -107,21 +107,9 @@
         android:buttonTint="@android:color/darker_gray"
         android:text="@string/csr_check1"
         android:textColor="@android:color/darker_gray"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/divider"
         app:layout_constraintTop_toBottomOf="@+id/Reg_Date_2" />
-
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:buttonTint="@android:color/darker_gray"
-        android:text="@string/csr_check2"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/checkBox"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
     <View
         android:id="@+id/divider"
@@ -169,11 +157,11 @@
         android:id="@+id/divider5"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
     <TextView
         android:id="@+id/textView9"

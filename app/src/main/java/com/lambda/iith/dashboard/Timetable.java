@@ -1,6 +1,8 @@
 package com.lambda.iith.dashboard;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -9,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +54,7 @@ import java.util.concurrent.TimeUnit;
 
 import Adapters.RecyclerViewAdapter2_TT;
 import Adapters.RecyclerViewAdapter_TT;
+import Adapters.TimeTableLegendAdapter;
 import Model.Lecture;
 
 public class Timetable extends Fragment {
@@ -59,10 +63,10 @@ public class Timetable extends Fragment {
     List<Lecture> lectureList;
     private String UUID;
     private String Seg = "12";
-    private MultiStateToggleButton timetableView;
+    private MultiStateToggleButton timetableView , DaySelect;
     private HashMap<String, HashMap<String, Lecture>> courseMap = new HashMap<>();
     private HashMap<String , Lecture> Mapper;
-    private RecyclerView myRV;
+    private RecyclerView myRV , legend;
     public static SharedPreferences sharedPreferences;
     public static ArrayList<String> courseList;
     private int k = 1;
@@ -83,21 +87,23 @@ public class Timetable extends Fragment {
         final View view =inflater.inflate(R.layout.recycler_view_timetable, container, false);
         myRV = (RecyclerView) view.findViewById(R.id.timetable_rv);
         timetableView = view.findViewById(R.id.timetableView);
-
+        legend = view.findViewById(R.id.Legend);
         timetableView.setValue(1);
 
         lectureList = new ArrayList<>(72);
         Lecture lec = new Lecture();
         lec.setCourse("IDP");
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
         if(sharedPreferences.getBoolean("TimeTableLaunch" , true)){
+
+
             Toast.makeText(getContext() , "Longpress cards to put course name" , Toast.LENGTH_SHORT).show();
             sharedPreferences.edit().putBoolean("TimeTableLaunch" , false).commit();
-        }
-
+        }sharedPreferences.edit().putBoolean("TimeTableLaunch" , false).commit();
         lec.setCourseId("ID1025");
 
-
+        DaySelect = view.findViewById(R.id.DaySelect);
         courseList = getArrayList("CourseList");
         courseSegmentList = getArrayList("Segment");
         slotList = getArrayList("SlotList");
@@ -124,7 +130,10 @@ public class Timetable extends Fragment {
 
         mapData();
 
+
         String seg = sharedPreferences.getString("DefaultSegment" , "12");
+
+
         if(seg.equals("12")) {
 
             segment.setSelection(0);
@@ -161,9 +170,13 @@ public class Timetable extends Fragment {
                 }
 
               if (k==1){
+                  DaySelect.setVisibility(View.GONE);
                   arrgen(Seg);
+
               }
               else{
+                  DaySelect.setVisibility(View.VISIBLE);
+
                   daily(Seg);
               }
            }
@@ -295,6 +308,8 @@ public class Timetable extends Fragment {
     }
 
     private void arrgen(String segment){
+        showLegend(segment);
+        DaySelect.setVisibility(View.GONE);
         HashMap<String , Lecture> course= courseMap.get(segment);
         lectureList.clear();
 
@@ -495,13 +510,25 @@ public class Timetable extends Fragment {
         editor.apply();     // This line is IMPORTANT !!!
     }
 
-    private void daily(String segment){
-        lectures1.clear();
-        T1.clear();
-        T2.clear();
+    private void daily(final String segment){
+        DaySelect.setVisibility(View.VISIBLE);
+        legend.setVisibility(View.GONE);
+        DaySelect.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                matchDay(value+1 , segment);
+            }
+        });
+        DaySelect.setValue(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1);
 
 
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        //int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+
+
+
+        }
+
+    private void matchDay(int day , String segment){
         System.out.println("DAY" + day);
         switch (day){
             case 2: {
@@ -531,17 +558,14 @@ public class Timetable extends Fragment {
                 return;
             }
             case 7:{
-                dailyCreate("", segment);}
+                dailyCreate("", segment);
+                return;}
 
 
             case 1: {
                 dailyCreate("", segment);
 
-
-            }
-
-
-
+                return;
             }
 
 
@@ -549,12 +573,15 @@ public class Timetable extends Fragment {
         }
 
 
+    }
 
     private void dailyCreate(String string , String segment ) {
 
 
         HashMap<String, Lecture> course = courseMap.get(segment);
-
+        lectures1.clear();
+        T1.clear();
+        T2.clear();
         System.out.println("ADSD" + course);
         ArrayList<ArrayList<String>> time = new ArrayList<>();
         ArrayList<String> t = new ArrayList<>();
@@ -601,12 +628,12 @@ public class Timetable extends Fragment {
 
         System.out.println(string);
 
+        int temp = 0;
 
         for (int i = 0; i < string.length(); i++) {
 
             System.out.println(string.substring(i, i + 1));
             System.out.println(course.get(string.substring(i, i + 1)));
-
 
             if (!course.get(string.substring(i, i + 1)).getCourseId().equals("")) {
 
@@ -615,8 +642,11 @@ public class Timetable extends Fragment {
                 lectures1.add(course.get(string.substring(i, i + 1)));
                 T1.add(time.get(i).get(0));
                 T2.add(time.get(i).get(1));
+                temp++;
             }
         }
+
+
         RecyclerViewAdapter2_TT adapter = new RecyclerViewAdapter2_TT(getContext() , lectures1 , T1 , T2);
         myRV.setAdapter(adapter);
         LinearLayoutManager layout = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);
@@ -628,5 +658,65 @@ public class Timetable extends Fragment {
         super.onResume();
         if (sharedPreferences.getString("CourseList" , "NULL").equals("NULL"))
             Toast.makeText(getContext() ,"Use AIMS helper to load data" , Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @Override
+    public void onStart() {
+        if(sharedPreferences.getBoolean("TimeTableLaunch1" , true)) {
+            sharedPreferences.edit().putBoolean("TimeTableLaunch1" , false).commit();
+
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setTitle("TIP");
+                alert.setMessage("You can use AIMS Helper Chrome extension to load timetable directly from AIMS");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+                alert.show();
+            }
+
+
+
+
+        super.onStart();
+    }
+
+    private void showLegend(String segment){
+
+        if(!sharedPreferences.getBoolean("Cname" , false)){
+            ArrayList <String> mCourseNames= new ArrayList<>();
+            ArrayList < String> mCourseCodes = new ArrayList<>();
+            int n = courseSegmentList.size();
+            for(int j=0 ; j<n ; j++){
+                if(courseSegmentList.get(j).contains(segment)){
+                    mCourseNames.add(CourseName.get(j));
+                    mCourseCodes.add(courseList.get(j));
+
+
+                }
+            }
+
+            legend.setVisibility(View.VISIBLE);
+            TimeTableLegendAdapter timeTableLegendAdapter = new TimeTableLegendAdapter(getContext() , mCourseNames , mCourseCodes);
+            legend.setAdapter(timeTableLegendAdapter);
+            GridLayoutManager layoutManager = new GridLayoutManager(getContext() , 2  , GridLayoutManager.VERTICAL , false);
+
+            legend.setLayoutManager(layoutManager);
+        }
+
+        else{
+            legend.setVisibility(View.GONE);
+        }
+
+
+
+
+
     }
 }

@@ -8,22 +8,38 @@
     android:layout_height="match_parent">
 
 
-    <ScrollView
+    <org.honorato.multistatetogglebutton.MultiStateToggleButton
+        android:id="@+id/DaySelect"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
+        android:layout_below="@+id/segmentselect"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
 
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="0dp"
+        android:visibility="gone"
+        mstb:mstbPrimaryColor="@color/toggle"
+        mstb:mstbSecondaryColor="@color/brandedsurface"
+        mstb:values="@array/day_short" />
+
+    <ScrollView
+        android:id="@+id/Scroller"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/DaySelect"
+        android:layout_marginTop="10dp"
         android:scrollbars="horizontal|vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/timetable_rv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbarStyle="outsideInset"
             android:scrollbars="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
 
 
         </android.support.v7.widget.RecyclerView>
@@ -61,6 +77,14 @@
         mstb:mstbPrimaryColor="@color/toggle"
         mstb:mstbSecondaryColor="@color/brandedsurface"
         mstb:values="@array/TimetableView" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/Legend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Scroller"
+        android:layout_marginTop="30dp"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

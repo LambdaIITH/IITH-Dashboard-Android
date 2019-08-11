@@ -166,7 +166,13 @@ public class HomeScreenFragment extends Fragment {
         });
 
 
-
+        CabSharing = view.findViewById(R.id.cs_home_recycler);
+        CabSharing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext() , CabSharing.class));
+            }
+        });
         mess1 = view.findViewById(R.id.menu_home);
         mess1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -419,6 +425,8 @@ public class HomeScreenFragment extends Fragment {
                     mapData();
                     daily(sharedPref.getString("DefaultSegment" , "12"));
                 }
+
+
             } catch (Exception e) {
 
             }
@@ -434,90 +442,22 @@ public class HomeScreenFragment extends Fragment {
 
     private void cabCardMake(boolean b) {
         if (b) {
-            cab.setVisibility(View.VISIBLE);
-            final String startTime = sharedPref.getString("startTime", "    NA      NA  ");
-            final String endTime = sharedPref.getString("endTime", "    NA      NA  ");
-            final int CabID = sharedPref.getInt("Route", 100);
-            RequestQueue queue = Volley.newRequestQueue(getContext());
-            String url = "http://www.iith.dev/query";
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                // Name, email address, and profile photo Url
+            if(sharedPref.getBoolean("Registered", false)) {
 
-                email = user.getEmail().toString();
+                CabGet();
             }
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            JSONArray JA = null;
-
-                            try {
-                                JA = new JSONArray(response);
-                                mNames.clear();
-                                mEmails.clear();
-                                JSONArray JA2 = new JSONArray();
-                                for (int i = 0; i < JA.length(); i++) {
-                                    JSONObject JO = (JSONObject) JA.get(i);
+            else{
+                mEmails.clear();
+                mEmails.add("You are not using this feature");
+                cab.setVisibility(View.VISIBLE);
+                CabSharing = view.findViewById(R.id.cs_home_recycler);
+                RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
+                CabSharing.setAdapter(adapter);
+                CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
+                return;
+            }
 
 
-                                    SimpleDateFormat format1 = new SimpleDateFormat("YYYY-mm-dd:HH:MM");
-                                    java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
-                                    java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
-                                    java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
-                                    java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
-                                    System.out.println(T3.toString() + T1.toString());
-                                    if ((JO.getInt("RouteID") == CabID && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0, 10)).equals(startTime.substring(0, 10)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0)))) {
-
-                                        JA2.put(JO);
-                                        //mNames.add(JO.getString(""));
-                                        mEmails.add(JO.getString("Email"));
-
-                                    }
-
-                                }
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putString("CabShares", JA2.toString());
-                                editor.commit();
-
-
-                                CabSharing = view.findViewById(R.id.cs_home_recycler);
-                                RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
-                                CabSharing.setAdapter(adapter);
-                                CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    try {
-                        mNames.clear();
-                        mEmails.clear();
-                        JSONArray JA4 = new JSONArray(sharedPref.getString("CabShares", "NULL"));
-                        JSONObject JO = new JSONObject();
-                        for (int k = 0; k < JA4.length(); k++) {
-                            JO = JA4.getJSONObject(k);
-                            mEmails.add(JO.getString("Email"));
-
-                            CabSharing = view.findViewById(R.id.cs_home_recycler);
-                            RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
-                            CabSharing.setAdapter(adapter);
-                            CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-
-            queue.add(stringRequest);
 
         } else {
             cab.setVisibility(View.GONE);
@@ -525,10 +465,103 @@ public class HomeScreenFragment extends Fragment {
 
     }
 
+
+    private void CabGet(){
+        final String startTime = sharedPref.getString("startTime", "    NA      NA  ");
+        final String endTime = sharedPref.getString("endTime", "    NA      NA  ");
+        final int CabID = sharedPref.getInt("Route", 100);
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = "http://www.iith.dev/query";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            // Name, email address, and profile photo Url
+
+            email = user.getEmail().toString();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        JSONArray JA = null;
+
+                        try {
+                            JA = new JSONArray(response);
+                            mNames.clear();
+                            mEmails.clear();
+                            JSONArray JA2 = new JSONArray();
+                            for (int i = 0; i < JA.length(); i++) {
+                                JSONObject JO = (JSONObject) JA.get(i);
+
+
+                                SimpleDateFormat format1 = new SimpleDateFormat("YYYY-mm-dd:HH:MM");
+                                java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
+                                java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
+                                java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
+                                java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
+                                System.out.println(T3.toString() + T1.toString());
+                                if ((JO.getInt("RouteID") == CabID && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0, 10)).equals(startTime.substring(0, 10)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0)))) {
+
+                                    JA2.put(JO);
+                                    //mNames.add(JO.getString(""));
+                                    mEmails.add(JO.getString("Email"));
+
+                                }
+
+                            }
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("CabShares", JA2.toString());
+                            editor.commit();
+                            cab.setVisibility(View.VISIBLE);
+
+                            CabSharing = view.findViewById(R.id.cs_home_recycler);
+                            RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
+                            CabSharing.setAdapter(adapter);
+                            CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
+                        } catch (JSONException e) {
+                            cab.setVisibility(View.VISIBLE);
+
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            cab.setVisibility(View.VISIBLE);
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    mNames.clear();
+                    mEmails.clear();
+                    JSONArray JA4 = new JSONArray(sharedPref.getString("CabShares", "NULL"));
+                    JSONObject JO = new JSONObject();
+                    for (int k = 0; k < JA4.length(); k++) {
+                        JO = JA4.getJSONObject(k);
+                        mEmails.add(JO.getString("Email"));
+
+                        CabSharing = view.findViewById(R.id.cs_home_recycler);
+                        RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
+                        CabSharing.setAdapter(adapter);
+                        CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    }
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+
+                }
+            }
+        });
+
+        cab.setVisibility(View.VISIBLE);
+        queue.add(stringRequest);
+    }
     @Override
     public void onResume() {
         super.onResume();
-        cabCardMake(sharedPref.getBoolean("cab", false) && sharedPref.getBoolean("Registered", false));
+        cabCardMake(sharedPref.getBoolean("cab", false));
         busmake(sharedPref.getBoolean("bus", true));
         messmake(sharedPref.getBoolean("mess", true));
         timetablemake(sharedPref.getBoolean("timetable", true));
@@ -664,11 +697,14 @@ public class HomeScreenFragment extends Fragment {
                 return;
             }
             case 7:{
-                dailyCreate("", segment);}
+                dailyCreate("", segment);
+                return;}
+
 
 
             case 1: {
                 dailyCreate("", segment);
+                return;
 
 
             }
@@ -734,7 +770,7 @@ public class HomeScreenFragment extends Fragment {
 
         System.out.println(string);
 
-
+        int temp = 0;
         for (int i = 0; i < string.length(); i++) {
 
             System.out.println(string.substring(i, i + 1));
@@ -748,8 +784,19 @@ public class HomeScreenFragment extends Fragment {
                 lectures1.add(course.get(string.substring(i, i + 1)));
                 T1.add(time.get(i).get(0));
                 T2.add(time.get(i).get(1));
+                temp++;
             }
         }
+        System.out.println("DD" + temp);
+        if (temp==0){
+            Lecture lecture = new Lecture();
+            lecture.setCourse("NO LECTURES TODAY! Enjoy");
+
+            lectures1.add(lecture);
+            T1.add("");
+            T2.add("");
+        }
+
         HomeTimeTableAdapter adapter = new HomeTimeTableAdapter(getContext() , lectures1 , T1 , T2);
         myRV.setAdapter(adapter);
         LinearLayoutManager layout = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);

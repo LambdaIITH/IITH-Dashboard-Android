@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lambda.iith.dashboard.FragmentBS;
 import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
 
@@ -20,20 +18,20 @@ import java.util.ArrayList;
 import Model.Lecture;
 
 
-public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdapter.ViewHolder>{
+public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegendAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<Lecture> mCourse = new ArrayList<>();
-    private ArrayList<String> mTime1 = new ArrayList<>();
-    private ArrayList<String> mTime2 = new ArrayList<>();
+    private ArrayList<String> mCourse = new ArrayList<>();
+    private ArrayList<String> mCourseCode = new ArrayList<>();
+
 
     private Context mContext;
 
-    public HomeTimeTableAdapter(Context context, ArrayList<Lecture> Names, ArrayList<String> Emails  , ArrayList<String> Time2 ) {
+    public TimeTableLegendAdapter(Context context, ArrayList<String> Names, ArrayList<String> Emails  ) {
         mCourse = Names;
 
-        mTime1 = Emails;
-        mTime2 = Time2;
+        mCourseCode = Emails;
+
         mContext = context;
     }
 
@@ -53,20 +51,14 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
 
 
 
-        holder.course.setText(mCourse.get(position).getCourse());
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acads);
-            }
-        });
-        if(!mTime1.get(position).isEmpty()) {
-            holder.time.setText(mTime1.get(position) + " to " + mTime2.get(position));
-        }
-        else{
-            holder.time.setVisibility(View.GONE);
+        holder.course.setText(mCourse.get(position));
 
-        }
+
+        holder.time.setText(mCourseCode.get(position));
+
+
+
+
         System.out.println("XXX");
 
 
@@ -91,7 +83,7 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
             course= itemView.findViewById(R.id.CourseName);
 
             time = itemView.findViewById(R.id.CourseTime);
-            parentLayout = itemView.findViewById(R.id.HomeTimeTableParent);
+            parentLayout = itemView.findViewById(R.id.ParentLayout);
         }
     }
 }
