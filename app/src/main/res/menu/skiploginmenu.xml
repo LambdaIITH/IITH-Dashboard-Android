@@ -4,13 +4,13 @@
     <item
         android:id="@+id/sl_mess"
         android:icon="@mipmap/baseline_restaurant_menu_black_48"
-        android:title="Mess Menu" />
+        android:title="." />
     <item
         android:id="@+id/sl_bus"
         android:icon="@mipmap/baseline_directions_bus_black_18dp"
-        android:title="Bus" />
+        android:title="." />
     <item
         android:id="@+id/login"
         android:icon="@drawable/googleg_standard_color_18"
-        android:title="Sign In" />
+        android:title="." />
 </menu>

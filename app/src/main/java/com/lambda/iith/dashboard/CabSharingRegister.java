@@ -48,9 +48,11 @@ public class CabSharingRegister extends AppCompatActivity {
 
     private Button Book ;
     public View view;
-    private ImageButton img;
     public static RequestQueue queue ;
-    private  String name , email , start , end , idToken;
+    private  String name;
+    private String email;
+    private String start;
+    private String end;
     private ToggleButton toggleButton;
     private CheckBox checkBox;
     @Override

@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.lambda.iith.dashboard.CabSharing;
-import com.lambda.iith.dashboard.HomeScreenFragment;
-import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
 
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerViewAdapter_CSHOME.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mNames = new ArrayList<>();
+
     private ArrayList<String> mEmails = new ArrayList<>();
 
 

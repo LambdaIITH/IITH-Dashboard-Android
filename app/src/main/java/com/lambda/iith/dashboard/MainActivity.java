@@ -1,29 +1,31 @@
 package com.lambda.iith.dashboard;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.GestureDetector;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,26 +47,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.ImageView;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 
@@ -154,13 +141,6 @@ public class MainActivity extends AppCompatActivity
                 //fetchData();
 
 
-
-
-
-
-
-
-
             }
         });
         pullToRefresh = findViewById(R.id.pullToRefresh);
@@ -201,9 +181,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             });
-
-
-
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment()).commit();
@@ -214,8 +191,6 @@ public class MainActivity extends AppCompatActivity
             fetchData();
             sharedPreferences.edit().putBoolean("firstrun", false).commit();
         }
-
-
 
     }
 
@@ -235,6 +210,7 @@ public class MainActivity extends AppCompatActivity
                     pullToRefresh.setEnabled(true);
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
+                    toolbar.setTitle("IITH Dashboard");
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new HomeScreenFragment()).commit();
 
                     return  true;
@@ -263,7 +239,7 @@ public class MainActivity extends AppCompatActivity
                     pullToRefresh.setEnabled(false);
                     pullToRefresh.setRefreshing(false);
                     MasterRefresh.setVisibility(View.GONE);
-
+                    toolbar.setTitle("Timetable");
                     t=0;
                     findViewById(R.id.TimeTableRefresh).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -307,7 +283,7 @@ public class MainActivity extends AppCompatActivity
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
                     pullToRefresh.setEnabled(true);
-
+                    toolbar.setTitle("Bus Schedule");
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new FragmentBS()).commit();
 
                     return  true;
@@ -318,10 +294,14 @@ public class MainActivity extends AppCompatActivity
                     MasterRefresh.setVisibility(View.VISIBLE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
                     pullToRefresh.setEnabled(true);
-
+                    toolbar.setTitle("Mess Menu");
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new MessMenu()).commit();
                     a=4;
                     return  true;
+                }
+
+                case R.id.nav_cab:{
+                    startActivity(new Intent(MainActivity.this , CabSharing.class));
                 }
 
             }
@@ -392,22 +372,11 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
 
-        if (id == R.id.nav_cab_sharing)
-
-        {
-
-            startActivity(new Intent(MainActivity.this , CabSharing.class));
-
-
-        } else if (id == R.id.nav_lost_found) {
-
-
-            Toast.makeText(getBaseContext() , "Coming Soon"  , Toast.LENGTH_SHORT).show();
 
 
 
 
-        } else if (id == R.id.logout){
+         if (id == R.id.logout){
             signOut();
 
 

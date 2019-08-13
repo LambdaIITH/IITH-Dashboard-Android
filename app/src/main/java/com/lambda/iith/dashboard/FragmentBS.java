@@ -6,36 +6,27 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import Adapters.BSAdapter;
 
@@ -47,7 +38,6 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
     private SharedPreferences.Editor edit;
     private JSONObject JO , JO2;
     private RecyclerView r1,r2;
-    private ToggleButton toggleButton;
     private int toggle = 0;
     private TextView Head1 , Head2;
     private String item;
@@ -65,10 +55,14 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         Head1 = view.findViewById(R.id.List1Head);
         Head2 = view.findViewById(R.id.List2Head);
 
-
+        int Day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
         bustoggle = view.findViewById(R.id.BusToggle);
-        bustoggle.setValue(0);
+        if(Day == 7 || Day ==1 ){
+            bustoggle.setValue(1);
+        }
+        else{
+        bustoggle.setValue(0);}
 
         bustoggle.setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
             @Override
@@ -104,10 +98,7 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
             }
         });
 
-        int Day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        if(Day == 7 || Day ==1 ){
-            bustoggle.setValue(1);
-        }
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         try {
@@ -125,6 +116,7 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         }
 
         spinner2.setOnItemSelectedListener(this);
+
 
 
 

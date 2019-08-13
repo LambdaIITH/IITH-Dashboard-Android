@@ -5,13 +5,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,37 +20,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.model.Document;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import Adapters.RecyclerViewAdapter2_TT;
 import Adapters.RecyclerViewAdapter_TT;
@@ -61,7 +48,6 @@ public class Timetable extends Fragment {
 
 
     List<Lecture> lectureList;
-    private String UUID;
     private String Seg = "12";
     private MultiStateToggleButton timetableView , DaySelect;
     private HashMap<String, HashMap<String, Lecture>> courseMap = new HashMap<>();
@@ -73,13 +59,11 @@ public class Timetable extends Fragment {
     public static ArrayList<String> courseSegmentList;
     public static ArrayList<String> slotList;
     public static ArrayList<String> CourseName;
-    private ScrollView scrollView1 ;
-    private HorizontalScrollView scrollView2;
     private Spinner segment;
     private ArrayList<Lecture> lectures1 = new ArrayList<>();
     private ArrayList<String> T1 = new ArrayList<>();
     private ArrayList<String> T2 = new ArrayList<>();
-
+    private static FragmentManager fragmentManager ;
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,7 +73,7 @@ public class Timetable extends Fragment {
         timetableView = view.findViewById(R.id.timetableView);
         legend = view.findViewById(R.id.Legend);
         timetableView.setValue(1);
-
+        fragmentManager = getFragmentManager();
         lectureList = new ArrayList<>(72);
         Lecture lec = new Lecture();
         lec.setCourse("IDP");
@@ -422,16 +406,22 @@ public class Timetable extends Fragment {
         for(int i=0 ; i<n ; i++){
             if(courseList.get(i) == CourseCode ){
                 CourseName.set(i ,Name );
+                saveArrayList(courseList , "CourseList");
+
+                saveArrayList(courseSegmentList , "Segment");
+
+                saveArrayList(slotList , "SlotList");
+                saveArrayList2(CourseName , "CourseName");
+                final FragmentTransaction ft = fragmentManager.beginTransaction();
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commit();
             }
 
         }
 
-        saveArrayList(courseList , "CourseList");
 
-        saveArrayList(courseSegmentList , "Segment");
-
-        saveArrayList(slotList , "SlotList");
-        saveArrayList2(CourseName , "CourseName");
 
 
 
@@ -459,6 +449,8 @@ public class Timetable extends Fragment {
 
         saveArrayList(slotList , "SlotList");
         saveArrayList2(CourseName , "CourseName");
+        final FragmentTransaction ft = fragmentManager.beginTransaction();
+
 
 
     }
@@ -472,25 +464,38 @@ public class Timetable extends Fragment {
         slotList = getArrayList("SlotList");
         CourseName = getArrayList("CourseName");
         int n = courseList.size();
-        for(int i=0 ; i<n-1 ; i++){
+        try {
+
+
+        for(int i=0 ; i<n ; i++) {
             System.out.println("@@" + i + n + courseList.get(i));
-            if(courseList.get(i).toString().equals(CourseID) ){
+            System.out.println("ZDF" + courseList);
+            if (courseList.get(i).equals(CourseID)) {
                 courseList.remove(i);
                 courseSegmentList.remove(i);
                 slotList.remove(i);
                 CourseName.remove(i);
+
+                saveArrayList(courseList, "CourseList");
+
+                saveArrayList(courseSegmentList, "Segment");
+
+                saveArrayList(slotList, "SlotList");
+                saveArrayList2(CourseName, "CourseName");
+
+                System.out.println("DELETED++");
+                final FragmentTransaction ft = fragmentManager.beginTransaction();
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commit();
+
+
             }
-
-
 
         }
 
-        saveArrayList(courseList , "CourseList");
-
-        saveArrayList(courseSegmentList , "Segment");
-
-        saveArrayList(slotList , "SlotList");
-        saveArrayList2(CourseName , "CourseName");
+        } catch (Exception e){}
 
     }
     public static void saveArrayList(List<String> list, String key){
@@ -499,7 +504,7 @@ public class Timetable extends Fragment {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
-        editor.apply();     // This line is IMPORTANT !!!
+        editor.commit();     // This line is IMPORTANT !!!
     }
     private static void saveArrayList2(ArrayList<String> list, String key){
 
@@ -507,7 +512,7 @@ public class Timetable extends Fragment {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
-        editor.apply();     // This line is IMPORTANT !!!
+        editor.commit();     // This line is IMPORTANT !!!
     }
 
     private void daily(final String segment){

@@ -1,7 +1,6 @@
 package com.lambda.iith.dashboard;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,27 +8,14 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
@@ -50,7 +36,7 @@ public class MessMenu extends Fragment  {
 
     private RequestQueue queue;
     NestedScrollView hscrollViewMain;
-    TextView htext1,htext2,htext3,htext4,htext6;
+    TextView htext1,htext2,htext3,htext4;
     private JSONObject j1,j2,j3,j4,j5,j6,j7;
 
     private int day;

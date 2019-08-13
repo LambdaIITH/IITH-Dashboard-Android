@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lambda.iith.dashboard.EditNameDialog;
 import com.lambda.iith.dashboard.R;
 import com.lambda.iith.dashboard.Timetable;
 
 import java.util.List;
-import java.util.prefs.PreferenceChangeEvent;
 
 import Model.Lecture;
 
@@ -152,7 +148,7 @@ public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAda
             myViewHolder.save.setVisibility(View.GONE);
             myViewHolder.del.setVisibility(View.GONE);
 
-            Toast.makeText(mContext , "Deleted , Please reopen this tab " , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(mContext , "Deleted , Please reopen this tab " , Toast.LENGTH_SHORT).show();
         }
     });
 }

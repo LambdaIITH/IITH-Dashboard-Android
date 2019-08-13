@@ -10,12 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
 
 import java.util.ArrayList;
-
-import Model.Lecture;
 
 
 public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegendAdapter.ViewHolder>{

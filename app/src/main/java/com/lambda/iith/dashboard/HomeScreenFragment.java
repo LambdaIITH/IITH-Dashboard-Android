@@ -3,30 +3,18 @@ package com.lambda.iith.dashboard;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.internal.BottomNavigationItemView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.HorizontalScrollView;
-import android.widget.ScrollView;
 import android.widget.Space;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -53,10 +41,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import Adapters.HomeTimeTableAdapter;
-import Adapters.RecyclerViewAdapter2_TT;
 import Adapters.RecyclerViewAdapter_CSHOME;
 import Model.Lecture;
 
@@ -71,11 +57,7 @@ public class HomeScreenFragment extends Fragment {
     private ArrayList<String> mEmails = new ArrayList<>();
     private View view;
     private String email;
-    private String UUID;
-    private String Seg = "12";
-    private MultiStateToggleButton timetableView;
     private HashMap<String, HashMap<String, Lecture>> courseMap = new HashMap<>();
-    private HashMap<String , Lecture> Mapper;
     private RecyclerView myRV;
     public static SharedPreferences sharedPreferences;
     public static ArrayList<String> courseList;
@@ -83,15 +65,10 @@ public class HomeScreenFragment extends Fragment {
     public static ArrayList<String> courseSegmentList;
     public static ArrayList<String> slotList;
     public static ArrayList<String> CourseName;
-    private ScrollView scrollView1 ;
-    private HorizontalScrollView scrollView2;
-    private Spinner segment;
-    private int flag;
     private SharedPreferences sharedPref;
     private TextView t1, t2, t3, t4 , mealName;
     private MultiStateToggleButton toggleButton;
-    private RequestQueue queue, queue2, queue3;
-    private NestedScrollView MessScroll;
+
     private ArrayList<Lecture> lectures1 = new ArrayList<>();
     private ArrayList<String> T1 = new ArrayList<>();
     private ArrayList<String> T2 = new ArrayList<>();
@@ -100,12 +77,10 @@ public class HomeScreenFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_screen, container, false);
-        queue = Volley.newRequestQueue(getContext());
-        queue2 = Volley.newRequestQueue(getContext());
-        queue3 = Volley.newRequestQueue(getContext());
+
         mess =  view.findViewById(R.id.MessCard);
         myRV = view.findViewById(R.id.Timetable_Recycler);
-        MessScroll = view.findViewById(R.id.MessScroll);
+        view.findViewById(R.id.MessScroll);
         mealName = view.findViewById(R.id.textView15);
         cab = view.findViewById(R.id.CabCard);
         mess.setOnClickListener(new View.OnClickListener() {
@@ -292,7 +267,6 @@ public class HomeScreenFragment extends Fragment {
                 }
                 string = JO.getString("SANGAREDDY");
                 temp = "";
-                flag = 0;
                 for (int i = 0; i < string.length(); i++) {
                     if (string.substring(i, i + 1).equals(",")) {
                         SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");

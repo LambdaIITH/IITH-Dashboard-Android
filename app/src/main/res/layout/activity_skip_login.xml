@@ -28,8 +28,11 @@
         android:layout_gravity="bottom"
         android:background="#202020"
         android:foregroundGravity="clip_horizontal"
-        app:itemIconTint="#F1EEEE"
-        app:itemTextColor="#F8FFFFFF"
+        android:scrollbarSize="1dp"
+        android:transitionGroup="false"
+        app:itemIconTint="@color/toggle"
+        app:itemTextColor="@color/toggle"
+        app:labelVisibilityMode="selected"
         app:menu="@menu/skiploginmenu" />
 
     <include

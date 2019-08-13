@@ -62,7 +62,7 @@
         android:foregroundGravity="clip_horizontal"
         android:scrollbarSize="1dp"
         app:itemIconTint="@color/toggle"
-        app:itemTextColor="#F8FFFFFF"
+        app:itemTextColor="@color/toggle"
         app:menu="@menu/bottom_navigation" />
     <RelativeLayout
         android:id="@+id/loadingPanel"
