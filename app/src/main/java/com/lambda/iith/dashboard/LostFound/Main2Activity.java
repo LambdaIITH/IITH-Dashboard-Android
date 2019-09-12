@@ -1,4 +1,4 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.LostFound;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.lambda.iith.dashboard.MainActivity;
+import com.lambda.iith.dashboard.R;
+import Adapters.ViewPagerAdapter;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -57,7 +61,7 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
 
-        Intent homeIntent = new Intent(Main2Activity.this,MainActivity.class);
+        Intent homeIntent = new Intent(Main2Activity.this, MainActivity.class);
         startActivity(homeIntent);
         return true;
     }

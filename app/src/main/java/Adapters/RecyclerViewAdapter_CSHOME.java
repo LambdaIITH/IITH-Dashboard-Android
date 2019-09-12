@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
+import com.lambda.iith.dashboard.cabsharing.CabSharing;
 
 import java.util.ArrayList;
 
@@ -54,7 +56,7 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
 
             }
         });

@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lambda.iith.dashboard.cabsharing.CabSharing;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
@@ -119,7 +120,7 @@ public class HomeScreenFragment extends Fragment {
         cab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), CabSharing.class));
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
 
             }
         });
@@ -145,7 +146,7 @@ public class HomeScreenFragment extends Fragment {
         CabSharing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext() , CabSharing.class));
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
             }
         });
         mess1 = view.findViewById(R.id.menu_home);
@@ -167,7 +168,7 @@ public class HomeScreenFragment extends Fragment {
         });
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         sharedPreferences = sharedPref;
-        System.out.println(sharedPref.getBoolean("cab", false));
+
         cabCardMake(sharedPref.getBoolean("cab", true));
         busmake(sharedPref.getBoolean("bus", true));
         messmake(sharedPref.getBoolean("mess", true));
@@ -344,7 +345,7 @@ public class HomeScreenFragment extends Fragment {
                 String formattedDate = dateFormat.format(d);
                 Date timen = new SimpleDateFormat("HH:mm:ss").parse(formattedDate);
                 JSONObject JO = Data.getJSONObject(day - 1);
-                System.out.println(day);
+
 
                 JSONObject JO2 = Data.getJSONObject(day % 7);
 
@@ -441,96 +442,34 @@ public class HomeScreenFragment extends Fragment {
 
 
     private void CabGet(){
-        final String startTime = sharedPref.getString("startTime", "    NA      NA  ");
-        final String endTime = sharedPref.getString("endTime", "    NA      NA  ");
-        final int CabID = sharedPref.getInt("Route", 100);
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://www.iith.dev/query";
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            // Name, email address, and profile photo Url
-
-            email = user.getEmail().toString();
-        }
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        JSONArray JA = null;
-
-                        try {
-                            JA = new JSONArray(response);
-                            mNames.clear();
-                            mEmails.clear();
-                            JSONArray JA2 = new JSONArray();
-                            for (int i = 0; i < JA.length(); i++) {
-                                JSONObject JO = (JSONObject) JA.get(i);
 
 
-                                SimpleDateFormat format1 = new SimpleDateFormat("YYYY-mm-dd:HH:MM");
-                                java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
-                                java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
-                                java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
-                                java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
-                                System.out.println(T3.toString() + T1.toString());
-                                if ((JO.getInt("RouteID") == CabID && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0, 10)).equals(startTime.substring(0, 10)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0)))) {
 
-                                    JA2.put(JO);
-                                    //mNames.add(JO.getString(""));
-                                    mEmails.add(JO.getString("Email"));
+        try{
 
-                                }
+            mEmails.clear();
 
-                            }
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("CabShares", JA2.toString());
-                            editor.commit();
-                            cab.setVisibility(View.VISIBLE);
+            JSONArray JA3 =  new JSONArray(sharedPref.getString("CabShares" , null));
+            JSONObject JO3;
+            for(int j=0 ; j<JA3.length() ; j++){
+                JO3 = (JSONObject) JA3.get(j);
+                mEmails.add(JO3.getString("Email"));
+                CabSharing = view.findViewById(R.id.cs_home_recycler);
+                RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
+                CabSharing.setAdapter(adapter);
+                CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                            CabSharing = view.findViewById(R.id.cs_home_recycler);
-                            RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
-                            CabSharing.setAdapter(adapter);
-                            CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
-                        } catch (JSONException e) {
-                            cab.setVisibility(View.VISIBLE);
 
-                            e.printStackTrace();
-                        } catch (ParseException e) {
-                            cab.setVisibility(View.VISIBLE);
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                try {
-                    mNames.clear();
-                    mEmails.clear();
-                    JSONArray JA4 = new JSONArray(sharedPref.getString("CabShares", "NULL"));
-                    JSONObject JO = new JSONObject();
-                    for (int k = 0; k < JA4.length(); k++) {
-                        JO = JA4.getJSONObject(k);
-                        mEmails.add(JO.getString("Email"));
-
-                        CabSharing = view.findViewById(R.id.cs_home_recycler);
-                        RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
-                        CabSharing.setAdapter(adapter);
-                        CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                    }
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-
-                }
             }
-        });
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e){}
 
         cab.setVisibility(View.VISIBLE);
-        queue.add(stringRequest);
+
     }
     @Override
     public void onResume() {
@@ -611,7 +550,7 @@ public class HomeScreenFragment extends Fragment {
         courseMap.put("56" ,HM3);
 
         for (int i = 0; i < n; i++) {
-            System.out.println(i);
+
 
             if (courseSegmentList.get(i).contains("12")) {
                 //courseMap.put("12",new HashMap<String, String>());
@@ -642,7 +581,7 @@ public class HomeScreenFragment extends Fragment {
 
 
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        System.out.println("DAY" + day);
+
         switch (day){
             case 2: {
                 dailyCreate("ABCDPQWX"  , segment);
@@ -698,7 +637,7 @@ public class HomeScreenFragment extends Fragment {
 
         HashMap<String, Lecture> course = courseMap.get(segment);
 
-        System.out.println("ADSD" + course);
+
         ArrayList<ArrayList<String>> time = new ArrayList<>();
         ArrayList<String> t = new ArrayList<>();
         ArrayList<String> t1 = new ArrayList<>();
@@ -742,13 +681,12 @@ public class HomeScreenFragment extends Fragment {
 
 
 
-        System.out.println(string);
+
 
         int temp = 0;
         for (int i = 0; i < string.length(); i++) {
 
-            System.out.println(string.substring(i, i + 1));
-            System.out.println(course.get(string.substring(i, i + 1)));
+
 
 
             if (!course.get(string.substring(i, i + 1)).getCourseId().equals("")) {
@@ -761,7 +699,7 @@ public class HomeScreenFragment extends Fragment {
                 temp++;
             }
         }
-        System.out.println("DD" + temp);
+
         if (temp==0){
             Lecture lecture = new Lecture();
             lecture.setCourse("NO LECTURES TODAY! Enjoy");

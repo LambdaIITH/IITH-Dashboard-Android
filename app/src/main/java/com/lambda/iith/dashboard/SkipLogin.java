@@ -3,14 +3,19 @@ package com.lambda.iith.dashboard;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -43,18 +48,51 @@ public class SkipLogin extends AppCompatActivity {
     private SignInButton button;
     private RequestQueue queue, queue2, queue3;
     private SharedPreferences sharedPreferences;
-
+    private SwipeRefreshLayout pulltorefresh;
+    private CountDownTimer mCountDownTimer ;
     public final static int RC_SIGN_IN = 0;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_skip_login);
         MainActivity.initiate();
         queue = Volley.newRequestQueue(getApplicationContext());
-        queue2 = Volley.newRequestQueue(getApplicationContext());
-        queue3 = Volley.newRequestQueue(getApplicationContext());
+
+        mCountDownTimer = new CountDownTimer(3000, 6000) {
+
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFinish() {
+
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+            }
+
+
+
+
+        };
+        pulltorefresh = findViewById(R.id.pullToRefresh);
+        pulltorefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mCountDownTimer.start();
+
+                refresh();
+            }
+        });
         refresh();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -69,7 +107,7 @@ public class SkipLogin extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
 
         fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
@@ -140,10 +178,7 @@ public class SkipLogin extends AppCompatActivity {
 
     @Override
     public void onStart() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser!=null) {
-            startActivity(new Intent(SkipLogin.this , MainActivity.class));
-        }
+
 
         super.onStart();
 
@@ -261,9 +296,25 @@ public class SkipLogin extends AppCompatActivity {
         });
 
         queue.add(stringRequest);
-        queue2.add(stringRequest2);
+        queue.add(stringRequest2);
 
-        queue3.add(stringRequest3);
+        queue.add(stringRequest3);
+
+        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                mCountDownTimer.onFinish();
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                pulltorefresh.setRefreshing(false);
+                mCountDownTimer.cancel();
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commit();
+                return;
+            }
+        });
 
 
     }

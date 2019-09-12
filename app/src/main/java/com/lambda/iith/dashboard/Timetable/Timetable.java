@@ -1,9 +1,11 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.Timetable;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,23 +14,28 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.HorizontalScrollView;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lambda.iith.dashboard.MainActivity;
+import com.lambda.iith.dashboard.R;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
@@ -49,9 +56,11 @@ public class Timetable extends Fragment {
 
     List<Lecture> lectureList;
     private String Seg = "12";
+    public static Context mContext;
     private MultiStateToggleButton timetableView , DaySelect;
-    private HashMap<String, HashMap<String, Lecture>> courseMap = new HashMap<>();
-    private HashMap<String , Lecture> Mapper;
+    public static  ArrayList<ArrayMap<String, Lecture>> courseMap = new ArrayList<>();
+    //private ArrayMap<String, ArrayMap<String, Lecture>> courseMap = new ArrayMap<>();
+    private LinearLayout Days , c1,c2,c3,c4,c5;
     private RecyclerView myRV , legend;
     public static SharedPreferences sharedPreferences;
     public static ArrayList<String> courseList;
@@ -59,7 +68,9 @@ public class Timetable extends Fragment {
     public static ArrayList<String> courseSegmentList;
     public static ArrayList<String> slotList;
     public static ArrayList<String> CourseName;
-    private Spinner segment;
+
+    private RelativeLayout Parent;
+    public static Spinner segment;
     private ArrayList<Lecture> lectures1 = new ArrayList<>();
     private ArrayList<String> T1 = new ArrayList<>();
     private ArrayList<String> T2 = new ArrayList<>();
@@ -68,23 +79,35 @@ public class Timetable extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+
         final View view =inflater.inflate(R.layout.recycler_view_timetable, container, false);
         myRV = (RecyclerView) view.findViewById(R.id.timetable_rv);
         timetableView = view.findViewById(R.id.timetableView);
         legend = view.findViewById(R.id.Legend);
+        Parent = view.findViewById(R.id.Timetableparent);
         timetableView.setValue(1);
         fragmentManager = getFragmentManager();
         lectureList = new ArrayList<>(72);
+        mContext = getContext();
         Lecture lec = new Lecture();
         lec.setCourse("IDP");
+        final float scale = getContext().getResources().getDisplayMetrics().density;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        if(sharedPreferences.getBoolean("TimeTableLaunch" , true)){
-
-
-            Toast.makeText(getContext() , "Longpress cards to put course name" , Toast.LENGTH_SHORT).show();
-            sharedPreferences.edit().putBoolean("TimeTableLaunch" , false).commit();
-        }sharedPreferences.edit().putBoolean("TimeTableLaunch" , false).commit();
+        c1 = view.findViewById(R.id.DayCard1);
+        c2 = view.findViewById(R.id.DayCard2);
+        c3 = view.findViewById(R.id.DayCard3);
+        c4 = view.findViewById(R.id.DayCard4);
+        c5 = view.findViewById(R.id.DayCard5);
+        Days = view.findViewById(R.id.days);
+        int width = (int) Math.floor(convertPxToDp(getContext() , MainActivity.width/5));
+        ViewGroup.LayoutParams params1 = c1.getLayoutParams();
+        params1.width = (int) ((width-10) * scale + 0.5f);
+        c1.setLayoutParams(params1);
+        c2.setLayoutParams(params1);
+        c3.setLayoutParams(params1);
+        c4.setLayoutParams(params1);
+        c5.setLayoutParams(params1);
         lec.setCourseId("ID1025");
 
         DaySelect = view.findViewById(R.id.DaySelect);
@@ -92,6 +115,9 @@ public class Timetable extends Fragment {
         courseSegmentList = getArrayList("Segment");
         slotList = getArrayList("SlotList");
         CourseName = getArrayList("CourseName");
+        int t=0;
+
+
         if(courseList == null){
             courseList = new ArrayList<>();
             courseSegmentList = new ArrayList<>();
@@ -105,36 +131,38 @@ public class Timetable extends Fragment {
         segment = view.findViewById(R.id.segmentselect);
 
 
-        //for (int i = 0; i < 72; i++) {
-
-        //  lectureList.add(i,lec);
-        // }   //         Lecture lecture = new Lecture();
-        //lecture.setCourse("Name");
-        //lecture.setCourseId("");
-
-        mapData();
 
 
         String seg = sharedPreferences.getString("DefaultSegment" , "12");
 
+        if (seg.equals("12")) {
 
-        if(seg.equals("12")) {
-
-            segment.setSelection(0);
+            Timetable.segment.setSelection(0);
 
 
-        }
-        else if(seg.equals("34")){
+        } else if (seg.equals("34")) {
 
-           segment.setSelection(1);
+            Timetable.segment.setSelection(1);
 
-        }
+        } else if (seg.equals("56")) {
 
-        else if(seg.equals("56")){
-
-            segment.setSelection(2);
+            Timetable.segment.setSelection(2);
 
         }
+        timetableView.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                k = value;
+                if(value==0){
+
+                    daily(Seg);
+                }
+                else{
+                    arrgen(Seg);
+                }
+            }
+        });
+
 
 
        segment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -154,12 +182,12 @@ public class Timetable extends Fragment {
                 }
 
               if (k==1){
-                  DaySelect.setVisibility(View.GONE);
+
                   arrgen(Seg);
 
               }
               else{
-                  DaySelect.setVisibility(View.VISIBLE);
+
 
                   daily(Seg);
               }
@@ -168,26 +196,13 @@ public class Timetable extends Fragment {
 
            @Override
            public void onNothingSelected(AdapterView<?> parent) {
+               return;
 
             }
        });
 
-        timetableView.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                k = value;
-                if(value==0){
-
-                    daily(Seg);
-                }
-                else{
-                    arrgen(Seg);
-                }
-            }
-        });
 
         return view;
-
     }
     public static ArrayList<String> getArrayList(String key){
         SharedPreferences prefs = sharedPreferences;
@@ -196,118 +211,34 @@ public class Timetable extends Fragment {
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         return gson.fromJson(json, type);
     }
-    private String getUID() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user!= null) {
-            return user.getUid();
-
-        }else {
-            return null;
-        }
-
+    public double convertPxToDp(Context context, double px) {
+        return px / context.getResources().getDisplayMetrics().density;
     }
+    private ArrayList<Integer> colour;
 
 
-
-    private void mapData() {
-
-        int n = courseList.size();
-        HashMap <String , Lecture> HM  = new HashMap<>();
-        HashMap <String , Lecture> HM2  = new HashMap<>();
-        HashMap <String , Lecture> HM3  = new HashMap<>();
-        HM.put("A" , create("",""));
-        HM.put("B" ,create("",""));
-        HM.put("C" , create("",""));
-        HM.put("D" , create("",""));
-        HM.put("E" , create("",""));
-        HM.put("F" , create("",""));
-        HM.put("G" , create("",""));
-        HM.put("P" , create("",""));
-        HM.put("Q" , create("",""));
-        HM.put("R" , create("",""));
-        HM.put("S" , create("",""));
-        HM.put("W" , create("",""));
-        HM.put("X" , create("",""));
-        HM.put("Y" , create("",""));
-        HM.put("Z" , create("",""));
-        HM2.put("A" , create("",""));
-        HM2.put("B" ,create("",""));
-        HM2.put("C" , create("",""));
-        HM2.put("D" , create("",""));
-        HM2.put("E" , create("",""));
-        HM2.put("F" , create("",""));
-        HM2.put("G" , create("",""));
-        HM2.put("P" , create("",""));
-        HM2.put("Q" , create("",""));
-        HM2.put("R" , create("",""));
-        HM2.put("S" , create("",""));
-        HM2.put("W" , create("",""));
-        HM2.put("X" , create("",""));
-        HM2.put("Y" , create("",""));
-        HM2.put("Z" , create("",""));
-        HM3.put("A" , create("",""));
-        HM3.put("B" ,create("",""));
-        HM3.put("C" , create("",""));
-        HM3.put("D" , create("",""));
-        HM3.put("E" , create("",""));
-        HM3.put("F" , create("",""));
-        HM3.put("G" , create("",""));
-        HM3.put("P" , create("",""));
-        HM3.put("Q" , create("",""));
-        HM3.put("R" , create("",""));
-        HM3.put("S" , create("",""));
-        HM3.put("W" , create("",""));
-        HM3.put("X" , create("",""));
-        HM3.put("Y" , create("",""));
-        HM3.put("Z" , create("",""));
-
-        courseMap.put("12" ,HM);
-        courseMap.put("34" ,HM2);
-        courseMap.put("56" ,HM3);
-
-        for (int i = 0; i < n; i++) {
-            System.out.println(i);
-
-            if (courseSegmentList.get(i).contains("12")) {
-                //courseMap.put("12",new HashMap<String, String>());
-
-                HashMap <String , Lecture> h1 = (courseMap.get("12"));
-                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
-                (courseMap.get("12")).get(slotList.get(i)).setCourseId(courseList.get(i));
-
-            }
-            if (courseSegmentList.get(i).contains("34")) {
-                HashMap <String , Lecture> h1 = (courseMap.get("34"));
-                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
-                (courseMap.get("34")).get(slotList.get(i)).setCourseId(courseList.get(i));
-            }
-            if (courseSegmentList.get(i).contains("56")) {
-                HashMap <String , Lecture> h1 = (courseMap.get("56"));
-                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
-                (courseMap.get("56")).get(slotList.get(i)).setCourseId(courseList.get(i));
-            }
-        }
-
-    }
 
     private void arrgen(String segment){
         showLegend(segment);
+        Days.setVisibility(View.VISIBLE);
         DaySelect.setVisibility(View.GONE);
-        HashMap<String , Lecture> course= courseMap.get(segment);
+
+        ArrayMap<String , Lecture> course= courseMap.get((Integer.parseInt(segment.substring(0,1)) -1) /2);
         lectureList.clear();
+        int def = getResources().getColor(R.color.brandedsurface);
 
-        lectureList.add(create("Day" , ""));
-        lectureList.add(create("9" , ""));
-        lectureList.add((create("10" , "")));
-        lectureList.add(create("11" , ""));
-        lectureList.add(create("12" , ""));
-        lectureList.add(create("14:30" , ""));
-        lectureList.add(create("16" , ""));
-        lectureList.add(create("17:30" , ""));
-        lectureList.add(create("19" , ""));
+        //lectureList.add(create("Day" , "" , def ));
+        lectureList.add(create("9" , "" , def));
+        lectureList.add((create("10" , "",def )));
+        lectureList.add(create("11" , "" , def));
+        lectureList.add(create("12" , "", def));
+        lectureList.add(create("14:30" , "", def));
+        lectureList.add(create("16" , "", def));
+        lectureList.add(create("17:30" , "", def));
+        lectureList.add(create("19" , "", def));
 
-        lectureList.add(create("MON", ""));
+        //lectureList.add(create("MON", "", def));
         lectureList.add(course.get("A") );
         lectureList.add(course.get("B") );
         lectureList.add(course.get("C") );
@@ -318,7 +249,7 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("X") );
 
 
-        lectureList.add(create("TUE", ""));
+        //lectureList.add(create("TUE", "", def));
         lectureList.add(course.get("D") );
         lectureList.add(course.get("E") );
         lectureList.add(course.get("F") );
@@ -329,17 +260,17 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("Z") );
 
 
-        lectureList.add(create("WED", ""));
+        //lectureList.add(create("WED", "", def));
         lectureList.add(course.get("B") );
         lectureList.add(course.get("C") );
         lectureList.add(course.get("A") );
         lectureList.add(course.get("G") );
         lectureList.add(course.get("F") );
-        lectureList.add(create("" , "") );
-        lectureList.add(create("" , "") );
-        lectureList.add(create("" , "") );
+        lectureList.add(create("" , "", def ));
+        lectureList.add(create("" , "" , def));
+        lectureList.add(create("" , "" , def));
 
-        lectureList.add(create("THU", ""));
+        //lectureList.add(create("THU", "", def));
         lectureList.add(course.get("C") );
         lectureList.add(course.get("A") );
         lectureList.add(course.get("B") );
@@ -349,7 +280,7 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("W") );
         lectureList.add(course.get("X") );
 
-        lectureList.add(create("FRI", ""));
+        //lectureList.add(create("FRI", "" , def));
         lectureList.add(course.get("E") );
         lectureList.add(course.get("F") );
         lectureList.add(course.get("D") );
@@ -364,7 +295,9 @@ public class Timetable extends Fragment {
 
 
         RecyclerViewAdapter_TT myAdapter = new RecyclerViewAdapter_TT(getContext(),lectureList);
-        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(9,StaggeredGridLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(8,StaggeredGridLayoutManager.HORIZONTAL);
+
+
 
         //manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         myRV.setAdapter(myAdapter);
@@ -388,23 +321,25 @@ public class Timetable extends Fragment {
 
     }
 
-    private Lecture create(String id , String name){
+
+    private Lecture create(String id , String name , int color){
         Lecture lecture = new Lecture();
         lecture.setCourseId(id);
         lecture.setCourse(name);
+        lecture.setCourseColor(color);
         return lecture;
     }
 
+
     public static void edit(String CourseCode ,String Name){
         int n = courseList.size();
-        saveArrayList(courseList , "CourseList");
 
-        saveArrayList(courseSegmentList , "Segment");
 
-        saveArrayList(slotList , "SlotList");
-        saveArrayList2(CourseName , "CourseName");
         for(int i=0 ; i<n ; i++){
-            if(courseList.get(i) == CourseCode ){
+            System.out.println("!+" + i);
+            System.out.println("!1+" + CourseCode);
+            if(courseList.get(i).equals(CourseCode) ){
+                System.out.println("!+" + i);
                 CourseName.set(i ,Name );
                 saveArrayList(courseList , "CourseList");
 
@@ -412,11 +347,16 @@ public class Timetable extends Fragment {
 
                 saveArrayList(slotList , "SlotList");
                 saveArrayList2(CourseName , "CourseName");
+                new timetableComp().execute(mContext);
+                int i1 = segment.getSelectedItemPosition();
                 final FragmentTransaction ft = fragmentManager.beginTransaction();
+
                 Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
                 ft.detach(fragment);
                 ft.attach(fragment);
+
                 ft.commit();
+                segment.setSelection(i1);
             }
 
         }
@@ -438,6 +378,23 @@ public class Timetable extends Fragment {
 
 
     public static void addCourse(String name , String code , String slot , String segment){
+        if(courseList.contains(code)){
+            Toast.makeText(mContext , "Course already exists" , Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(slotList.contains(slot)){
+            for(int t=0;t<courseList.size() ; t++){
+                if(slotList.get(t).equals(slot)){
+                    if(courseSegmentList.contains(segment)){
+                        Toast.makeText(mContext , "Course Clashes" , Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
+        }
+
+
+
         courseList.add(code);
         courseSegmentList.add(segment);
         slotList.add(slot);
@@ -468,8 +425,7 @@ public class Timetable extends Fragment {
 
 
         for(int i=0 ; i<n ; i++) {
-            System.out.println("@@" + i + n + courseList.get(i));
-            System.out.println("ZDF" + courseList);
+
             if (courseList.get(i).equals(CourseID)) {
                 courseList.remove(i);
                 courseSegmentList.remove(i);
@@ -483,7 +439,7 @@ public class Timetable extends Fragment {
                 saveArrayList(slotList, "SlotList");
                 saveArrayList2(CourseName, "CourseName");
 
-                System.out.println("DELETED++");
+
                 final FragmentTransaction ft = fragmentManager.beginTransaction();
                 Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
                 ft.detach(fragment);
@@ -516,8 +472,11 @@ public class Timetable extends Fragment {
     }
 
     private void daily(final String segment){
+
         DaySelect.setVisibility(View.VISIBLE);
+        Days.setVisibility(View.GONE);
         legend.setVisibility(View.GONE);
+        Parent.removeView(legend);
         DaySelect.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
@@ -534,7 +493,7 @@ public class Timetable extends Fragment {
         }
 
     private void matchDay(int day , String segment){
-        System.out.println("DAY" + day);
+
         switch (day){
             case 2: {
                 dailyCreate("ABCDPQWX"  , segment);
@@ -553,7 +512,7 @@ public class Timetable extends Fragment {
                 return;
             }
             case 5:{
-                dailyCreate("CABEQBWX", segment) ;
+                dailyCreate("CABEQPWX", segment) ;
 
                 return;
             }
@@ -583,11 +542,11 @@ public class Timetable extends Fragment {
     private void dailyCreate(String string , String segment ) {
 
 
-        HashMap<String, Lecture> course = courseMap.get(segment);
+        ArrayMap<String, Lecture> course = courseMap.get((Integer.parseInt(segment.substring(0,1)) -1) /2);
         lectures1.clear();
         T1.clear();
         T2.clear();
-        System.out.println("ADSD" + course);
+
         ArrayList<ArrayList<String>> time = new ArrayList<>();
         ArrayList<String> t = new ArrayList<>();
         ArrayList<String> t1 = new ArrayList<>();
@@ -631,14 +590,14 @@ public class Timetable extends Fragment {
 
 
 
-        System.out.println(string);
+
+
 
         int temp = 0;
 
         for (int i = 0; i < string.length(); i++) {
 
-            System.out.println(string.substring(i, i + 1));
-            System.out.println(course.get(string.substring(i, i + 1)));
+
 
             if (!course.get(string.substring(i, i + 1)).getCourseId().equals("")) {
 
@@ -679,7 +638,7 @@ public class Timetable extends Fragment {
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Toast.makeText(getContext() , "Longpress cards to put course name" , Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -706,7 +665,8 @@ public class Timetable extends Fragment {
 
                 }
             }
-
+            Parent.removeView(legend);
+           Parent.addView(legend);
             legend.setVisibility(View.VISIBLE);
             TimeTableLegendAdapter timeTableLegendAdapter = new TimeTableLegendAdapter(getContext() , mCourseNames , mCourseCodes);
             legend.setAdapter(timeTableLegendAdapter);
@@ -717,6 +677,7 @@ public class Timetable extends Fragment {
 
         else{
             legend.setVisibility(View.GONE);
+            Parent.removeView(legend);
         }
 
 

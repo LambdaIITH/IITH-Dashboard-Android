@@ -51,7 +51,7 @@ public class MessMenu extends Fragment  {
 
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    messToggle = rootview.findViewById(R.id.MessToggle);
+    messToggle = rootview.findViewById(R.id.MessToggle1);
     messToggle.setValue(sharedPreferences.getInt("MESSDEF" , 1));
     breakfast = rootview.findViewById(R.id.breakfast);
     lunch = rootview.findViewById(R.id.lunch);
@@ -75,12 +75,50 @@ public class MessMenu extends Fragment  {
             @Override
             public void onValueChanged(int value) {
                 if(value==0){
+
                     parse("LDH" ,MainActivity.LDH );
+
+
+                    System.out.println("HelloWTF");
+
                 }
-                else{ parse("UDH" , MainActivity.UDH);}
+                else{ parse("UDH" , MainActivity.UDH);
+                    System.out.println("HelloWTF1");
+                   }
+                int position = MessDay.getSelectedItemPosition();
+                try {
+                    if (position == 0) {
 
-                MessDay.setSelection(MessDay.getSelectedItemPosition());
+                        putData(j2);
+                    }
+                    if (position == 1) {
 
+                        putData(j3);
+                    }
+                    if (position == 2) {
+
+                        putData(j4);
+                    }
+                    if (position == 3) {
+
+                        putData(j5);
+                    }
+                    if (position == 4) {
+
+                        putData(j6);
+                    }
+                    if (position == 5) {
+
+                        putData(j7);
+                    }
+                    if (position == 6) {
+
+                        putData(j1);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -214,8 +252,8 @@ public class MessMenu extends Fragment  {
 
 
     int day = calendar.get(Calendar.DAY_OF_WEEK);
-    MessDay.setSelection((day-2)%7);
-
+    MessDay.setSelection((day+5)%7);
+    System.out.println("H:"+(day-2)%7);
 
 
 
@@ -241,13 +279,14 @@ private void parse(String string , String def){
     try{
         JSONArray JA = new JSONArray(sharedPreferences.getString(string , def));
         j1 = JA.getJSONObject(0);
+        System.out.println(j1);
         j2 = JA.getJSONObject(1);
         j3 = JA.getJSONObject(2);
         j4 = JA.getJSONObject(3);
         j5 = JA.getJSONObject(4);
         j6 = JA.getJSONObject(5);
         j7 = JA.getJSONObject(6);
-
+       ;
 
     } catch (JSONException e) {
         e.printStackTrace();

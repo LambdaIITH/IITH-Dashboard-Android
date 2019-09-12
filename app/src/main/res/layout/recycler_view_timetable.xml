@@ -4,48 +4,190 @@
 
     xmlns:mstb="http://schemas.android.com/apk/res-auto"
 
+    android:id="@+id/Timetableparent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <org.honorato.multistatetogglebutton.MultiStateToggleButton
         android:id="@+id/DaySelect"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_below="@+id/segmentselect"
+        android:layout_below="@id/segmentselect"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
 
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginTop="25dp"
         android:visibility="gone"
         mstb:mstbPrimaryColor="@color/toggle"
         mstb:mstbSecondaryColor="@color/brandedsurface"
-        mstb:values="@array/day_short" />
+        mstb:values="@array/day_short">
+
+    </org.honorato.multistatetogglebutton.MultiStateToggleButton>
+
+    <LinearLayout
+        android:id="@+id/days"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/blank"
+            android:layout_width="35dp"
+            android:layout_height="47.5dp"
+            android:layout_margin="1dp"
+            android:background="@color/brandedsurface"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DayCard1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:background="@color/brandedsurface"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/day1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="4dp"
+                android:text="MON"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DayCard2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:background="@color/brandedsurface"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/day2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="4dp"
+                android:text="TUE"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DayCard3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:background="@color/brandedsurface"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/day3"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="4dp"
+                android:text="WED"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DayCard4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:background="@color/brandedsurface"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/day4"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="4dp"
+                android:text="THU"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DayCard5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:background="@color/brandedsurface"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/day5"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="4dp"
+                android:text="FRI"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
 
     <ScrollView
-        android:id="@+id/Scroller"
+        android:id="@+id/scroller"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
-        android:layout_below="@+id/DaySelect"
-        android:layout_marginTop="10dp"
-        android:scrollbars="horizontal|vertical">
+        android:layout_marginTop="100dp"
+        android:overScrollMode="never"
+        android:scrollbarSize="0dp">
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/timetable_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbars="vertical"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/days"
+            android:layout_marginTop="0dp"
+            android:scrollbarSize="0dp"
             app:layout_constraintStart_toStartOf="parent">
 
 
         </android.support.v7.widget.RecyclerView>
-
     </ScrollView>
-
     <Spinner
         android:id="@+id/segmentselect"
         android:layout_width="wrap_content"
@@ -82,7 +224,7 @@
         android:id="@+id/Legend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Scroller"
+        android:layout_below="@id/scroller"
         android:layout_marginTop="30dp"
         android:visibility="gone" />
 

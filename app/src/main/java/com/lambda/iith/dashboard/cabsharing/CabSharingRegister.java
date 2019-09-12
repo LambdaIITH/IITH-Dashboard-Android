@@ -1,4 +1,4 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.cabsharing;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-
-import android.widget.ImageButton;
 
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -35,7 +33,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.lambda.iith.dashboard.MainActivity;
+import com.lambda.iith.dashboard.R;
 
+import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,7 +54,7 @@ public class CabSharingRegister extends AppCompatActivity {
     private String email;
     private String start;
     private String end;
-    private ToggleButton toggleButton;
+    private MultiStateToggleButton toggleButton;
     private CheckBox checkBox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +71,10 @@ public class CabSharingRegister extends AppCompatActivity {
         to = (Button) findViewById(R.id.to);
 
         Book = (Button) findViewById(R.id.cs_book);
-        toggleButton = (ToggleButton) findViewById(R.id.messToggle);
+        toggleButton =  findViewById(R.id.cabToggle);
         Calendar calendar = Calendar.getInstance();
 
-
+        toggleButton.setValue(0);
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(calendar.getTime());
@@ -114,11 +115,7 @@ public class CabSharingRegister extends AppCompatActivity {
 
                     }
                     int route;
-                    if (toggleButton.isChecked()) {
-                        route = 1;
-                    } else {
-                        route = 0;
-                    }
+                    route = toggleButton.getValue();
 
 
                     start = date.getText().toString() + "T" + from.getText().toString() + ":00.321+05:30";
@@ -131,7 +128,9 @@ public class CabSharingRegister extends AppCompatActivity {
 
 
                     if (checkBox.isChecked()) {
+                        editor.putInt("Private" , 1);
                         editor.commit();
+
                         Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
                                 Toast.LENGTH_SHORT).show();
                     } else {
@@ -145,18 +144,18 @@ public class CabSharingRegister extends AppCompatActivity {
                             jsonBody.put("StartTime", start);
                             jsonBody.put("EndTime", end);
                             jsonBody.put("RouteID", route);
-                            System.out.println("ID1" +MainActivity.idToken);
-                            jsonBody.put("token", MainActivity.idToken);
 
-                            editor.commit();
+                            jsonBody.put("token", MainActivity.idToken);
+                            editor.putInt("Private" , 0);
+
                             final String requestBody = jsonBody.toString();
-                            System.out.println(requestBody);
+
 
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     Toast.makeText(getApplication().getBaseContext(), "Booked Successfully" , Toast.LENGTH_SHORT).show();
-
+                                    editor.commit();
                                     Log.i("VOLLEY", response);
                                 }
                             }, new Response.ErrorListener() {

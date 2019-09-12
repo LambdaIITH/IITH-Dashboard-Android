@@ -1,4 +1,4 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.LostFound;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.lambda.iith.dashboard.R;
 
 import java.util.ArrayList;
 

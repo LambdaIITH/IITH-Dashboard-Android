@@ -1,12 +1,11 @@
 package com.lambda.iith.dashboard;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -20,10 +19,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +47,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+import com.lambda.iith.dashboard.Timetable.AddCourse;
+import com.lambda.iith.dashboard.Timetable.DPload;
+import com.lambda.iith.dashboard.Timetable.Timetable;
+import com.lambda.iith.dashboard.Timetable.timetableComp;
+import com.lambda.iith.dashboard.cabsharing.CabSharing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     public String name;
     public  String email;
     private int t;
-    public String photoUrl;
+    public Uri photoUrl;
     private ImageButton MasterRefresh;
     private SharedPreferences sharedPreferences;
     public static BottomNavigationView bottomNavigationView;
@@ -76,48 +85,43 @@ public class MainActivity extends AppCompatActivity
     private List<String> courseSegmentList;
     private List<String> slotList;
     private ArrayList<String> CourseName;
-    private RequestQueue queue,queue2,queue3;
-    private CountDownTimer mCountDownTimer ;
+    private RequestQueue queue;
     private SwipeRefreshLayout pullToRefresh;
     private FragmentManager fragmentManager;
+
+    public static ImageView imageView;
+    public static int height,width;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        fragmentManager = getSupportFragmentManager();
+        queue = Volley.newRequestQueue(MainActivity.this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+        refresh();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
+
         initiate();
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        timetableComp Timetablecomp = new timetableComp();
+        Timetablecomp.execute(getApplicationContext());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        fragmentManager = getSupportFragmentManager();
+
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setOnCreateContextMenuListener(this);
-        mCountDownTimer = new CountDownTimer(3000, 2000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFinish() {
-                //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.detach(fragment);
-                ft.attach(fragment);
-                ft.commit();
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-
-            }
-        };
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigation);
@@ -128,30 +132,31 @@ public class MainActivity extends AppCompatActivity
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
 
         MasterRefresh = findViewById(R.id.MainRefresh);
-        MasterRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
 
-                mCountDownTimer.start();
-                refresh();
-                //fetchData();
-
-
-            }
-        });
         pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setRefreshing(false);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pullToRefresh.setRefreshing(false);
+
 
                 refresh();
-                mCountDownTimer.start();// your code
+
+
+
+            }
+        });
+        MasterRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                pullToRefresh.setRefreshing(true);
+                refresh();
+
 
 
             }
@@ -161,29 +166,30 @@ public class MainActivity extends AppCompatActivity
         if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
             fetchData();
         }
-        queue = Volley.newRequestQueue(MainActivity.this);
-        queue2 = Volley.newRequestQueue(MainActivity.this);
-        queue3= Volley.newRequestQueue(MainActivity.this);
-        refresh();
 
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
-            name = user.getDisplayName().toString();
-            email = user.getEmail().toString();
-            photoUrl = user.getPhotoUrl().toString();
+            name = user.getDisplayName();
+            email = user.getEmail();
+            photoUrl = user.getPhotoUrl();
+
+
+
             user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                 @Override
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         idToken = task.getResult().getToken();
 
+
                     }
                 }
             });
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentlayout , new HomeScreenFragment()).commit();
 
 
 
@@ -192,6 +198,43 @@ public class MainActivity extends AppCompatActivity
             sharedPreferences.edit().putBoolean("firstrun", false).commit();
         }
 
+
+        findViewById(R.id.TimeTableRefresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                alert.setTitle("Warning");
+                alert.setMessage("This will clear any changes you made and restore your timetable to the AIMS version. Press Sync to proceed or cancel to discontinue");
+                alert.setPositiveButton("Sync", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        fetchData();
+
+                    }
+                });
+
+                alert.setNegativeButton("Cancel" , null);
+                alert.show();
+
+
+
+            }
+        });
+
+
+
+
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        refresh();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -240,29 +283,7 @@ public class MainActivity extends AppCompatActivity
                     pullToRefresh.setRefreshing(false);
                     MasterRefresh.setVisibility(View.GONE);
                     toolbar.setTitle("Timetable");
-                    t=0;
-                    findViewById(R.id.TimeTableRefresh).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                            alert.setTitle("Warning");
-                            alert.setMessage("This will clear any changes you made and restore your timetable to the AIMS version. Press Sync to proceed or cancel to discontinue");
-                            alert.setPositiveButton("Sync", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mCountDownTimer.start();
-                                    fetchData();
 
-                                }
-                            });
-
-                            alert.setNegativeButton("Cancel" , null);
-                            alert.show();
-
-
-
-                        }
-                    });
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new Timetable()).commit();
 
                     findViewById(R.id.addcourse).setVisibility(View.VISIBLE);
@@ -301,7 +322,14 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 case R.id.nav_cab:{
-                    startActivity(new Intent(MainActivity.this , CabSharing.class));
+                    findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
+                    MasterRefresh.setVisibility(View.VISIBLE);
+                    findViewById(R.id.addcourse).setVisibility(View.GONE);
+                    pullToRefresh.setEnabled(true);
+                    toolbar.setTitle("Cab Sharing");
+                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout , new CabSharing()).commit();
+                    a=4;
+                    return  true;
                 }
 
             }
@@ -327,6 +355,11 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         Nav_Bar_Header = (TextView) findViewById(R.id.Nav_Bar_name);
         Nav_Bar_Header.setText(name); // Setting Username recieved from google account in navigation bar
+
+        imageView = findViewById(R.id.nav_bar_dp);
+
+        new DPload().execute(photoUrl.toString());
+
 
         Nav_Bar_Email = (TextView) findViewById(R.id.nav_bar_email);
         Nav_Bar_Email.setText(email); // Setting email recieved from google account in navigation bar
@@ -396,7 +429,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onStart() {
-
 
         super.onStart();
 
@@ -505,7 +537,7 @@ private void refresh(){
 
                     SharedPreferences.Editor edit = sharedPreferences.edit();
                     edit.putString("LDH", response);
-
+                    System.out.println("LDH" + response);
                     edit.commit();
 
 
@@ -523,14 +555,106 @@ private void refresh(){
     });
 
     queue.add(stringRequest);
-    queue2.add(stringRequest2);
+    queue.add(stringRequest2);
+    final SharedPreferences sharedPref = sharedPreferences;
+    queue.add(stringRequest3);
+    String url4 = "https://iith.dev/query";
+    final String startTime = sharedPref.getString("startTime","    NA      NA  " );
+    final String endTime = sharedPref.getString("endTime","    NA      NA  " );
+    final int CabID = sharedPref.getInt("Route",100 );
 
-    queue3.add(stringRequest3);
+    StringRequest stringRequest4 = new StringRequest(Request.Method.GET, url4,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // Display the first 500 characters of the response string.
+                    JSONArray JA = null;
+                    JSONArray JA2 = null;
+                    try {
+                        JA = new JSONArray(response);
+                        JA2 = new JSONArray();
+
+                        for (int i = 0; i < JA.length(); i++) {
+                            JSONObject JO = (JSONObject) JA.get(i);
+                            if (JO.getString("Email").equals(email) && !sharedPref.getBoolean("Registered", false)) {
+                                SharedPreferences.Editor editor = sharedPref.edit();
+
+                                editor.putString("startTime", JO.getString("StartTime"));
+                                editor.putString("endTime", JO.getString("EndTime"));
+                                editor.putBoolean("Registered", true);
+                                editor.putInt("Route", JO.getInt("RouteID"));
+                                editor.commit();
+
+
+                            }
+
+                            SimpleDateFormat format1 = new SimpleDateFormat("YYYY-mm-dd:HH:MM");
+                            java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
+                            java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
+                            java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
+                            java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
+
+                            if ((JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0, 10)).equals(startTime.substring(0, 10)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0))) {
+
+                                JA2.put(JO);
+
+
+                            }
+
+                        }
+
+
+                        SharedPreferences.Editor edit = sharedPref.edit();
+                        edit.putString("CabShares", JA2.toString());
+
+                        edit.commit();
+
+
+
+
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+        }
+
+    });
+
+
+    queue.add(stringRequest4);
+
+    queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+        @Override
+        public void onRequestFinished(Request<Object> request) {
+
+
+            Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            pullToRefresh.setRefreshing(false);
+
+            ft.detach(fragment);
+            ft.attach(fragment);
+            ft.commit();
+            return;
+
+
+        }
+    });
+
 
 
 
 
 }
+
     private String getUID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -544,7 +668,7 @@ private void refresh(){
     }
     private void fetchData() {
         String UUID = getUID();
-
+        pullToRefresh.setRefreshing(true);
         DocumentReference users = FirebaseFirestore.getInstance().document("users/"+UUID);
         users.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -579,7 +703,14 @@ private void refresh(){
                 saveArrayList2(CourseName , "CourseName");
 
 
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commit();
 
+                Toast.makeText(getBaseContext() , "Data Synced" , Toast.LENGTH_SHORT).show();
+                pullToRefresh.setRefreshing(false);
 
             }
         });

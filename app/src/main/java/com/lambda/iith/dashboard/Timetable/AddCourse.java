@@ -1,4 +1,4 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.Timetable;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.lambda.iith.dashboard.MainActivity;
+import com.lambda.iith.dashboard.R;
 
 public class AddCourse extends AppCompatActivity {
     Spinner spinner;

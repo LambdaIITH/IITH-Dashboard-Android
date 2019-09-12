@@ -56,7 +56,6 @@ public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegend
 
 
 
-        System.out.println("XXX");
 
 
 

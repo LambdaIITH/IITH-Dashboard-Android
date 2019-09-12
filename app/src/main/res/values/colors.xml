@@ -17,6 +17,11 @@
     <color name="tabtextcolor">#000000</color>
     <color name="tabindicatorcolor">#0000FF</color>
     <color name="fabBack">#607d8b</color>
+    <color name="timetable_blue">#FF1868A7</color>
+    <color name="timetable_green">#FF066D09</color>
+    <color name="timetable_orange">#FF8A701F</color>
+
+    <color name="timetable_red">#FF7E2D2D</color>
 
 
 

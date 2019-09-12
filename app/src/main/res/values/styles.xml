@@ -42,6 +42,7 @@
     <style name="NoActionBar" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorAccent"> @color/toggle</item>
         <item name="android:windowBackground">@color/Background</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>

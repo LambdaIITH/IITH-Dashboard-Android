@@ -26,7 +26,7 @@
             android:entries="@array/day_list" />
 
         <org.honorato.multistatetogglebutton.MultiStateToggleButton
-            android:id="@+id/MessToggle"
+            android:id="@+id/MessToggle1"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
@@ -95,6 +95,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/antic"
                         android:text="TextView"
                         android:textAlignment="center"
                         android:textSize="18sp" />
@@ -145,6 +146,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/antic"
                         android:text="TextView"
                         android:textAlignment="center"
                         android:textSize="18sp" />
@@ -195,6 +197,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/antic"
                         android:text="TextView"
                         android:textAlignment="center"
                         android:textSize="18sp" />
@@ -245,6 +248,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="15dp"
+                        android:fontFamily="@font/antic"
                         android:text="dinner"
                         android:textAlignment="center"
                         android:textSize="18sp" />

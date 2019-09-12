@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-    tools:context=".Main2Activity"
+    tools:context=".LostFound.Main2Activity"
     android:orientation="vertical">
 
 

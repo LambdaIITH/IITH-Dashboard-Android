@@ -1,10 +1,12 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.LostFound;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.lambda.iith.dashboard.R;
 
 public class Main3Activity extends AppCompatActivity {
 

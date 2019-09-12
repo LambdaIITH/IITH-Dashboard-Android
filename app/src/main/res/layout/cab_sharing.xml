@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cs_CabTime1"
                 android:textColor="@color/onSurface"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
                 app:layout_constraintEnd_toStartOf="@+id/textView8" />
 
@@ -64,7 +64,7 @@
                 android:layout_marginEnd="8dp"
                 android:text=" to "
                 android:textColor="@color/onSurface"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cs_CabTime2"
                 android:textColor="@color/onSurface"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
                 app:layout_constraintStart_toEndOf="@+id/textView8" />
 
