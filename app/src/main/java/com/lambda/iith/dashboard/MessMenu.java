@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class MessMenu extends Fragment  {
     private RequestQueue queue;
     NestedScrollView hscrollViewMain;
     TextView htext1,htext2,htext3,htext4;
-    private JSONObject j1,j2,j3,j4,j5,j6,j7;
+    private JSONObject j1,j2,j3,j4,j5,j6,j7,j11,j21,j31,j41,j51,j61,j71;
 
     private int day;
 
@@ -66,9 +67,9 @@ public class MessMenu extends Fragment  {
 
 
         if (messToggle.getValue() == 0){
-            parse("LDH" , MainActivity.LDH);
+            parse("LDH" , MainActivity.DEF);
         } else {
-            parse("UDH" , MainActivity.UDH);
+            parse("UDH" , MainActivity.DEF);
         }
 
         messToggle.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
@@ -76,46 +77,45 @@ public class MessMenu extends Fragment  {
             public void onValueChanged(int value) {
                 if(value==0){
 
-                    parse("LDH" ,MainActivity.LDH );
+                    parse("LDH" ,MainActivity.DEF);
 
 
                     System.out.println("HelloWTF");
 
                 }
-                else{ parse("UDH" , MainActivity.UDH);
+                else{ parse("UDH" , MainActivity.DEF);
                     System.out.println("HelloWTF1");
                    }
                 int position = MessDay.getSelectedItemPosition();
                 try {
                     if (position == 0) {
 
-                        putData(j2);
+                        putData(j2,j21);
                     }
                     if (position == 1) {
 
-                        putData(j3);
+                        putData(j3,j31);
                     }
                     if (position == 2) {
 
-                        putData(j4);
+                        putData(j4,j41);
                     }
                     if (position == 3) {
 
-                        putData(j5);
+                        putData(j5,j51);
                     }
                     if (position == 4) {
 
-                        putData(j6);
+                        putData(j6,j61);
                     }
                     if (position == 5) {
 
-                        putData(j7);
+                        putData(j7,j71);
                     }
                     if (position == 6) {
 
-                        putData(j1);
+                        putData(j1,j11);
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -141,31 +141,31 @@ public class MessMenu extends Fragment  {
                 try {
                     if (position == 0) {
 
-                        putData(j2);
+                        putData(j2,j21);
                     }
                     if (position == 1) {
 
-                        putData(j3);
+                        putData(j3,j31);
                     }
                     if (position == 2) {
 
-                        putData(j4);
+                        putData(j4,j41);
                     }
                     if (position == 3) {
 
-                        putData(j5);
+                        putData(j5,j51);
                     }
                     if (position == 4) {
 
-                        putData(j6);
+                        putData(j6,j61);
                     }
                     if (position == 5) {
 
-                        putData(j7);
+                        putData(j7,j71);
                     }
                     if (position == 6) {
 
-                        putData(j1);
+                        putData(j1,j11);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -263,30 +263,77 @@ public class MessMenu extends Fragment  {
 
 
 
-private void putData(JSONObject j2) throws JSONException {
-    breakfast.setText(j2.getString("Breakfast"));
-    lunch.setText(j2.getString("Lunch"));
-    snacks.setText(j2.getString("Snacks"));
-    dinner.setText(j2.getString("Dinner"));
+private void putData(JSONObject j2 , JSONObject j1) throws JSONException {
+    JSONArray JA1 = j2.getJSONArray("Breakfast");
+    JSONArray JA2 = j2.getJSONArray("Lunch");
+    JSONArray JA3 = j2.getJSONArray("Snacks");
+    JSONArray JA4 = j2.getJSONArray("Dinner");
+    JSONArray JA5 = j1.getJSONArray("Breakfast");
+    JSONArray JA6 = j1.getJSONArray("Lunch");
+    JSONArray JA7 = j1.getJSONArray("Snacks");
+    JSONArray JA8 = j1.getJSONArray("Dinner");
+    breakfast.setText(parseMeal(JA1,JA5));
+    lunch.setText(parseMeal(JA2,JA6));
+    snacks.setText(parseMeal(JA3,JA7));
+    dinner.setText(parseMeal(JA4,JA8));
+
+
 }
 
+private String parseMeal(JSONArray JA1 , JSONArray JA2)  {
+    String string = "";
+    try {
 
+        for (int i = 0; i < JA1.length(); i++) {
+            string += (i+1) + ") " + JA1.getString(i) + "   ";
+
+        }
+
+        string += " \n\n";
+        string+= "Extras:";
+        string += " \n";
+
+        for (int i = 0; i < JA2.length(); i++) {
+            string += (i+1) + ") " + JA2.getString(i) + "   ";
+
+        }
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+    return string;
+}
 
 
 
 
 private void parse(String string , String def){
     try{
-        JSONArray JA = new JSONArray(sharedPreferences.getString(string , def));
-        j1 = JA.getJSONObject(0);
-        System.out.println(j1);
-        j2 = JA.getJSONObject(1);
-        j3 = JA.getJSONObject(2);
-        j4 = JA.getJSONObject(3);
-        j5 = JA.getJSONObject(4);
-        j6 = JA.getJSONObject(5);
-        j7 = JA.getJSONObject(6);
-       ;
+        JSONObject JA = new JSONObject(sharedPreferences.getString("MESSJSON" , def));
+        System.out.println(JA);
+        JSONObject JA1 = JA.getJSONObject(string);
+        j1 = JA1.getJSONObject("Sunday");
+        System.out.println("HHHH" + j1);
+        j2 = JA1.getJSONObject("Monday");
+        j3 = JA1.getJSONObject("Tuesday");
+        j4 = JA1.getJSONObject("Wednesday");
+        j5 = JA1.getJSONObject("Thursday");
+        j6 = JA1.getJSONObject("Friday");
+        j7 = JA1.getJSONObject("Saturday");
+
+        JSONObject JA2 = JA.getJSONObject(string+ " Additional");
+        j11 = JA2.getJSONObject("Sunday");
+
+        System.out.println("HHH!" + j11);
+        j21 = JA2.getJSONObject("Monday");
+        j31 = JA2.getJSONObject("Tuesday");
+        j41 = JA2.getJSONObject("Wednesday");
+        j51 = JA2.getJSONObject("Thursday");
+        j61 = JA2.getJSONObject("Friday");
+        j71 = JA2.getJSONObject("Saturday");
+
+
 
     } catch (JSONException e) {
         e.printStackTrace();

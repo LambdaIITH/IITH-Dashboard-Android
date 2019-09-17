@@ -77,12 +77,12 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
 
                 else if (item.equals("ODF") && toggle == 0){
                     display("ODF" , "Kandi to ODF", "ODF to Kandi");
-                    Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
 
                 }
                 else if (item.equals("ODF") && toggle==1){
                     display("ODFS" , "Kandi to ODF", "ODF to Kandi");
-                    Toast.makeText(getContext() , "Only Sunday is Weekend for ODF buses" , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext() , "Only Sunday is Weekend for ODF buses" , Toast.LENGTH_SHORT).show();
                 }
 
                 else if (item.equals("Maingate")){
@@ -141,11 +141,11 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
 
         else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 0){
             display("ODF" , "Kandi to ODF", "ODF to Kandi");
-            Toast.makeText(getContext() , "Only Sunday is Weekend for ODF buses" , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext() , "Only Sunday is Weekend for ODF buses" , Toast.LENGTH_SHORT).show();
         }
         else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle==1) {
             display("ODFS", "Kandi to ODF", "ODF to Kandi");
-            Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
         }
 
         else if (parent.getItemAtPosition(position).toString().equals("Maingate")){

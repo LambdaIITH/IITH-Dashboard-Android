@@ -1,6 +1,5 @@
 package com.lambda.iith.dashboard;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,23 +9,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Space;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lambda.iith.dashboard.cabsharing.CabSharing;
+import com.lambda.iith.dashboard.Timetable.Timetable;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
@@ -41,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import Adapters.HomeTimeTableAdapter;
 import Adapters.RecyclerViewAdapter_CSHOME;
@@ -51,18 +41,18 @@ public class HomeScreenFragment extends Fragment {
 
     //Fragment to be displayed on Home screen which will have 3 cards as layout.
     private CardView bus, mess, timetable, cab;
-    private Space space1;
+
     private RecyclerView CabSharing;
     private TextView mess1;
-    private ArrayList<String> mNames = new ArrayList<>();
+
     private ArrayList<String> mEmails = new ArrayList<>();
     private View view;
-    private String email;
-    private HashMap<String, HashMap<String, Lecture>> courseMap = new HashMap<>();
+
+
     private RecyclerView myRV;
     public static SharedPreferences sharedPreferences;
     public static ArrayList<String> courseList;
-    private int k = 1;
+
     public static ArrayList<String> courseSegmentList;
     public static ArrayList<String> slotList;
     public static ArrayList<String> CourseName;
@@ -184,7 +174,7 @@ public class HomeScreenFragment extends Fragment {
             String temp;
             bus.setVisibility(View.VISIBLE);
             try {
-                JSONObject JO = null;
+                JSONObject JO;
                 if (toggleButton.getValue() == 1) {
                     JO = new JSONObject(sharedPref.getString("ToIITH", "{\"LAB\":\"02:00 ,02:30 ,03:15 ,04:00 ,04:45 ,05:30 ,06:15 ,07:00 ,07:30 ,08:00 ,08:30 ,13:15 ,14:30 ,15:00 ,19:45 ,20:30,\",\"LINGAMPALLY\":\"09:15 ,13:15 ,15:00 ,17:00 ,19:15 ,22:15,\",\"ODF\":\"08:20 , 09:30 ,11:30 ,12:30 ,14:00 ,15:30 ,17:00 ,19:35 ,20:30 ,21:00 ,22:00 ,23:00,\",\"SANGAREDDY\":\"08:45 ,13:45 ,18:00 ,18:40 ,22:00,\",\"LINGAMPALLYW\":\"09:15 ,13:15 ,15:00 ,17:00 ,19:15 ,22:15,\",\"ODFS\":\"08:00 ,09:15 ,11:30 ,12:30 ,14:00 ,15:30 ,17:00 ,18:30 ,19:45 ,20:30 ,21:30 ,23:00,\"}"));
                 } else {
@@ -194,106 +184,132 @@ public class HomeScreenFragment extends Fragment {
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY:MM:dd");
                 String da = dateFormat.format(Calendar.getInstance().getTime());
-                if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                    string = JO.getString("LINGAMPALLYW");
-                } else {
-                    string = JO.getString("LINGAMPALLY");
-                }
-
-                temp = "";
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
-                        //t1.setText(format1.format(date));
-                        java.util.Date T1 = format1.parse(da + ":" + temp.trim());
-
-                        if (T1.compareTo(date) > 0) {
-                            t1.setText(temp);
-                            break;
-                        }
-                        temp = "";
-                        continue;
+                try {
+                    if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
+                        string = JO.getString("LINGAMPALLYW");
+                    } else {
+                        string = JO.getString("LINGAMPALLY");
                     }
 
-                    temp += string.substring(i, i + 1);
+                    temp = "";
 
+                    for (int i = 0; i < string.length(); i++) {
+                        if (string.substring(i, i + 1).equals(",")) {
+                            SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
+                            //t1.setText(format1.format(date));
+                            java.util.Date T1 = format1.parse(da + ":" + temp.trim());
 
-                }
-                if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                    string = JO.getString("ODFS");
-                } else {
-                    string = JO.getString("ODF");
-                }
-                temp = "";
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
-                        ;
-                        java.util.Date T1 = format1.parse(da + ":" + temp.trim());
-
-                        if (T1.compareTo(date) > 0) {
-                            t2.setText(temp);
-                            break;
+                            if (T1.compareTo(date) > 0) {
+                                t1.setText(temp);
+                                break;
+                            }
+                            temp = "";
+                            continue;
                         }
-                        temp = "";
-                        continue;
+
+                        temp += string.substring(i, i + 1);
+
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
+                        string = JO.getString("ODFS");
+                    } else {
+                        string = JO.getString("ODF");
+                    }
+                    temp = "";
+                    for (int i = 0; i < string.length(); i++) {
+                        if (string.substring(i, i + 1).equals(",")) {
+                            SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
+                            ;
+                            java.util.Date T1 = format1.parse(da + ":" + temp.trim());
+
+                            if (T1.compareTo(date) > 0) {
+                                t2.setText(temp);
+                                break;
+                            }
+                            temp = "";
+                            continue;
+                        }
+
+                        temp += string.substring(i, i + 1);
+
+
                     }
 
-                    temp += string.substring(i, i + 1);
-
-
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                try {
+                    string = JO.getString("SANGAREDDY");
+                    temp = "";
+                    for (int i = 0; i < string.length(); i++) {
+                        if (string.substring(i, i + 1).equals(",")) {
+                            SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");
+
+                            t4.setText(temp);
+
+                            java.util.Date T1 = format1.parse(da + temp.trim());
+
+                            if (T1.compareTo(date) > 0) {
+
+                                break;
+                            }
+                            temp = "";
+                            continue;
+                        }
+
+                        temp += string.substring(i, i + 1);
 
 
-                //String da = dateFormat.format(Calendar.getInstance().getTime());
-                string = JO.getString("LAB");
-                temp = "";
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");
-                        ;
-                        java.util.Date T1 = format1.parse(da + temp.trim());
+                    }
 
-                        if (T1.compareTo(date) > 0) {
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+
+
+                    string = JO.getString("LAB");
+                    temp = "";
+                    for (int i = 0; i < string.length(); i++) {
+                        if (string.substring(i, i + 1).equals(",")) {
+                            SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");
+
                             t3.setText(temp);
-                            break;
+
+                            java.util.Date T1 = format1.parse(da + temp.trim());
+
+                            if (T1.compareTo(date) > 0) {
+
+                                break;
+                            }
+                            temp = "";
+                            continue;
                         }
-                        temp = "";
-                        continue;
+
+                        temp += string.substring(i, i + 1);
+
+
                     }
-
-                    temp += string.substring(i, i + 1);
-
-
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-                string = JO.getString("SANGAREDDY");
-                temp = "";
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");
-                        ;
-                        t4.setText(temp);
-
-                        java.util.Date T1 = format1.parse(da + temp.trim());
-
-                        if (T1.compareTo(date) > 0) {
-
-                            break;
-                        }
-                        temp = "";
-                        continue;
-                    }
-
-                    temp += string.substring(i, i + 1);
-
-
-                }
-
-            } catch (ParseException e) {
-                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
 
 
         } else {
@@ -304,16 +320,25 @@ public class HomeScreenFragment extends Fragment {
     private void messmake(boolean b) {
         if (b) {
             mess.setVisibility(View.VISIBLE);
+            JSONObject data = new JSONObject();
+            JSONObject data1 = new JSONObject();
+            JSONObject JO1 = new JSONObject();
+            try{
 
-            String data;
+            JO1 = new JSONObject(sharedPreferences.getString("MESSJSON" , MainActivity.DEF));} catch (JSONException e) {
+                e.printStackTrace();
+            }
             try {
                 if (sharedPref.getInt("MESSDEF", 1) == 1) {
-                    data = sharedPref.getString("UDH", MainActivity.UDH);
+
+                    data = JO1.getJSONObject("UDH");
+                    data1 = JO1.getJSONObject("UDH Additional");
                 } else {
-                    data = sharedPref.getString("LDH", MainActivity.LDH);
+                    data = JO1.getJSONObject("LDH");
+                    data1 = JO1.getJSONObject("LDH Additional");
                 }
 
-                JSONArray Data = new JSONArray(data);
+
                 int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
 
@@ -344,35 +369,59 @@ public class HomeScreenFragment extends Fragment {
                 DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
                 String formattedDate = dateFormat.format(d);
                 Date timen = new SimpleDateFormat("HH:mm:ss").parse(formattedDate);
-                JSONObject JO = Data.getJSONObject(day - 1);
+                ArrayList<String> a1 = new ArrayList<>();
+                a1.add("Sunday");
+                a1.add("Monday");
+                a1.add("Tuesday");a1.add("Wednesday");a1.add("Thursday");a1.add("Friday");a1.add("Saturday");
 
 
-                JSONObject JO2 = Data.getJSONObject(day % 7);
+                JSONObject JO = data.getJSONObject(a1.get(day - 1));
+                JSONObject JO11 = data1.getJSONObject(a1.get(day - 1));
+                JSONObject JO3 = data1.getJSONObject(a1.get(day%7));
+                JSONObject JO2 = data.getJSONObject(a1.get(day % 7));
 
                 if (timen.before(time1)) {
                     mealName.setText("Today's Breakfast");
-                    mess1.setText(JO.getString("Breakfast"));
+                    JSONArray L = JO.getJSONArray("Breakfast")  ;
+                    JSONArray L1 = JO11.getJSONArray("Breakfast")  ;
+
+
+                    mess1.setText(parseMeal(L,L1));
 
                 } else if (timen.after(calendar1.getTime()) && timen.before(calendar2.getTime())) {
                     //checkes whether the current time is between 10:30:00 and 14:30:00.
                     mealName.setText("Today's Lunch");
-                    mess1.setText(JO.getString("Lunch"));
+                    JSONArray L = JO.getJSONArray("Lunch")  ;
+                    JSONArray L1 = JO11.getJSONArray("Lunch")  ;
+
+                    mess1.setText(parseMeal(L,L1));
 
                 } else if (timen.after(calendar2.getTime()) && timen.before(calendar3.getTime())) {
                     mealName.setText("Today's Snacks");
-                    mess1.setText(JO.getString("Snacks"));
+                    JSONArray L = JO.getJSONArray("Snacks")  ;
+                    JSONArray L1 = JO11.getJSONArray("Snacks")  ;
+
+                    mess1.setText(parseMeal(L,L1));
 
                 } else if (timen.after(calendar3.getTime()) && timen.before(calendar4.getTime())) {
                     mealName.setText("Today's Dinner");
-                    mess1.setText(JO.getString("Dinner"));
+                    JSONArray L = JO.getJSONArray("Dinner")  ;
+                    JSONArray L1 = JO11.getJSONArray("Dinner")  ;
+
+
+                    mess1.setText(parseMeal(L,L1));
 
                 } else if (timen.after(time4)) {
                     mealName.setText("Tomorrow's Breakfast");
 
-                    mess1.setText(JO2.getString("Breakfast"));
+                    JSONArray L = JO2.getJSONArray("Breakfast")  ;
+                    JSONArray L1 = JO3.getJSONArray("Breakfast")  ;
+
+                    mess1.setText(parseMeal(L,L1));
 
 
                 }
+
 
 
             } catch (ParseException e) {
@@ -386,6 +435,32 @@ public class HomeScreenFragment extends Fragment {
         }
     }
 
+    private String parseMeal(JSONArray JA1 , JSONArray JA2)  {
+        String string = "";
+        try {
+
+            for (int i = 0; i < JA1.length(); i++) {
+                string += (i+1) + ") " + JA1.getString(i) + "   ";
+
+            }
+
+            string += " \n";
+            string+= "Extras:";
+            string += " \n";
+
+            for (int i = 0; i < JA2.length(); i++) {
+                string += (i+1) + ") " + JA2.getString(i) + "   ";
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return string;
+    }
+
+
     private void timetablemake(boolean b) {
         if (b) {
             try {
@@ -397,7 +472,7 @@ public class HomeScreenFragment extends Fragment {
                 slotList = getArrayList("SlotList");
                 CourseName = getArrayList("CourseName");
                 if(courseList != null) {
-                    mapData();
+
                     daily(sharedPref.getString("DefaultSegment" , "12"));
                 }
 
@@ -487,92 +562,9 @@ public class HomeScreenFragment extends Fragment {
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         return gson.fromJson(json, type);
     }
-    private Lecture create(String id , String name){
-        Lecture lecture = new Lecture();
-        lecture.setCourseId(id);
-        lecture.setCourse(name);
-        return lecture;
-    }
-    private void mapData() {
-
-        int n = courseList.size();
-        HashMap <String , Lecture> HM  = new HashMap<>();
-        HashMap <String , Lecture> HM2  = new HashMap<>();
-        HashMap <String , Lecture> HM3  = new HashMap<>();
-        HM.put("A" , create("",""));
-        HM.put("B" ,create("",""));
-        HM.put("C" , create("",""));
-        HM.put("D" , create("",""));
-        HM.put("E" , create("",""));
-        HM.put("F" , create("",""));
-        HM.put("G" , create("",""));
-        HM.put("P" , create("",""));
-        HM.put("Q" , create("",""));
-        HM.put("R" , create("",""));
-        HM.put("S" , create("",""));
-        HM.put("W" , create("",""));
-        HM.put("X" , create("",""));
-        HM.put("Y" , create("",""));
-        HM.put("Z" , create("",""));
-        HM2.put("A" , create("",""));
-        HM2.put("B" ,create("",""));
-        HM2.put("C" , create("",""));
-        HM2.put("D" , create("",""));
-        HM2.put("E" , create("",""));
-        HM2.put("F" , create("",""));
-        HM2.put("G" , create("",""));
-        HM2.put("P" , create("",""));
-        HM2.put("Q" , create("",""));
-        HM2.put("R" , create("",""));
-        HM2.put("S" , create("",""));
-        HM2.put("W" , create("",""));
-        HM2.put("X" , create("",""));
-        HM2.put("Y" , create("",""));
-        HM2.put("Z" , create("",""));
-        HM3.put("A" , create("",""));
-        HM3.put("B" ,create("",""));
-        HM3.put("C" , create("",""));
-        HM3.put("D" , create("",""));
-        HM3.put("E" , create("",""));
-        HM3.put("F" , create("",""));
-        HM3.put("G" , create("",""));
-        HM3.put("P" , create("",""));
-        HM3.put("Q" , create("",""));
-        HM3.put("R" , create("",""));
-        HM3.put("S" , create("",""));
-        HM3.put("W" , create("",""));
-        HM3.put("X" , create("",""));
-        HM3.put("Y" , create("",""));
-        HM3.put("Z" , create("",""));
-
-        courseMap.put("12" ,HM);
-        courseMap.put("34" ,HM2);
-        courseMap.put("56" ,HM3);
-
-        for (int i = 0; i < n; i++) {
 
 
-            if (courseSegmentList.get(i).contains("12")) {
-                //courseMap.put("12",new HashMap<String, String>());
 
-                HashMap <String , Lecture> h1 = (courseMap.get("12"));
-                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
-                (courseMap.get("12")).get(slotList.get(i)).setCourseId(courseList.get(i));
-
-            }
-            if (courseSegmentList.get(i).contains("34")) {
-                HashMap <String , Lecture> h1 = (courseMap.get("34"));
-                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
-                (courseMap.get("34")).get(slotList.get(i)).setCourseId(courseList.get(i));
-            }
-            if (courseSegmentList.get(i).contains("56")) {
-                HashMap <String , Lecture> h1 = (courseMap.get("56"));
-                h1.get(slotList.get(i)).setCourse(CourseName.get(i));
-                (courseMap.get("56")).get(slotList.get(i)).setCourseId(courseList.get(i));
-            }
-        }
-
-    }
 
     private void daily(String segment){
         lectures1.clear();
@@ -600,7 +592,7 @@ public class HomeScreenFragment extends Fragment {
                 return;
             }
             case 5:{
-                dailyCreate("CABEQBWX", segment) ;
+                dailyCreate("CABEQPWX", segment) ;
 
                 return;
             }
@@ -609,18 +601,12 @@ public class HomeScreenFragment extends Fragment {
 
                 return;
             }
-            case 7:{
-                dailyCreate("", segment);
-                return;}
-
+            case 7:
 
 
             case 1: {
                 dailyCreate("", segment);
-                return;
-
-
-            }
+                return;}
 
 
 
@@ -635,7 +621,7 @@ public class HomeScreenFragment extends Fragment {
     private void dailyCreate(String string , String segment ) {
 
 
-        HashMap<String, Lecture> course = courseMap.get(segment);
+        ArrayMap<String, Lecture> course = Timetable.courseMap.get((Integer.parseInt(segment.substring(0,1)) -1) /2);
 
 
         ArrayList<ArrayList<String>> time = new ArrayList<>();

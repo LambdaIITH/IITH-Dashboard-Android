@@ -349,6 +349,7 @@ public class Timetable extends Fragment {
                 saveArrayList2(CourseName , "CourseName");
                 new timetableComp().execute(mContext);
                 int i1 = segment.getSelectedItemPosition();
+
                 final FragmentTransaction ft = fragmentManager.beginTransaction();
 
                 Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
@@ -406,6 +407,7 @@ public class Timetable extends Fragment {
 
         saveArrayList(slotList , "SlotList");
         saveArrayList2(CourseName , "CourseName");
+
         final FragmentTransaction ft = fragmentManager.beginTransaction();
 
 
@@ -414,17 +416,16 @@ public class Timetable extends Fragment {
 
 
 
-    public static void Delete(String CourseID){
+    public static void Delete(String CourseID) {
 
         courseList = getArrayList("CourseList");
         courseSegmentList = getArrayList("Segment");
         slotList = getArrayList("SlotList");
         CourseName = getArrayList("CourseName");
         int n = courseList.size();
-        try {
 
 
-        for(int i=0 ; i<n ; i++) {
+        for (int i = 0; i < n; i++) {
 
             if (courseList.get(i).equals(CourseID)) {
                 courseList.remove(i);
@@ -439,20 +440,22 @@ public class Timetable extends Fragment {
                 saveArrayList(slotList, "SlotList");
                 saveArrayList2(CourseName, "CourseName");
 
+                break;
 
-                final FragmentTransaction ft = fragmentManager.beginTransaction();
-                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
-                ft.detach(fragment);
-                ft.attach(fragment);
-                ft.commit();
 
 
             }
 
+
         }
 
-        } catch (Exception e){}
-
+        final FragmentTransaction ft = fragmentManager.beginTransaction();
+        timetableComp timetableComp = new timetableComp();
+        timetableComp.execute(mContext);
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+        ft.detach(fragment);
+        ft.attach(fragment);
+        ft.commit();
     }
     public static void saveArrayList(List<String> list, String key){
         ;
