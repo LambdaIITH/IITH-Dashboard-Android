@@ -65,10 +65,7 @@ public class timetableComp extends AsyncTask<Context, Void , ArrayList<ArrayMap<
             courseSegmentList = new ArrayList<>();
             slotList = new ArrayList<>();
             CourseName = new ArrayList<>();
-            courseList.add(" ");
-            courseSegmentList.add("12");
-            slotList.add("Z");
-            CourseName.add(" ");
+
         }
         mapData();
 

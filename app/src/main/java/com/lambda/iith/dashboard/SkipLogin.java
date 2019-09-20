@@ -210,7 +210,7 @@ public class SkipLogin extends AppCompatActivity {
     }
 
     private void refresh() {
-        String url = "https://jsonblob.com/api/jsonBlob/835519fb-ae2b-11e9-8313-bf8495d5f167";
+        String url = "https://iith.dev/bus";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -224,7 +224,7 @@ public class SkipLogin extends AppCompatActivity {
 
                             SharedPreferences.Editor edit = sharedPreferences.edit();
                             edit.putString("ToIITH", JA.getString(1));
-                            edit.putString("FromIITH", JA.getString(0));
+                            edit.putString("FromIITH" , JA.getString(0));
                             edit.commit();
 
                         } catch (JSONException e) {
@@ -234,15 +234,16 @@ public class SkipLogin extends AppCompatActivity {
                     }
 
 
+
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
             }
 
         });
-        String url2 = "https://jsonblob.com/api/6336df25-aeb3-11e9-99ce-c9fa198f2f2e";
-        String url3 = "https://jsonblob.com/api/c2d3dd6e-aebc-11e9-99ce-116fae627a57";
+        String url2 = "https://iith.dev/dining";
+
         MainActivity.initiate();
 
 
@@ -254,43 +255,23 @@ public class SkipLogin extends AppCompatActivity {
                         // Display the first 500 characters of the response string.
 
 
+
+
                         SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("UDH", response);
+                        edit.putString("MESSJSON", response);
 
                         edit.commit();
+
 
 
                     }
 
 
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
-            }
-
-        });
-        StringRequest stringRequest3 = new StringRequest(Request.Method.GET, url3,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray JA = null;
-                        // Display the first 500 characters of the response string.
-
-
-                        SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("LDH", response);
-
-                        edit.commit();
-
-
-                    }
-
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -298,7 +279,7 @@ public class SkipLogin extends AppCompatActivity {
         queue.add(stringRequest);
         queue.add(stringRequest2);
 
-        queue.add(stringRequest3);
+
 
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
             @Override

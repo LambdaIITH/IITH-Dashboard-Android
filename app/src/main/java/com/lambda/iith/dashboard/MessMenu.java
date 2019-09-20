@@ -285,7 +285,7 @@ private String parseMeal(JSONArray JA1 , JSONArray JA2)  {
     try {
 
         for (int i = 0; i < JA1.length(); i++) {
-            string += (i+1) + ") " + JA1.getString(i) + "   ";
+            string += (i+1) + ".\u00A0" + JA1.getString(i).replace(" " , "\u00A0") + "   ";
 
         }
 
@@ -294,7 +294,7 @@ private String parseMeal(JSONArray JA1 , JSONArray JA2)  {
         string += " \n";
 
         for (int i = 0; i < JA2.length(); i++) {
-            string += (i+1) + ") " + JA2.getString(i) + "   ";
+            string += (i+1) + ".\u00A0" + JA2.getString(i).replace(" " , "\u00A0") + "   ";
 
         }
 

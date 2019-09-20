@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
@@ -61,8 +62,15 @@ public class AddCourse extends AppCompatActivity {
                     segment+="56";
                 }
 
-                Timetable.addCourse(e1.getText().toString() , e2.getText().toString() , slot , segment);
-                startActivity(new Intent(AddCourse.this , MainActivity.class));
+                if(!(e1.getText().toString().equals("") || e2.getText().toString().equals("") || slot.equals(null) || segment.equals(""))){
+                    Timetable.addCourse(e1.getText().toString() , e2.getText().toString() , slot , segment);
+                    startActivity(new Intent(AddCourse.this , MainActivity.class));
+                }
+                else{
+                    Toast.makeText(getBaseContext() ,"All fields are mandatory" , Toast.LENGTH_SHORT ).show();
+                }
+
+
             }
         });
 

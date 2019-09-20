@@ -80,6 +80,7 @@ public class CabSharing extends Fragment {
         textView = view.findViewById(R.id.CAbType);
         recyclerView = (RecyclerView) view.findViewById(R.id.Recycler);
         flag = 0;
+        queue = Volley.newRequestQueue(getContext());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -146,7 +147,12 @@ public class CabSharing extends Fragment {
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeleteBooking();
+                try {
+                    DeleteBooking();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
             }
         });
@@ -192,7 +198,7 @@ public class CabSharing extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void DeleteBooking(){
+    private void DeleteBooking() throws JSONException {
 
         if(sharedPref.getInt("Private" , -1)==1){
             Toast.makeText(getActivity().getBaseContext(), "Deleted Successfully",
@@ -203,6 +209,7 @@ public class CabSharing extends Fragment {
             edit.remove("Route");
             edit.putBoolean("Registered" , false);
             edit.remove("Private");
+            edit.remove("CabShares");
             edit.commit();
             Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentlayout);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -218,82 +225,90 @@ public class CabSharing extends Fragment {
             return;
         }
 
+        if((sharedPref.getInt("Private" , -1)==0)){
 
-    try{
-        String URL = "https://iith.dev/delete";
-        JSONObject jsonBody = new JSONObject();
-        //jsonBody.put("Name" , name);
+            String URL = "https://iith.dev/delete";
+            JSONObject jsonBody = new JSONObject();
+            //jsonBody.put("Name" , name);
 
-        jsonBody.put("Email", email);
-        jsonBody.put("StartTime", startTime);
-        jsonBody.put("EndTime", endTime);
-        jsonBody.put("RouteID", CabID);
+            jsonBody.put("Email", email);
+            jsonBody.put("StartTime", startTime);
+            jsonBody.put("EndTime", endTime);
+            jsonBody.put("RouteID", CabID);
 
-        jsonBody.put("token", MainActivity.idToken);
-        final String requestBody = jsonBody.toString();
+            jsonBody.put("Token", MainActivity.idToken);
+            final String requestBody = jsonBody.toString();
+            StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(getActivity().getBaseContext(), "Deleted Successfully",
+                            Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor edit = sharedPref.edit();
+                    edit.remove("startTime");
+                    edit.remove("endTime");
+                    edit.remove("Route");
+                    edit.remove("Private");
+                    edit.remove("CabShares");
+                    edit.putBoolean("Registered" , false);
+                    edit.commit();
 
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(getActivity().getBaseContext(), "Deleted Successfully",
-                        Toast.LENGTH_SHORT).show();
-                SharedPreferences.Editor edit = sharedPref.edit();
-                edit.remove("startTime");
-                edit.remove("endTime");
-                edit.remove("Route");
-                edit.putBoolean("Registered" , false);
-                edit.commit();
-
-                Log.i("VOLLEY", response);
-            }
-        }, new Response.ErrorListener() {
-
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getBaseContext(), "Delete Unuccessfull",
-                        Toast.LENGTH_SHORT).show();
-                Log.e("VOLLEY", error.toString());
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
+                    Log.i("VOLLEY", response);
                 }
-            }
+            }, new Response.ErrorListener() {
 
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                String responseString = "";
-                if (response != null) {
-                    responseString = String.valueOf(response.statusCode);
-                    // can get more details such as response.headers
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity().getBaseContext(), "Delete Unuccessfull",
+                            Toast.LENGTH_SHORT).show();
+                    Log.e("VOLLEY", error.toString());
                 }
-                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-            }
-        };
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
 
-        SharedPreferences.Editor edit = sharedPref.edit();
-        queue.add(stringRequest);
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
 
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentlayout);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(fragment);
-        ft.attach(fragment);
-        ft.commit();
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                        // can get more details such as response.headers
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+            queue.add(stringRequest1);
+            queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                @Override
+                public void onRequestFinished(Request<Object> request) {
+                    Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentlayout);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragment);
+                    ft.attach(fragment);
+                    ft.commit();
+                }
+            });
+        }
+
+
+
+
+
+
+        
+
 
 
 }

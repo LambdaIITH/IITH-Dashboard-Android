@@ -202,6 +202,8 @@ public class HomeScreenFragment extends Fragment {
                             if (T1.compareTo(date) > 0) {
                                 t1.setText(temp);
                                 break;
+                            }else{
+                                t1.setText(" N/A ");
                             }
                             temp = "";
                             continue;
@@ -233,6 +235,8 @@ public class HomeScreenFragment extends Fragment {
                             if (T1.compareTo(date) > 0) {
                                 t2.setText(temp);
                                 break;
+                            }else{
+                                t2.setText(" N/A ");
                             }
                             temp = "";
                             continue;
@@ -262,6 +266,8 @@ public class HomeScreenFragment extends Fragment {
                             if (T1.compareTo(date) > 0) {
 
                                 break;
+                            }else{
+                                t4.setText(" N/A ");
                             }
                             temp = "";
                             continue;
@@ -294,14 +300,21 @@ public class HomeScreenFragment extends Fragment {
 
                                 break;
                             }
+                            else{
+                                t3.setText(" N/A ");
+                            }
                             temp = "";
                             continue;
                         }
+
 
                         temp += string.substring(i, i + 1);
 
 
                     }
+
+
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -440,16 +453,16 @@ public class HomeScreenFragment extends Fragment {
         try {
 
             for (int i = 0; i < JA1.length(); i++) {
-                string += (i+1) + ") " + JA1.getString(i) + "   ";
+                string += (i+1) + ".\u00A0" + JA1.getString(i).replace(" " , "\u00A0") + "   ";
 
             }
 
-            string += " \n";
+            string += " \n\n";
             string+= "Extras:";
             string += " \n";
 
             for (int i = 0; i < JA2.length(); i++) {
-                string += (i+1) + ") " + JA2.getString(i) + "   ";
+                string += (i+1) + ".\u00A0" + JA2.getString(i).replace(" " , "\u00A0") + "   ";
 
             }
 
@@ -459,7 +472,6 @@ public class HomeScreenFragment extends Fragment {
 
         return string;
     }
-
 
     private void timetablemake(boolean b) {
         if (b) {

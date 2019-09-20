@@ -15,59 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "198169856520-kcm9gvd4k8o26cnfb9l8ud71k1vcr6jv.apps.googleusercontent.com",
+          "client_id": "198169856520-ac1fqi88sn5h00p2rsldar2vo11ovun3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.lambda.iith.dashboard",
-            "certificate_hash": "a7991f8f2befe89f045b46146d28869fc34d97ab"
+            "certificate_hash": "0227aec7e01ed3bca4d1cae02437a391cdaf4b7a"
           }
         },
         {
-          "client_id": "198169856520-t2hj295nd38rvop38353jdk21jqdbjlo.apps.googleusercontent.com",
+          "client_id": "198169856520-l9njtdfssikqrj9mbfugk5oebe1ps95o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.lambda.iith.dashboard",
-            "certificate_hash": "3ebbbbb214605fac37b1c56ae3c144649ee07633"
+            "certificate_hash": "4a3cec638b9cdbc17591397aec3568079fc61fb4"
           }
         },
         {
-          "client_id": "198169856520-513ek23d38s11mj7bfihvasdgsfqvkji.apps.googleusercontent.com",
+          "client_id": "198169856520-uu3cf4e1h362b47vcad1s1l6d741ng1q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.lambda.iith.dashboard",
-            "certificate_hash": "250ff067874ea7c84e602ccaa76a2f48109b769d"
-          }
-        },
-        {
-          "client_id": "198169856520-6veqeohhh85ohb25is61b1oiuq1q29qq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.lambda.iith.dashboard",
-            "certificate_hash": "40c553cf40c53bd63646263318cf288f6be5115b"
-          }
-        },
-        {
-          "client_id": "198169856520-53om2i42jhsjo8vvs0p19t2cqmnd4sev.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.lambda.iith.dashboard",
-            "certificate_hash": "9a7138fdf2e97ae5f7f2fe4309316551a26ebc47"
-          }
-        },
-        {
-          "client_id": "198169856520-b2gtc1e8kr4juksic1fce8hu1atmtqha.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.lambda.iith.dashboard",
-            "certificate_hash": "4c425fd75db803ccbea6ae24f384423c482b8a26"
-          }
-        },
-        {
-          "client_id": "198169856520-orrgmkkjpaugt1iu89s2cqrkhkohtu3h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.lambda.iith.dashboard",
-            "certificate_hash": "84ff92e839161024e710a40d521c9943460aac5f"
+            "certificate_hash": "1c9a8ceaef705aa986dea16e5e586e573a36bee1"
           }
         },
         {

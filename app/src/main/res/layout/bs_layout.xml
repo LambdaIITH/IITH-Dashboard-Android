@@ -53,7 +53,7 @@
             android:layout_marginStart="4dp"
             app:cardBackgroundColor="@color/brandedsurface"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/space">
+            app:layout_constraintTop_toTopOf="@+id/space009">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -96,7 +96,7 @@ public class CabSharingRegister extends AppCompatActivity {
         Book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharingRegister.this);
+                final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(CabSharingRegister.this);
                 final SharedPreferences.Editor editor = sharedPref.edit();
                 if (sharedPref.getBoolean("Registered", false)) {
                     Toast.makeText(getApplication().getBaseContext(), "Please delete previous booking before proceeding",
@@ -124,7 +124,9 @@ public class CabSharingRegister extends AppCompatActivity {
 
                     editor.putString("startTime", start);
                     editor.putString("endTime", end);
+
                     editor.putInt("Route", route);
+                    editor.putBoolean("Registered" , true);
 
 
                     if (checkBox.isChecked()) {
@@ -133,6 +135,8 @@ public class CabSharingRegister extends AppCompatActivity {
 
                         Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
                                 Toast.LENGTH_SHORT).show();
+                        sharedPref.edit().putBoolean("PleaseUpdateCAB" , true).commit();
+                        onBackPressed();
                     } else {
                         try {
 
@@ -149,7 +153,7 @@ public class CabSharingRegister extends AppCompatActivity {
                             editor.putInt("Private" , 0);
 
                             final String requestBody = jsonBody.toString();
-
+                            System.out.println(requestBody);
 
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                                 @Override
@@ -163,7 +167,7 @@ public class CabSharingRegister extends AppCompatActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplication().getBaseContext(), "Booking Unuccessfull",
+                                    Toast.makeText(getApplication().getBaseContext(), "Booking Unsuccessful",
                                             Toast.LENGTH_SHORT).show();
                                     Log.e("VOLLEY", error.toString());
                                 }
@@ -201,7 +205,14 @@ public class CabSharingRegister extends AppCompatActivity {
                     }
 
 
-                    onBackPressed();
+                    queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+                        @Override
+                        public void onRequestFinished(Request<Object> request) {
+                            sharedPref.edit().putBoolean("PleaseUpdateCAB" , true).commit();
+                            onBackPressed();
+                        }
+                    });
+
                 }
             }
 

@@ -90,8 +90,7 @@ public class Timetable extends Fragment {
         fragmentManager = getFragmentManager();
         lectureList = new ArrayList<>(72);
         mContext = getContext();
-        Lecture lec = new Lecture();
-        lec.setCourse("IDP");
+
         final float scale = getContext().getResources().getDisplayMetrics().density;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         c1 = view.findViewById(R.id.DayCard1);
@@ -108,7 +107,7 @@ public class Timetable extends Fragment {
         c3.setLayoutParams(params1);
         c4.setLayoutParams(params1);
         c5.setLayoutParams(params1);
-        lec.setCourseId("ID1025");
+
 
         DaySelect = view.findViewById(R.id.DaySelect);
         courseList = getArrayList("CourseList");
@@ -123,10 +122,7 @@ public class Timetable extends Fragment {
             courseSegmentList = new ArrayList<>();
             slotList = new ArrayList<>();
             CourseName = new ArrayList<>();
-            courseList.add(" ");
-            courseSegmentList.add("12");
-            slotList.add("Z");
-            CourseName.add(" ");
+
         }
         segment = view.findViewById(R.id.segmentselect);
 
@@ -623,8 +619,7 @@ public class Timetable extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (sharedPreferences.getString("CourseList" , "NULL").equals("NULL"))
-            Toast.makeText(getContext() ,"Use AIMS helper to load data" , Toast.LENGTH_SHORT).show();
+
 
 
     }

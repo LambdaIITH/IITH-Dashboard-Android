@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity
                 refresh();
 
 
-
             }
         });
         MasterRefresh.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 
 
         if(sharedPreferences.getString("CourseList" , "NULL").equals("NULL")){
-            fetchData();
+           fetchData();
         }
 
 
@@ -183,6 +182,7 @@ public class MainActivity extends AppCompatActivity
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         idToken = task.getResult().getToken();
+                        System.out.println("HHHH" + idToken);
 
 
                     }
@@ -233,8 +233,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        System.out.println(("!!!!" + sharedPreferences.getBoolean("PleaseUpdateCAB" , false)));
+        if(sharedPreferences.getBoolean("PleaseUpdateCAB" , false)){
+            pullToRefresh.setRefreshing(true);
+            refresh();
 
-        refresh();
+            sharedPreferences.edit().putBoolean("PleaseUpdateCAB" , false).commit();
+        }
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -339,7 +345,7 @@ public class MainActivity extends AppCompatActivity
     };
 
 
-        @Override
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -348,6 +354,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
             this.finishAffinity();
         }
+
     }
 
     @Override
@@ -409,14 +416,14 @@ public class MainActivity extends AppCompatActivity
 
 
 
-         if (id == R.id.logout){
+        if (id == R.id.logout){
             signOut();
 
 
 
 
         } else if (id == R.id.nav_Settings){
-        startActivity(new Intent(MainActivity.this ,Settings.class));}
+            startActivity(new Intent(MainActivity.this ,Settings.class));}
 
         else if (id == R.id.about){
             startActivity(new Intent(MainActivity.this , About.class));
@@ -459,173 +466,208 @@ public class MainActivity extends AppCompatActivity
 
 
 
-private void refresh(){
-    String url = "https://jsonblob.com/api/jsonBlob/835519fb-ae2b-11e9-8313-bf8495d5f167";
+    private void refresh(){
+        String url = "https://iith.dev/bus";
 
-    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    JSONArray JA = null;
-                    // Display the first 500 characters of the response string.
-                    try {
-                        JA = new JSONArray(response);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray JA = null;
+                        // Display the first 500 characters of the response string.
+                        try {
+                            JA = new JSONArray(response);
+
+
+                            SharedPreferences.Editor edit = sharedPreferences.edit();
+                            edit.putString("ToIITH", JA.getString(1));
+                            edit.putString("FromIITH" , JA.getString(0));
+                            edit.commit();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        String url2 = "https://iith.dev/dining";
+
+        MainActivity.initiate();
+
+
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray JA = null;
+                        // Display the first 500 characters of the response string.
+
+
 
 
                         SharedPreferences.Editor edit = sharedPreferences.edit();
-                        edit.putString("ToIITH", JA.getString(1));
-                        edit.putString("FromIITH" , JA.getString(0));
+                        edit.putString("MESSJSON", response);
+
                         edit.commit();
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+
                     }
 
-                }
 
 
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+            }
 
-            }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
-        }
+        });
 
-    });
-    String url2 = "https://jsonblob.com/api/6336df25-aeb3-11e9-99ce-c9fa198f2f2e";
+        queue.add(stringRequest);
+        queue.add(stringRequest2);
+        final SharedPreferences sharedPref = sharedPreferences;
 
-    MainActivity.initiate();
+        String url4 = "https://iith.dev/query";
+        final String startTime = sharedPref.getString("startTime","    NA      NA  " );
+        final String endTime = sharedPref.getString("endTime","    NA      NA  " );
+        final int CabID = sharedPref.getInt("Route",100 );
+        StringRequest stringRequest4;
+        System.out.println("FGFGG" + sharedPref.getBoolean("Registered" , false));
+        if(sharedPref.getBoolean("Registered" , false)) {
 
+            stringRequest4 = new StringRequest(Request.Method.GET, url4,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                            JSONArray JA = null;
+                            JSONArray JA2 = null;
+                            try {
+                                JA = new JSONArray(response);
+                                JA2 = new JSONArray();
 
-    StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    JSONArray JA = null;
-                    // Display the first 500 characters of the response string.
+                                for (int i = 0; i < JA.length(); i++) {
+                                    JSONObject JO = (JSONObject) JA.get(i);
+                                    System.out.println("GGGG1233");
 
+                                    SimpleDateFormat format1 = new SimpleDateFormat("YYYY-mm-dd:HH:MM");
+                                    java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
+                                    java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
+                                    java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
+                                    java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
 
-
-
-                    SharedPreferences.Editor edit = sharedPreferences.edit();
-                    edit.putString("MESSJSON", response);
-
-                    edit.commit();
-
-
-
-                }
-
-
-
-            }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
-        }
-
-    });
-
-    queue.add(stringRequest);
-    queue.add(stringRequest2);
-    final SharedPreferences sharedPref = sharedPreferences;
-
-    String url4 = "https://iith.dev/query";
-    final String startTime = sharedPref.getString("startTime","    NA      NA  " );
-    final String endTime = sharedPref.getString("endTime","    NA      NA  " );
-    final int CabID = sharedPref.getInt("Route",100 );
-
-    StringRequest stringRequest4 = new StringRequest(Request.Method.GET, url4,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    // Display the first 500 characters of the response string.
-                    JSONArray JA = null;
-                    JSONArray JA2 = null;
-                    try {
-                        JA = new JSONArray(response);
-                        JA2 = new JSONArray();
-
-                        for (int i = 0; i < JA.length(); i++) {
-                            JSONObject JO = (JSONObject) JA.get(i);
-                            if (JO.getString("Email").equals(email) && !sharedPref.getBoolean("Registered", false)) {
-                                SharedPreferences.Editor editor = sharedPref.edit();
-
-                                editor.putString("startTime", JO.getString("StartTime"));
-                                editor.putString("endTime", JO.getString("EndTime"));
-                                editor.putBoolean("Registered", true);
-                                editor.putInt("Route", JO.getInt("RouteID"));
-                                editor.commit();
+                                    if ((JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0, 10)).equals(startTime.substring(0, 10)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0))) {
+                                        System.out.println("GGGG1233" + JO);
+                                        JA2.put(JO);
 
 
+                                    }
+
+                                }
+
+
+                                SharedPreferences.Editor edit = sharedPref.edit();
+                                edit.putString("CabShares", JA2.toString());
+
+                                edit.commit();
+
+
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-
-                            SimpleDateFormat format1 = new SimpleDateFormat("YYYY-mm-dd:HH:MM");
-                            java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
-                            java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
-                            java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
-                            java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
-
-                            if ((JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(email)) && (JO.getString("StartTime").substring(0, 10)).equals(startTime.substring(0, 10)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0))) {
-
-                                JA2.put(JO);
-
-
-                            }
-
                         }
 
-
-                        SharedPreferences.Editor edit = sharedPref.edit();
-                        edit.putString("CabShares", JA2.toString());
-
-                        edit.commit();
-
-
-
-
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
                 }
 
-            }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+            });
+        }
+        else {
+            System.out.println("HERE");
+            stringRequest4 = new StringRequest(Request.Method.GET, url4,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                            JSONArray JA = null;
+                            JSONArray JA2 = null;
+                            try {
+                                JA = new JSONArray(response);
+                                JA2 = new JSONArray();
+                                System.out.println("HERE1" + JA);
+                                for (int i = 0; i < JA.length(); i++) {
+                                    JSONObject JO = (JSONObject) JA.get(i);
+                                    System.out.println("GGGG" + i + JO );
+                                    System.out.println(email);
+                                    if (JO.getString("Email").equals(email)) {
+                                        SharedPreferences.Editor edit = sharedPref.edit();
+                                        System.out.println("HERE2" + JO);
+                                        edit.putString("startTime", JO.getString("StartTime"));
+                                        edit.putString("endTime", JO.getString("EndTime"));
+                                        edit.putBoolean("Registered", true);
+                                        edit.putInt("Private", 0);
+                                        edit.putInt("Route", JO.getInt("RouteID"));
+                                        edit.commit();
+                                    }
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+                }
+
+            });
         }
 
-    });
-
-
-    queue.add(stringRequest4);
-
-    queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-        @Override
-        public void onRequestFinished(Request<Object> request) {
-
-
-            Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            pullToRefresh.setRefreshing(false);
-
-            ft.detach(fragment);
-            ft.attach(fragment);
-            ft.commit();
-            return;
-
-
-        }
-    });
 
 
 
+        queue.add(stringRequest4);
+
+        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
 
 
-}
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                pullToRefresh.setRefreshing(false);
+
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commit();
+                return;
+
+
+            }
+        });
+
+
+
+
+
+    }
 
     private String getUID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -638,7 +680,9 @@ private void refresh(){
         }
 
     }
-    private void fetchData() {
+    private void
+
+fetchData() {
         String UUID = getUID();
         pullToRefresh.setRefreshing(true);
         DocumentReference users = FirebaseFirestore.getInstance().document("users/"+UUID);

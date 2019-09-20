@@ -50,8 +50,11 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
         Log.d(TAG, "onBindViewHolder: called.");
 
 
-
-        holder.course.setText(mCourse.get(position).getCourse());
+        if(!mCourse.get(position).getCourse().equals("Name")){
+        holder.course.setText(mCourse.get(position).getCourse());}
+        else{
+            holder.course.setText(mCourse.get(position).getCourseId());
+        }
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
