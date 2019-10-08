@@ -3,27 +3,15 @@
     <color name="colorPrimary">#2E2F31</color>
     <color name="colorPrimaryDark">#202020</color>
     <color name="colorAccent">#000000</color>
-    <color name = "toggle">#BF86FC</color>
+    <color name="toggle">#BF86FC</color>
     <color name="Background">#222222</color>
-    <color name="Surface">#121212</color>
-    <color name="onPrimary">#000000</color>
-    <color name="onSecondary">#000000</color>
-    <color name="onBackground">#222222</color>
     <color name="onSurface">#FFFFFF</color>
-    <color name="Primary">#BB86FC</color>
-    <color name="PrimaryVariant">#3700B3</color>
-    <color name="Secondary">#03DAC6</color>
-    <color name ="brandedsurface">#2E2F31</color>
-    <color name="tabtextcolor">#000000</color>
-    <color name="tabindicatorcolor">#0000FF</color>
-    <color name="fabBack">#607d8b</color>
+    <color name="brandedsurface">#2E2F31</color>
     <color name="timetable_blue">#FF1868A7</color>
     <color name="timetable_green">#FF066D09</color>
     <color name="timetable_orange">#FF8A701F</color>
 
     <color name="timetable_red">#FF7E2D2D</color>
-
-
 
 
 </resources>

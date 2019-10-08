@@ -6,7 +6,12 @@
 
     android:id="@+id/Timetableparent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:scrollbarSize="0dp"
+    android:orientation="vertical"
+    android:overScrollMode="ifContentScrolls"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
 
 
     <org.honorato.multistatetogglebutton.MultiStateToggleButton
@@ -18,7 +23,7 @@
 
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:visibility="gone"
         mstb:mstbPrimaryColor="@color/toggle"
         mstb:mstbSecondaryColor="@color/brandedsurface"
@@ -30,12 +35,12 @@
         android:id="@+id/days"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp"
+        android:layout_below="@id/segmentselect"
+        android:layout_alignParentTop="false"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/blank"
             android:layout_width="35dp"
             android:layout_height="47.5dp"
             android:layout_margin="1dp"
@@ -55,7 +60,6 @@
 
 
             <TextView
-                android:id="@+id/day1"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -79,7 +83,6 @@
 
 
             <TextView
-                android:id="@+id/day2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -103,7 +106,6 @@
 
 
             <TextView
-                android:id="@+id/day3"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -127,7 +129,6 @@
 
 
             <TextView
-                android:id="@+id/day4"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -151,7 +152,6 @@
 
 
             <TextView
-                android:id="@+id/day5"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -171,10 +171,15 @@
         android:id="@+id/scroller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_below="@id/segmentselect"
+        android:layout_marginTop="54dp"
+        android:nestedScrollingEnabled="true"
         android:overScrollMode="never"
         android:scrollbarSize="0dp">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/timetable_rv"
@@ -187,31 +192,46 @@
 
 
         </android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/Legend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="80dp"
+                android:visibility="gone" />
+        </LinearLayout>
     </ScrollView>
+
+
+
+
     <Spinner
         android:id="@+id/segmentselect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/timetableView"
+        android:layout_alignBottom="@+id/timetableView"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="8dp"
         android:entries="@array/Segments" />
 
     <TextView
-        android:id="@+id/textView33"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/timetableView"
+        android:layout_alignBottom="@+id/timetableView"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:gravity="center_vertical"
         android:text="Segment" />
 
     <org.honorato.multistatetogglebutton.MultiStateToggleButton
         android:id="@+id/timetableView"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="15dp"
@@ -219,14 +239,6 @@
         mstb:mstbPrimaryColor="@color/toggle"
         mstb:mstbSecondaryColor="@color/brandedsurface"
         mstb:values="@array/TimetableView" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/Legend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scroller"
-        android:layout_marginTop="30dp"
-        android:visibility="gone" />
 
 
 </RelativeLayout>

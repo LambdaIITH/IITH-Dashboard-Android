@@ -14,13 +14,14 @@ import java.util.List;
 
 import Model.Lecture;
 
-public class RecyclerViewAdapter2_TT extends RecyclerView.Adapter<RecyclerViewAdapter2_TT.MyViewHolder>{
+public class RecyclerViewAdapter2_TT extends RecyclerView.Adapter<RecyclerViewAdapter2_TT.MyViewHolder> {
 
     private Context mContext;
     private List<Lecture> lectures;
-    private List<String> T1 ;
-    private List<String> T2 ;
-    public RecyclerViewAdapter2_TT(Context context, List<Lecture> lectures , List<String> T1 , List<String> T2) {
+    private List<String> T1;
+    private List<String> T2;
+
+    public RecyclerViewAdapter2_TT(Context context, List<Lecture> lectures, List<String> T1, List<String> T2) {
         this.mContext = context;
         this.lectures = lectures;
         this.T1 = T1;
@@ -32,7 +33,7 @@ public class RecyclerViewAdapter2_TT extends RecyclerView.Adapter<RecyclerViewAd
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        view = layoutInflater.inflate(R.layout.timetable_dailyview,viewGroup,false);
+        view = layoutInflater.inflate(R.layout.timetable_dailyview, viewGroup, false);
 
 
         return new MyViewHolder(view);
@@ -46,27 +47,26 @@ public class RecyclerViewAdapter2_TT extends RecyclerView.Adapter<RecyclerViewAd
         myViewHolder.textView2.setText(T2.get(i));
 
 
-
-}
+    }
 
     @Override
     public int getItemCount() {
         return lectures.size();
     }
 
-public static class MyViewHolder extends RecyclerView.ViewHolder{
-    TextView textView , textView2 , textView3 , textView4;
-    public MyViewHolder(@NonNull View itemView) {
-        super(itemView);
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView textView, textView2, textView3, textView4;
 
-        textView = itemView.findViewById(R.id.time1);
-        textView2 = itemView.findViewById(R.id.time2);
-        textView3 = itemView.findViewById(R.id.CCode);
-        textView4 = itemView.findViewById(R.id.Cname);
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            textView = itemView.findViewById(R.id.time1);
+            textView2 = itemView.findViewById(R.id.time2);
+            textView3 = itemView.findViewById(R.id.CCode);
+            textView4 = itemView.findViewById(R.id.Cname);
 
 
-
-    }
+        }
     }
 
 }

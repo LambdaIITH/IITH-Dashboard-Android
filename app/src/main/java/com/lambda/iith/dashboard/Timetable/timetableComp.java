@@ -21,27 +21,20 @@ import java.util.List;
 
 import Model.Lecture;
 
-public class timetableComp extends AsyncTask<Context, Void , ArrayList<ArrayMap<String, Lecture>>> {
-    private SharedPreferences sharedPreferences1;
-    private String Seg = "12";
-
-
-    private Context mContext;
-    private MultiStateToggleButton timetableView, DaySelect;
-    private ArrayList<ArrayMap<String, Lecture>> courseMap = new ArrayList<>();
-    //private ArrayMap<String, ArrayMap<String, Lecture>> courseMap = new ArrayMap<>();
-
-    private RecyclerView myRV, legend;
-
+public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<String, Lecture>>> {
     public static ArrayList<String> courseList;
-
     public static ArrayList<String> courseSegmentList;
     public static ArrayList<String> slotList;
     public static ArrayList<String> CourseName;
     public static ArrayList<Integer> colorArray = new ArrayList<>();
-
-
-
+    //private ArrayMap<String, ArrayMap<String, Lecture>> courseMap = new ArrayMap<>();
+    private SharedPreferences sharedPreferences1;
+    private String Seg = "12";
+    private Context mContext;
+    private MultiStateToggleButton timetableView, DaySelect;
+    private ArrayList<ArrayMap<String, Lecture>> courseMap = new ArrayList<>();
+    private RecyclerView myRV, legend;
+    private ArrayList<Integer> colour;
 
     @Override
     protected ArrayList<ArrayMap<String, Lecture>> doInBackground(Context... contexts) {
@@ -73,7 +66,6 @@ public class timetableComp extends AsyncTask<Context, Void , ArrayList<ArrayMap<
 
     }
 
-
     private ArrayList<String> getArrayList(String key) {
         SharedPreferences prefs = sharedPreferences1;
         Gson gson = new Gson();
@@ -94,8 +86,6 @@ public class timetableComp extends AsyncTask<Context, Void , ArrayList<ArrayMap<
         }
 
     }
-
-    private ArrayList<Integer> colour;
 
     private void mapData() {
 
@@ -200,24 +190,10 @@ public class timetableComp extends AsyncTask<Context, Void , ArrayList<ArrayMap<
     }
 
 
-
-
-
-
-
-
-
-
-
-
     @Override
     protected void onPostExecute(ArrayList<ArrayMap<String, Lecture>> arrayMaps) {
         super.onPostExecute(arrayMaps);
         Timetable.courseMap = courseMap;
-
-
-
-
 
 
     }

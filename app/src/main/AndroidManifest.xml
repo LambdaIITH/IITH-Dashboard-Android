@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/application_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
-        tools:replace="android:label"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:label">
         <activity
             android:name=".About"
             android:label="@string/title_activity_about"
@@ -40,10 +40,10 @@
         <activity
             android:name=".Launch"
             android:label="Dashboard"
-            android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="stateHidden"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="stateHidden">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,7 +53,6 @@
             </intent-filter>
 
         </activity>
-
 
 
         <activity

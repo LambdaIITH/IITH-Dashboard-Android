@@ -55,15 +55,15 @@ public class FragmentQuiz extends Fragment {
         words.add("ten");
 
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, words);
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = view.findViewById(R.id.list);
         listView.setAdapter(itemsAdapter);
 
 
-        ImageView home=(ImageView) view.findViewById(R.id.add_id_circle);
+        ImageView home = view.findViewById(R.id.add_id_circle);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent homeIntent = new Intent(getActivity(),Main3Activity.class);
+                Intent homeIntent = new Intent(getActivity(), Main3Activity.class);
                 startActivity(homeIntent);
             }
         });

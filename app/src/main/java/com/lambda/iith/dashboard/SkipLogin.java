@@ -42,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class SkipLogin extends AppCompatActivity {
+    public final static int RC_SIGN_IN = 0;
     private BottomNavigationView bottomNavigationView;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
@@ -49,8 +50,7 @@ public class SkipLogin extends AppCompatActivity {
     private RequestQueue queue, queue2, queue3;
     private SharedPreferences sharedPreferences;
     private SwipeRefreshLayout pulltorefresh;
-    private CountDownTimer mCountDownTimer ;
-    public final static int RC_SIGN_IN = 0;
+    private CountDownTimer mCountDownTimer;
     private FragmentManager fragmentManager;
 
     @Override
@@ -60,7 +60,7 @@ public class SkipLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_skip_login);
-        MainActivity.initiate();
+
         queue = Volley.newRequestQueue(getApplicationContext());
 
         mCountDownTimer = new CountDownTimer(3000, 6000) {
@@ -79,8 +79,6 @@ public class SkipLogin extends AppCompatActivity {
                 findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
             }
-
-
 
 
         };
@@ -112,7 +110,7 @@ public class SkipLogin extends AppCompatActivity {
 
         fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new MessMenu()).commit();
 
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationSL);
+        bottomNavigationView = findViewById(R.id.BottomNavigationSL);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -224,7 +222,7 @@ public class SkipLogin extends AppCompatActivity {
 
                             SharedPreferences.Editor edit = sharedPreferences.edit();
                             edit.putString("ToIITH", JA.getString(1));
-                            edit.putString("FromIITH" , JA.getString(0));
+                            edit.putString("FromIITH", JA.getString(0));
                             edit.commit();
 
                         } catch (JSONException e) {
@@ -234,17 +232,16 @@ public class SkipLogin extends AppCompatActivity {
                     }
 
 
-
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
             }
 
         });
         String url2 = "https://iith.dev/dining";
 
-        MainActivity.initiate();
+
 
 
         StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2,
@@ -255,30 +252,25 @@ public class SkipLogin extends AppCompatActivity {
                         // Display the first 500 characters of the response string.
 
 
-
-
                         SharedPreferences.Editor edit = sharedPreferences.edit();
                         edit.putString("MESSJSON", response);
 
                         edit.commit();
 
 
-
                     }
-
 
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext() , "Server Refresh Failed ..." , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
             }
 
         });
 
         queue.add(stringRequest);
         queue.add(stringRequest2);
-
 
 
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
@@ -292,7 +284,7 @@ public class SkipLogin extends AppCompatActivity {
                 mCountDownTimer.cancel();
                 ft.detach(fragment);
                 ft.attach(fragment);
-                ft.commit();
+                ft.commitAllowingStateLoss();
                 return;
             }
         });

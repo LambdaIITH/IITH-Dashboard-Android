@@ -1,10 +1,14 @@
 package com.lambda.iith.dashboard;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.constraint.Constraints;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,27 +43,22 @@ import Model.Lecture;
 
 public class HomeScreenFragment extends Fragment {
 
-    //Fragment to be displayed on Home screen which will have 3 cards as layout.
-    private CardView bus, mess, timetable, cab;
-
-    private RecyclerView CabSharing;
-    private TextView mess1;
-
-    private ArrayList<String> mEmails = new ArrayList<>();
-    private View view;
-
-
-    private RecyclerView myRV;
     public static SharedPreferences sharedPreferences;
     public static ArrayList<String> courseList;
-
     public static ArrayList<String> courseSegmentList;
     public static ArrayList<String> slotList;
     public static ArrayList<String> CourseName;
+    //Fragment to be displayed on Home screen which will have 3 cards as layout.
+    private CardView bus, mess, timetable, cab;
+    private RecyclerView CabSharing;
+    private TextView mess1;
+    private ArrayList<String> mEmails = new ArrayList<>();
+    private View view;
+    private RecyclerView myRV;
     private SharedPreferences sharedPref;
-    private TextView t1, t2, t3, t4 , mealName;
+    private TextView t1, t2, t3, t4, mealName , b1 , b2 , b3 , b4;
     private MultiStateToggleButton toggleButton;
-
+    private ConstraintLayout constraintLayout;
     private ArrayList<Lecture> lectures1 = new ArrayList<>();
     private ArrayList<String> T1 = new ArrayList<>();
     private ArrayList<String> T2 = new ArrayList<>();
@@ -68,8 +67,8 @@ public class HomeScreenFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_screen, container, false);
-
-        mess =  view.findViewById(R.id.MessCard);
+        constraintLayout = view.findViewById(R.id.busview);
+        mess = view.findViewById(R.id.MessCard);
         myRV = view.findViewById(R.id.Timetable_Recycler);
         view.findViewById(R.id.MessScroll);
         mealName = view.findViewById(R.id.textView15);
@@ -115,23 +114,36 @@ public class HomeScreenFragment extends Fragment {
             }
         });
 
-
+        final float scale = getResources().getDisplayMetrics().density;
         t1 = view.findViewById(R.id.toLing);
         t2 = view.findViewById(R.id.toODF);
         toggleButton = view.findViewById(R.id.BusToggleHome);
         toggleButton.setValue(0);
         t3 = view.findViewById(R.id.toLing2);
         t4 = view.findViewById(R.id.toODF2);
+        b1 = view.findViewById(R.id.textView23);
+        b2 = view.findViewById(R.id.textView24);
+        b3 = view.findViewById(R.id.textView5);
+        b4 = view.findViewById(R.id.textView7);
 
-
+        double width2 = convertPxToDp(getContext(),Launch.width/4);
+        ViewGroup.LayoutParams params = t1.getLayoutParams();
+        params.width = (int) ((width2-5) * scale + 0.5f);
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        t1.setLayoutParams(params);
+        t2.setLayoutParams(params);
+        t3.setLayoutParams(params);
+        t4.setLayoutParams(params);
+        b1.setLayoutParams(params);
+        b2.setLayoutParams(params);
+        b3.setLayoutParams(params);
+        b4.setLayoutParams(params);
         toggleButton.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
                 busmake(true);
             }
         });
-
-
         CabSharing = view.findViewById(R.id.cs_home_recycler);
         CabSharing.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,12 +174,14 @@ public class HomeScreenFragment extends Fragment {
         cabCardMake(sharedPref.getBoolean("cab", true));
         busmake(sharedPref.getBoolean("bus", true));
         messmake(sharedPref.getBoolean("mess", true));
-        timetablemake(sharedPref.getBoolean("timetable" , true));
+        timetablemake(sharedPref.getBoolean("timetable", true));
 
 
         return view;
     }
-
+    public double convertPxToDp(Context context, double px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
     private void busmake(boolean b) {
         if (b) {
             String string;
@@ -182,7 +196,7 @@ public class HomeScreenFragment extends Fragment {
                 }
                 Date date = Calendar.getInstance().getTime();
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY:MM:dd");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd");
                 String da = dateFormat.format(Calendar.getInstance().getTime());
                 try {
                     if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
@@ -202,7 +216,7 @@ public class HomeScreenFragment extends Fragment {
                             if (T1.compareTo(date) > 0) {
                                 t1.setText(temp);
                                 break;
-                            }else{
+                            } else {
                                 t1.setText(" N/A ");
                             }
                             temp = "";
@@ -229,13 +243,12 @@ public class HomeScreenFragment extends Fragment {
                     for (int i = 0; i < string.length(); i++) {
                         if (string.substring(i, i + 1).equals(",")) {
                             SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
-                            ;
                             java.util.Date T1 = format1.parse(da + ":" + temp.trim());
 
                             if (T1.compareTo(date) > 0) {
                                 t2.setText(temp);
                                 break;
-                            }else{
+                            } else {
                                 t2.setText(" N/A ");
                             }
                             temp = "";
@@ -266,7 +279,7 @@ public class HomeScreenFragment extends Fragment {
                             if (T1.compareTo(date) > 0) {
 
                                 break;
-                            }else{
+                            } else {
                                 t4.setText(" N/A ");
                             }
                             temp = "";
@@ -299,8 +312,7 @@ public class HomeScreenFragment extends Fragment {
                             if (T1.compareTo(date) > 0) {
 
                                 break;
-                            }
-                            else{
+                            } else {
                                 t3.setText(" N/A ");
                             }
                             temp = "";
@@ -314,15 +326,12 @@ public class HomeScreenFragment extends Fragment {
                     }
 
 
-
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
 
 
         } else {
@@ -336,9 +345,17 @@ public class HomeScreenFragment extends Fragment {
             JSONObject data = new JSONObject();
             JSONObject data1 = new JSONObject();
             JSONObject JO1 = new JSONObject();
-            try{
+            try {
 
-            JO1 = new JSONObject(sharedPreferences.getString("MESSJSON" , MainActivity.DEF));} catch (JSONException e) {
+                JSONObject JA;
+                if(sharedPreferences.getString("MESSJSON", "NULL").equals("NULL")){
+                    Init init = new Init();
+                    JO1 = new JSONObject(Init.DEF);
+
+                }
+                else{
+                    JO1 = new JSONObject(sharedPreferences.getString("MESSJSON" , "NULL"));}
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             try {
@@ -385,56 +402,59 @@ public class HomeScreenFragment extends Fragment {
                 ArrayList<String> a1 = new ArrayList<>();
                 a1.add("Sunday");
                 a1.add("Monday");
-                a1.add("Tuesday");a1.add("Wednesday");a1.add("Thursday");a1.add("Friday");a1.add("Saturday");
+                a1.add("Tuesday");
+                a1.add("Wednesday");
+                a1.add("Thursday");
+                a1.add("Friday");
+                a1.add("Saturday");
 
 
                 JSONObject JO = data.getJSONObject(a1.get(day - 1));
                 JSONObject JO11 = data1.getJSONObject(a1.get(day - 1));
-                JSONObject JO3 = data1.getJSONObject(a1.get(day%7));
+                JSONObject JO3 = data1.getJSONObject(a1.get(day % 7));
                 JSONObject JO2 = data.getJSONObject(a1.get(day % 7));
 
                 if (timen.before(time1)) {
                     mealName.setText("Today's Breakfast");
-                    JSONArray L = JO.getJSONArray("Breakfast")  ;
-                    JSONArray L1 = JO11.getJSONArray("Breakfast")  ;
+                    JSONArray L = JO.getJSONArray("Breakfast");
+                    JSONArray L1 = JO11.getJSONArray("Breakfast");
 
 
-                    mess1.setText(parseMeal(L,L1));
+                    mess1.setText(parseMeal(L, L1));
 
                 } else if (timen.after(calendar1.getTime()) && timen.before(calendar2.getTime())) {
                     //checkes whether the current time is between 10:30:00 and 14:30:00.
                     mealName.setText("Today's Lunch");
-                    JSONArray L = JO.getJSONArray("Lunch")  ;
-                    JSONArray L1 = JO11.getJSONArray("Lunch")  ;
+                    JSONArray L = JO.getJSONArray("Lunch");
+                    JSONArray L1 = JO11.getJSONArray("Lunch");
 
-                    mess1.setText(parseMeal(L,L1));
+                    mess1.setText(parseMeal(L, L1));
 
                 } else if (timen.after(calendar2.getTime()) && timen.before(calendar3.getTime())) {
                     mealName.setText("Today's Snacks");
-                    JSONArray L = JO.getJSONArray("Snacks")  ;
-                    JSONArray L1 = JO11.getJSONArray("Snacks")  ;
+                    JSONArray L = JO.getJSONArray("Snacks");
+                    JSONArray L1 = JO11.getJSONArray("Snacks");
 
-                    mess1.setText(parseMeal(L,L1));
+                    mess1.setText(parseMeal(L, L1));
 
                 } else if (timen.after(calendar3.getTime()) && timen.before(calendar4.getTime())) {
                     mealName.setText("Today's Dinner");
-                    JSONArray L = JO.getJSONArray("Dinner")  ;
-                    JSONArray L1 = JO11.getJSONArray("Dinner")  ;
+                    JSONArray L = JO.getJSONArray("Dinner");
+                    JSONArray L1 = JO11.getJSONArray("Dinner");
 
 
-                    mess1.setText(parseMeal(L,L1));
+                    mess1.setText(parseMeal(L, L1));
 
                 } else if (timen.after(time4)) {
                     mealName.setText("Tomorrow's Breakfast");
 
-                    JSONArray L = JO2.getJSONArray("Breakfast")  ;
-                    JSONArray L1 = JO3.getJSONArray("Breakfast")  ;
+                    JSONArray L = JO2.getJSONArray("Breakfast");
+                    JSONArray L1 = JO3.getJSONArray("Breakfast");
 
-                    mess1.setText(parseMeal(L,L1));
+                    mess1.setText(parseMeal(L, L1));
 
 
                 }
-
 
 
             } catch (ParseException e) {
@@ -448,21 +468,21 @@ public class HomeScreenFragment extends Fragment {
         }
     }
 
-    private String parseMeal(JSONArray JA1 , JSONArray JA2)  {
+    private String parseMeal(JSONArray JA1, JSONArray JA2) {
         String string = "";
         try {
 
             for (int i = 0; i < JA1.length(); i++) {
-                string += (i+1) + ".\u00A0" + JA1.getString(i).replace(" " , "\u00A0") + "   ";
+                string += (i + 1) + ".\u00A0" + JA1.getString(i).replace(" ", "\u00A0") + "   ";
 
             }
 
             string += " \n\n";
-            string+= "Extras:";
+            string += "Extras:";
             string += " \n";
 
             for (int i = 0; i < JA2.length(); i++) {
-                string += (i+1) + ".\u00A0" + JA2.getString(i).replace(" " , "\u00A0") + "   ";
+                string += (i + 1) + ".\u00A0" + JA2.getString(i).replace(" ", "\u00A0") + "   ";
 
             }
 
@@ -483,20 +503,16 @@ public class HomeScreenFragment extends Fragment {
                 courseSegmentList = getArrayList("Segment");
                 slotList = getArrayList("SlotList");
                 CourseName = getArrayList("CourseName");
-                if(courseList != null) {
+                if (courseList != null) {
 
-                    daily(sharedPref.getString("DefaultSegment" , "12"));
+                    daily(sharedPref.getString("DefaultSegment", "12"));
                 }
 
 
             } catch (Exception e) {
 
             }
-        }
-
-
-
-         else {
+        } else {
             timetable.setVisibility(View.GONE);
         }
     }
@@ -504,11 +520,10 @@ public class HomeScreenFragment extends Fragment {
 
     private void cabCardMake(boolean b) {
         if (b) {
-            if(sharedPref.getBoolean("Registered", false)) {
+            if (sharedPref.getBoolean("Registered", false)) {
 
                 CabGet();
-            }
-            else{
+            } else {
                 mEmails.clear();
                 mEmails.add("You are not using this feature");
                 cab.setVisibility(View.VISIBLE);
@@ -520,7 +535,6 @@ public class HomeScreenFragment extends Fragment {
             }
 
 
-
         } else {
             cab.setVisibility(View.GONE);
         }
@@ -528,17 +542,16 @@ public class HomeScreenFragment extends Fragment {
     }
 
 
-    private void CabGet(){
+    private void CabGet() {
 
 
-
-        try{
+        try {
 
             mEmails.clear();
 
-            JSONArray JA3 =  new JSONArray(sharedPref.getString("CabShares" , null));
+            JSONArray JA3 = new JSONArray(sharedPref.getString("CabShares", null));
             JSONObject JO3;
-            for(int j=0 ; j<JA3.length() ; j++){
+            for (int j = 0; j < JA3.length(); j++) {
                 JO3 = (JSONObject) JA3.get(j);
                 mEmails.add(JO3.getString("Email"));
                 CabSharing = view.findViewById(R.id.cs_home_recycler);
@@ -552,33 +565,33 @@ public class HomeScreenFragment extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (Exception e) {
         }
-        catch (Exception e){}
 
         cab.setVisibility(View.VISIBLE);
 
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        cabCardMake(sharedPref.getBoolean("cab", false));
+        cabCardMake(sharedPref.getBoolean("cab", true));
         busmake(sharedPref.getBoolean("bus", true));
         messmake(sharedPref.getBoolean("mess", true));
         timetablemake(sharedPref.getBoolean("timetable", true));
     }
 
-    private ArrayList<String> getArrayList(String key){
+    private ArrayList<String> getArrayList(String key) {
         SharedPreferences prefs = sharedPref;
         Gson gson = new Gson();
         String json = prefs.getString(key, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         return gson.fromJson(json, type);
     }
 
 
-
-
-    private void daily(String segment){
+    private void daily(String segment) {
         lectures1.clear();
         T1.clear();
         T2.clear();
@@ -586,29 +599,29 @@ public class HomeScreenFragment extends Fragment {
 
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
-        switch (day){
+        switch (day) {
             case 2: {
-                dailyCreate("ABCDPQWX"  , segment);
+                dailyCreate("ABCDPQWX", segment);
 
                 return;
 
             }
             case 3: {
-                dailyCreate("DEFGRSYZ", segment) ;
+                dailyCreate("DEFGRSYZ", segment);
 
                 return;
             }
-            case 4:{
-                dailyCreate("BCAGF", segment) ;
+            case 4: {
+                dailyCreate("BCAGF", segment);
 
                 return;
             }
-            case 5:{
-                dailyCreate("CABEQPWX", segment) ;
+            case 5: {
+                dailyCreate("CABEQPWX", segment);
 
                 return;
             }
-            case 6:{
+            case 6: {
                 dailyCreate("EFDGSRYZ", segment);
 
                 return;
@@ -618,22 +631,20 @@ public class HomeScreenFragment extends Fragment {
 
             case 1: {
                 dailyCreate("", segment);
-                return;}
-
+                return;
+            }
 
 
         }
 
 
-
     }
 
 
+    private void dailyCreate(String string, String segment) {
 
-    private void dailyCreate(String string , String segment ) {
 
-
-        ArrayMap<String, Lecture> course = Timetable.courseMap.get((Integer.parseInt(segment.substring(0,1)) -1) /2);
+        ArrayMap<String, Lecture> course = Timetable.courseMap.get((Integer.parseInt(segment.substring(0, 1)) - 1) / 2);
 
 
         ArrayList<ArrayList<String>> time = new ArrayList<>();
@@ -678,17 +689,11 @@ public class HomeScreenFragment extends Fragment {
         time.add(t7);
 
 
-
-
-
         int temp = 0;
         for (int i = 0; i < string.length(); i++) {
 
 
-
-
             if (!course.get(string.substring(i, i + 1)).getCourseId().equals("")) {
-
 
 
                 lectures1.add(course.get(string.substring(i, i + 1)));
@@ -698,7 +703,7 @@ public class HomeScreenFragment extends Fragment {
             }
         }
 
-        if (temp==0){
+        if (temp == 0) {
             Lecture lecture = new Lecture();
             lecture.setCourse("NO LECTURES TODAY! Enjoy");
 
@@ -707,9 +712,9 @@ public class HomeScreenFragment extends Fragment {
             T2.add("");
         }
 
-        HomeTimeTableAdapter adapter = new HomeTimeTableAdapter(getContext() , lectures1 , T1 , T2);
+        HomeTimeTableAdapter adapter = new HomeTimeTableAdapter(getContext(), lectures1, T1, T2);
         myRV.setAdapter(adapter);
-        LinearLayoutManager layout = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);
+        LinearLayoutManager layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         myRV.setLayoutManager(layout);
         return;
     }

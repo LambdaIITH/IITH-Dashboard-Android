@@ -34,7 +34,6 @@
             tools:layout_editor_absoluteY="182dp">
 
             <TextView
-                android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/TimetableCard"
@@ -62,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginBottom="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardBackgroundColor="@color/brandedsurface"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
@@ -71,7 +70,6 @@
             tools:layout_editor_absoluteY="16dp">
 
             <TextView
-                android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/TimetableCard"
@@ -85,104 +83,106 @@
 
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/busview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbarAlwaysDrawHorizontalTrack="false">
 
 
-                <TextView
-                    android:id="@+id/toLing2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginBottom="13dp"
-                    android:text=" N/A "
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView23"
-                    app:layout_constraintStart_toStartOf="@+id/textView23" />
-
-                <TextView
-                    android:id="@+id/toODF2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="13dp"
-                    android:text=" N/A "
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView24"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Maingate"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView24"
-                    app:layout_constraintEnd_toStartOf="@+id/textView24"
-                    app:layout_constraintStart_toEndOf="@+id/textView7"
-                    app:layout_constraintTop_toTopOf="@+id/textView24" />
-
-                <TextView
-                    android:id="@+id/textView24"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="10dp"
-                    android:text="Sangareddy"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView23"
-                    app:layout_constraintTop_toBottomOf="@+id/toODF2" />
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/BusToggleHome"
+                    tools:layout_editor_absoluteX="149dp">
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="3dp"
-                    android:text="Lingampally"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView7"
-                    app:layout_constraintEnd_toStartOf="@+id/textView7"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView7" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="0dp"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="9dp"
-                    android:text=" ODF"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView23"
-                    app:layout_constraintEnd_toStartOf="@+id/textView23"
-                    app:layout_constraintStart_toEndOf="@+id/textView5"
-                    app:layout_constraintTop_toTopOf="@+id/textView23" />
+                        <TextView
+                            android:id="@+id/toLing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="13dp"
+                            android:text=" N/A "
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/toLing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:layout_marginBottom="13dp"
-                    android:text=" N/A "
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView5"
-                    app:layout_constraintEnd_toEndOf="@+id/textView5" />
+                        <TextView
+                            android:id="@+id/toODF"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="13dp"
+                            android:text=" N/A "
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/toODF"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="31dp"
-                    android:layout_marginBottom="13dp"
-                    android:text=" N/A "
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView7"
-                    app:layout_constraintStart_toEndOf="@+id/textView5" />
+                        <TextView
+                            android:id="@+id/toLing2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="13dp"
+                            android:text=" N/A "
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/toODF2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" N/A "
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lingampally"
+                            android:textAlignment="center" />
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ODF"
+                            android:textAlignment="center" />
+
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Maingate"
+                            android:textAlignment="center" />
+
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sangareddy"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <org.honorato.multistatetogglebutton.MultiStateToggleButton
                     android:id="@+id/BusToggleHome"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="false"
 
                     android:layout_marginTop="2dp"
@@ -191,7 +191,9 @@
                     app:layout_constraintTop_toTopOf="parent"
                     mstb:mstbPrimaryColor="@color/toggle"
                     mstb:mstbSecondaryColor="@color/brandedsurface"
-                    mstb:values="@array/BusToggleHome" />
+                    mstb:values="@array/BusToggleHome" >
+
+                </org.honorato.multistatetogglebutton.MultiStateToggleButton>
 
             </android.support.constraint.ConstraintLayout>
 
@@ -274,7 +276,6 @@
             tools:layout_editor_absoluteY="343dp">
 
             <TextView
-                android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/TimetableCard"

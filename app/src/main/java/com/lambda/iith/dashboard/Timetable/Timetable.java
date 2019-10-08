@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lambda.iith.dashboard.Launch;
 import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
 
@@ -54,295 +55,53 @@ import Model.Lecture;
 public class Timetable extends Fragment {
 
 
-    List<Lecture> lectureList;
-    private String Seg = "12";
     public static Context mContext;
-    private MultiStateToggleButton timetableView , DaySelect;
-    public static  ArrayList<ArrayMap<String, Lecture>> courseMap = new ArrayList<>();
-    //private ArrayMap<String, ArrayMap<String, Lecture>> courseMap = new ArrayMap<>();
-    private LinearLayout Days , c1,c2,c3,c4,c5;
-    private RecyclerView myRV , legend;
+    public static ArrayList<ArrayMap<String, Lecture>> courseMap = new ArrayList<>();
     public static SharedPreferences sharedPreferences;
     public static ArrayList<String> courseList;
-    private int k = 1;
     public static ArrayList<String> courseSegmentList;
     public static ArrayList<String> slotList;
     public static ArrayList<String> CourseName;
-
-    private RelativeLayout Parent;
     public static Spinner segment;
+    private static FragmentManager fragmentManager;
+    List<Lecture> lectureList;
+    private String Seg = "12";
+    private MultiStateToggleButton timetableView, DaySelect;
+    //private ArrayMap<String, ArrayMap<String, Lecture>> courseMap = new ArrayMap<>();
+    private LinearLayout Days, c1, c2, c3, c4, c5;
+    private RecyclerView myRV, legend;
+    private int k = 1;
+    private RelativeLayout Parent;
     private ArrayList<Lecture> lectures1 = new ArrayList<>();
     private ArrayList<String> T1 = new ArrayList<>();
     private ArrayList<String> T2 = new ArrayList<>();
-    private static FragmentManager fragmentManager ;
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    private ArrayList<Integer> colour;
 
-
-
-        final View view =inflater.inflate(R.layout.recycler_view_timetable, container, false);
-        myRV = (RecyclerView) view.findViewById(R.id.timetable_rv);
-        timetableView = view.findViewById(R.id.timetableView);
-        legend = view.findViewById(R.id.Legend);
-        Parent = view.findViewById(R.id.Timetableparent);
-        timetableView.setValue(1);
-        fragmentManager = getFragmentManager();
-        lectureList = new ArrayList<>(72);
-        mContext = getContext();
-
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        c1 = view.findViewById(R.id.DayCard1);
-        c2 = view.findViewById(R.id.DayCard2);
-        c3 = view.findViewById(R.id.DayCard3);
-        c4 = view.findViewById(R.id.DayCard4);
-        c5 = view.findViewById(R.id.DayCard5);
-        Days = view.findViewById(R.id.days);
-        int width = (int) Math.floor(convertPxToDp(getContext() , MainActivity.width/5));
-        ViewGroup.LayoutParams params1 = c1.getLayoutParams();
-        params1.width = (int) ((width-10) * scale + 0.5f);
-        c1.setLayoutParams(params1);
-        c2.setLayoutParams(params1);
-        c3.setLayoutParams(params1);
-        c4.setLayoutParams(params1);
-        c5.setLayoutParams(params1);
-
-
-        DaySelect = view.findViewById(R.id.DaySelect);
-        courseList = getArrayList("CourseList");
-        courseSegmentList = getArrayList("Segment");
-        slotList = getArrayList("SlotList");
-        CourseName = getArrayList("CourseName");
-        int t=0;
-
-
-        if(courseList == null){
-            courseList = new ArrayList<>();
-            courseSegmentList = new ArrayList<>();
-            slotList = new ArrayList<>();
-            CourseName = new ArrayList<>();
-
-        }
-        segment = view.findViewById(R.id.segmentselect);
-
-
-
-
-        String seg = sharedPreferences.getString("DefaultSegment" , "12");
-
-        if (seg.equals("12")) {
-
-            Timetable.segment.setSelection(0);
-
-
-        } else if (seg.equals("34")) {
-
-            Timetable.segment.setSelection(1);
-
-        } else if (seg.equals("56")) {
-
-            Timetable.segment.setSelection(2);
-
-        }
-        timetableView.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                k = value;
-                if(value==0){
-
-                    daily(Seg);
-                }
-                else{
-                    arrgen(Seg);
-                }
-            }
-        });
-
-
-
-       segment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-           @Override
-           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               if(parent.getItemAtPosition(position).toString().equals("1-2")){
-                   Seg = "12";
-                    }
-
-              else if(parent.getItemAtPosition(position).toString().equals("3-4")){
-                   Seg = "34";
-
-               }
-              else {
-                   Seg = "56";
-
-                }
-
-              if (k==1){
-
-                  arrgen(Seg);
-
-              }
-              else{
-
-
-                  daily(Seg);
-              }
-           }
-
-
-           @Override
-           public void onNothingSelected(AdapterView<?> parent) {
-               return;
-
-            }
-       });
-
-
-        return view;
-    }
-    public static ArrayList<String> getArrayList(String key){
+    public static ArrayList<String> getArrayList(String key) {
         SharedPreferences prefs = sharedPreferences;
         Gson gson = new Gson();
         String json = prefs.getString(key, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         return gson.fromJson(json, type);
     }
 
-    public double convertPxToDp(Context context, double px) {
-        return px / context.getResources().getDisplayMetrics().density;
-    }
-    private ArrayList<Integer> colour;
-
-
-
-    private void arrgen(String segment){
-        showLegend(segment);
-        Days.setVisibility(View.VISIBLE);
-        DaySelect.setVisibility(View.GONE);
-
-        ArrayMap<String , Lecture> course= courseMap.get((Integer.parseInt(segment.substring(0,1)) -1) /2);
-        lectureList.clear();
-        int def = getResources().getColor(R.color.brandedsurface);
-
-        //lectureList.add(create("Day" , "" , def ));
-        lectureList.add(create("9" , "" , def));
-        lectureList.add((create("10" , "",def )));
-        lectureList.add(create("11" , "" , def));
-        lectureList.add(create("12" , "", def));
-        lectureList.add(create("14:30" , "", def));
-        lectureList.add(create("16" , "", def));
-        lectureList.add(create("17:30" , "", def));
-        lectureList.add(create("19" , "", def));
-
-        //lectureList.add(create("MON", "", def));
-        lectureList.add(course.get("A") );
-        lectureList.add(course.get("B") );
-        lectureList.add(course.get("C") );
-        lectureList.add(course.get("D") );
-        lectureList.add(course.get("P") );
-        lectureList.add(course.get("Q") );
-        lectureList.add(course.get("W") );
-        lectureList.add(course.get("X") );
-
-
-        //lectureList.add(create("TUE", "", def));
-        lectureList.add(course.get("D") );
-        lectureList.add(course.get("E") );
-        lectureList.add(course.get("F") );
-        lectureList.add(course.get("G") );
-        lectureList.add(course.get("R") );
-        lectureList.add(course.get("S") );
-        lectureList.add(course.get("Y") );
-        lectureList.add(course.get("Z") );
-
-
-        //lectureList.add(create("WED", "", def));
-        lectureList.add(course.get("B") );
-        lectureList.add(course.get("C") );
-        lectureList.add(course.get("A") );
-        lectureList.add(course.get("G") );
-        lectureList.add(course.get("F") );
-        lectureList.add(create("" , "", def ));
-        lectureList.add(create("" , "" , def));
-        lectureList.add(create("" , "" , def));
-
-        //lectureList.add(create("THU", "", def));
-        lectureList.add(course.get("C") );
-        lectureList.add(course.get("A") );
-        lectureList.add(course.get("B") );
-        lectureList.add(course.get("E") );
-        lectureList.add(course.get("Q") );
-        lectureList.add(course.get("P") );
-        lectureList.add(course.get("W") );
-        lectureList.add(course.get("X") );
-
-        //lectureList.add(create("FRI", "" , def));
-        lectureList.add(course.get("E") );
-        lectureList.add(course.get("F") );
-        lectureList.add(course.get("D") );
-        lectureList.add(course.get("G") );
-        lectureList.add(course.get("S") );
-        lectureList.add(course.get("R") );
-        lectureList.add(course.get("Y") );
-       lectureList.add(course.get("Z") );
-
-
-
-
-
-        RecyclerViewAdapter_TT myAdapter = new RecyclerViewAdapter_TT(getContext(),lectureList);
-        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(8,StaggeredGridLayoutManager.HORIZONTAL);
-
-
-
-        //manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        myRV.setAdapter(myAdapter);
-        myRV.setLayoutManager(manager);
-        myRV.setHasFixedSize(false);
-
-
-
-
-
-
-        //lectureList.add(create(course.get("A") , "Name"));
-        //lectureList.add(create(course.get("A") , "Name"));
-        //lectureList.add(create(course.get("A") , "Name"));
-        //lectureList.add(create(course.get("A") , "Name"));
-
-
-
-
-
-
-    }
-
-
-    private Lecture create(String id , String name , int color){
-        Lecture lecture = new Lecture();
-        lecture.setCourseId(id);
-        lecture.setCourse(name);
-        lecture.setCourseColor(color);
-        return lecture;
-    }
-
-
-    public static void edit(String CourseCode ,String Name){
+    public static void edit(String CourseCode, String Name) {
         int n = courseList.size();
 
 
-        for(int i=0 ; i<n ; i++){
+        for (int i = 0; i < n; i++) {
             System.out.println("!+" + i);
             System.out.println("!1+" + CourseCode);
-            if(courseList.get(i).equals(CourseCode) ){
+            if (courseList.get(i).equals(CourseCode)) {
                 System.out.println("!+" + i);
-                CourseName.set(i ,Name );
-                saveArrayList(courseList , "CourseList");
+                CourseName.set(i, Name);
+                saveArrayList(courseList, "CourseList");
 
-                saveArrayList(courseSegmentList , "Segment");
+                saveArrayList(courseSegmentList, "Segment");
 
-                saveArrayList(slotList , "SlotList");
-                saveArrayList2(CourseName , "CourseName");
+                saveArrayList(slotList, "SlotList");
+                saveArrayList2(CourseName, "CourseName");
                 new timetableComp().execute(mContext);
                 int i1 = segment.getSelectedItemPosition();
 
@@ -359,31 +118,17 @@ public class Timetable extends Fragment {
         }
 
 
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
-    public static void addCourse(String name , String code , String slot , String segment){
-        if(courseList.contains(code)){
-            Toast.makeText(mContext , "Course already exists" , Toast.LENGTH_SHORT).show();
+    public static void addCourse(String name, String code, String slot, String segment) {
+        if (courseList.contains(code)) {
+            Toast.makeText(mContext, "Course already exists", Toast.LENGTH_SHORT).show();
             return;
-        }
-        else if(slotList.contains(slot)){
-            for(int t=0;t<courseList.size() ; t++){
-                if(slotList.get(t).equals(slot)){
-                    if(courseSegmentList.contains(segment)){
-                        Toast.makeText(mContext , "Course Clashes" , Toast.LENGTH_SHORT).show();
+        } else if (slotList.contains(slot)) {
+            for (int t = 0; t < courseList.size(); t++) {
+                if (slotList.get(t).equals(slot)) {
+                    if (courseSegmentList.contains(segment)) {
+                        Toast.makeText(mContext, "Course Clashes", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -391,26 +136,22 @@ public class Timetable extends Fragment {
         }
 
 
-
         courseList.add(code);
         courseSegmentList.add(segment);
         slotList.add(slot);
         CourseName.add(name);
 
-        saveArrayList(courseList , "CourseList");
+        saveArrayList(courseList, "CourseList");
 
-        saveArrayList(courseSegmentList , "Segment");
+        saveArrayList(courseSegmentList, "Segment");
 
-        saveArrayList(slotList , "SlotList");
-        saveArrayList2(CourseName , "CourseName");
+        saveArrayList(slotList, "SlotList");
+        saveArrayList2(CourseName, "CourseName");
 
         final FragmentTransaction ft = fragmentManager.beginTransaction();
 
 
-
     }
-
-
 
     public static void Delete(String CourseID) {
 
@@ -439,7 +180,6 @@ public class Timetable extends Fragment {
                 break;
 
 
-
             }
 
 
@@ -453,15 +193,16 @@ public class Timetable extends Fragment {
         ft.attach(fragment);
         ft.commit();
     }
-    public static void saveArrayList(List<String> list, String key){
-        ;
+
+    public static void saveArrayList(List<String> list, String key) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.commit();     // This line is IMPORTANT !!!
     }
-    private static void saveArrayList2(ArrayList<String> list, String key){
+
+    private static void saveArrayList2(ArrayList<String> list, String key) {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
@@ -470,7 +211,226 @@ public class Timetable extends Fragment {
         editor.commit();     // This line is IMPORTANT !!!
     }
 
-    private void daily(final String segment){
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
+        final View view = inflater.inflate(R.layout.recycler_view_timetable, container, false);
+        myRV = view.findViewById(R.id.timetable_rv);
+        timetableView = view.findViewById(R.id.timetableView);
+        legend = view.findViewById(R.id.Legend);
+        Parent = view.findViewById(R.id.Timetableparent);
+        timetableView.setValue(1);
+        fragmentManager = getFragmentManager();
+        lectureList = new ArrayList<>(72);
+        mContext = getContext();
+
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        c1 = view.findViewById(R.id.DayCard1);
+        c2 = view.findViewById(R.id.DayCard2);
+        c3 = view.findViewById(R.id.DayCard3);
+        c4 = view.findViewById(R.id.DayCard4);
+        c5 = view.findViewById(R.id.DayCard5);
+        Days = view.findViewById(R.id.days);
+        int width = (int) Math.floor(convertPxToDp(getContext(), Launch.width / 5));
+        ViewGroup.LayoutParams params1 = c1.getLayoutParams();
+        params1.width = (int) ((width - 10) * scale + 0.5f);
+        c1.setLayoutParams(params1);
+        c2.setLayoutParams(params1);
+        c3.setLayoutParams(params1);
+        c4.setLayoutParams(params1);
+        c5.setLayoutParams(params1);
+
+
+        DaySelect = view.findViewById(R.id.DaySelect);
+        courseList = getArrayList("CourseList");
+        courseSegmentList = getArrayList("Segment");
+        slotList = getArrayList("SlotList");
+        CourseName = getArrayList("CourseName");
+        int t = 0;
+
+
+        if (courseList == null) {
+            courseList = new ArrayList<>();
+            courseSegmentList = new ArrayList<>();
+            slotList = new ArrayList<>();
+            CourseName = new ArrayList<>();
+
+        }
+        segment = view.findViewById(R.id.segmentselect);
+
+
+        String seg = sharedPreferences.getString("DefaultSegment", "12");
+
+        if (seg.equals("12")) {
+
+            Timetable.segment.setSelection(0);
+
+
+        } else if (seg.equals("34")) {
+
+            Timetable.segment.setSelection(1);
+
+        } else if (seg.equals("56")) {
+
+            Timetable.segment.setSelection(2);
+
+        }
+        timetableView.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                k = value;
+                if (value == 0) {
+
+                    daily(Seg);
+                } else {
+                    arrgen(Seg);
+                }
+            }
+        });
+
+
+        segment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getItemAtPosition(position).toString().equals("1-2")) {
+                    Seg = "12";
+                } else if (parent.getItemAtPosition(position).toString().equals("3-4")) {
+                    Seg = "34";
+
+                } else {
+                    Seg = "56";
+
+                }
+
+                if (k == 1) {
+
+                    arrgen(Seg);
+
+                } else {
+
+
+                    daily(Seg);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
+
+            }
+        });
+
+
+        return view;
+    }
+
+    public double convertPxToDp(Context context, double px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    private void arrgen(String segment) {
+        showLegend(segment);
+        Days.setVisibility(View.VISIBLE);
+        DaySelect.setVisibility(View.GONE);
+
+        ArrayMap<String, Lecture> course = courseMap.get((Integer.parseInt(segment.substring(0, 1)) - 1) / 2);
+        lectureList.clear();
+        int def = getResources().getColor(R.color.brandedsurface);
+
+        //lectureList.add(create("Day" , "" , def ));
+        lectureList.add(create("9", "", def));
+        lectureList.add((create("10", "", def)));
+        lectureList.add(create("11", "", def));
+        lectureList.add(create("12", "", def));
+        lectureList.add(create("14:30", "", def));
+        lectureList.add(create("16", "", def));
+        lectureList.add(create("17:30", "", def));
+        lectureList.add(create("19", "", def));
+
+        //lectureList.add(create("MON", "", def));
+        lectureList.add(course.get("A"));
+        lectureList.add(course.get("B"));
+        lectureList.add(course.get("C"));
+        lectureList.add(course.get("D"));
+        lectureList.add(course.get("P"));
+        lectureList.add(course.get("Q"));
+        lectureList.add(course.get("W"));
+        lectureList.add(course.get("X"));
+
+
+        //lectureList.add(create("TUE", "", def));
+        lectureList.add(course.get("D"));
+        lectureList.add(course.get("E"));
+        lectureList.add(course.get("F"));
+        lectureList.add(course.get("G"));
+        lectureList.add(course.get("R"));
+        lectureList.add(course.get("S"));
+        lectureList.add(course.get("Y"));
+        lectureList.add(course.get("Z"));
+
+
+        //lectureList.add(create("WED", "", def));
+        lectureList.add(course.get("B"));
+        lectureList.add(course.get("C"));
+        lectureList.add(course.get("A"));
+        lectureList.add(course.get("G"));
+        lectureList.add(course.get("F"));
+        lectureList.add(create("", "", def));
+        lectureList.add(create("", "", def));
+        lectureList.add(create("", "", def));
+
+        //lectureList.add(create("THU", "", def));
+        lectureList.add(course.get("C"));
+        lectureList.add(course.get("A"));
+        lectureList.add(course.get("B"));
+        lectureList.add(course.get("E"));
+        lectureList.add(course.get("Q"));
+        lectureList.add(course.get("P"));
+        lectureList.add(course.get("W"));
+        lectureList.add(course.get("X"));
+
+        //lectureList.add(create("FRI", "" , def));
+        lectureList.add(course.get("E"));
+        lectureList.add(course.get("F"));
+        lectureList.add(course.get("D"));
+        lectureList.add(course.get("G"));
+        lectureList.add(course.get("S"));
+        lectureList.add(course.get("R"));
+        lectureList.add(course.get("Y"));
+        lectureList.add(course.get("Z"));
+
+
+        RecyclerViewAdapter_TT myAdapter = new RecyclerViewAdapter_TT(getContext(), lectureList);
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(8, StaggeredGridLayoutManager.HORIZONTAL);
+
+
+        //manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        myRV.setAdapter(myAdapter);
+        myRV.setLayoutManager(manager);
+        myRV.setHasFixedSize(false);
+
+
+        //lectureList.add(create(course.get("A") , "Name"));
+        //lectureList.add(create(course.get("A") , "Name"));
+        //lectureList.add(create(course.get("A") , "Name"));
+        //lectureList.add(create(course.get("A") , "Name"));
+
+
+    }
+
+    private Lecture create(String id, String name, int color) {
+        Lecture lecture = new Lecture();
+        lecture.setCourseId(id);
+        lecture.setCourse(name);
+        lecture.setCourseColor(color);
+        return lecture;
+    }
+
+    private void daily(final String segment) {
 
         DaySelect.setVisibility(View.VISIBLE);
         Days.setVisibility(View.GONE);
@@ -479,7 +439,7 @@ public class Timetable extends Fragment {
         DaySelect.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
-                matchDay(value+1 , segment);
+                matchDay(value + 1, segment);
             }
         });
         DaySelect.setValue(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1);
@@ -488,41 +448,41 @@ public class Timetable extends Fragment {
         //int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
 
+    }
 
-        }
+    private void matchDay(int day, String segment) {
 
-    private void matchDay(int day , String segment){
-
-        switch (day){
+        switch (day) {
             case 2: {
-                dailyCreate("ABCDPQWX"  , segment);
+                dailyCreate("ABCDPQWX", segment);
 
                 return;
 
             }
             case 3: {
-                dailyCreate("DEFGRSYZ", segment) ;
+                dailyCreate("DEFGRSYZ", segment);
 
                 return;
             }
-            case 4:{
-                dailyCreate("BCAGF", segment) ;
+            case 4: {
+                dailyCreate("BCAGF", segment);
 
                 return;
             }
-            case 5:{
-                dailyCreate("CABEQPWX", segment) ;
+            case 5: {
+                dailyCreate("CABEQPWX", segment);
 
                 return;
             }
-            case 6:{
+            case 6: {
                 dailyCreate("EFDGSRYZ", segment);
 
                 return;
             }
-            case 7:{
+            case 7: {
                 dailyCreate("", segment);
-                return;}
+                return;
+            }
 
 
             case 1: {
@@ -532,16 +492,15 @@ public class Timetable extends Fragment {
             }
 
 
-
         }
 
 
     }
 
-    private void dailyCreate(String string , String segment ) {
+    private void dailyCreate(String string, String segment) {
 
 
-        ArrayMap<String, Lecture> course = courseMap.get((Integer.parseInt(segment.substring(0,1)) -1) /2);
+        ArrayMap<String, Lecture> course = courseMap.get((Integer.parseInt(segment.substring(0, 1)) - 1) / 2);
         lectures1.clear();
         T1.clear();
         T2.clear();
@@ -588,18 +547,12 @@ public class Timetable extends Fragment {
         time.add(t7);
 
 
-
-
-
-
         int temp = 0;
 
         for (int i = 0; i < string.length(); i++) {
 
 
-
             if (!course.get(string.substring(i, i + 1)).getCourseId().equals("")) {
-
 
 
                 lectures1.add(course.get(string.substring(i, i + 1)));
@@ -610,53 +563,51 @@ public class Timetable extends Fragment {
         }
 
 
-        RecyclerViewAdapter2_TT adapter = new RecyclerViewAdapter2_TT(getContext() , lectures1 , T1 , T2);
+        RecyclerViewAdapter2_TT adapter = new RecyclerViewAdapter2_TT(getContext(), lectures1, T1, T2);
         myRV.setAdapter(adapter);
-        LinearLayoutManager layout = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);
+        LinearLayoutManager layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         myRV.setLayoutManager(layout);
         return;
     }
+
     @Override
     public void onResume() {
         super.onResume();
-
 
 
     }
 
     @Override
     public void onStart() {
-        if(sharedPreferences.getBoolean("TimeTableLaunch1" , true)) {
-            sharedPreferences.edit().putBoolean("TimeTableLaunch1" , false).commit();
+        if (sharedPreferences.getBoolean("TimeTableLaunch1", true)) {
+            sharedPreferences.edit().putBoolean("TimeTableLaunch1", false).commit();
 
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                alert.setTitle("TIP");
-                alert.setMessage("You can use AIMS Helper Chrome extension to load timetable directly from AIMS");
-                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext() , "Longpress cards to put course name" , Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            alert.setTitle("TIP");
+            alert.setMessage("You can use AIMS Helper Chrome extension to load timetable directly from AIMS");
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(getContext(), "Longpress cards to put course name", Toast.LENGTH_SHORT).show();
 
-                    }
-                });
-                alert.show();
-            }
-
-
+                }
+            });
+            alert.show();
+        }
 
 
         super.onStart();
     }
 
-    private void showLegend(String segment){
+    private void showLegend(String segment) {
 
-        if(!sharedPreferences.getBoolean("Cname" , false)){
-            ArrayList <String> mCourseNames= new ArrayList<>();
-            ArrayList < String> mCourseCodes = new ArrayList<>();
+        if (!sharedPreferences.getBoolean("Cname", true)) {
+            ArrayList<String> mCourseNames = new ArrayList<>();
+            ArrayList<String> mCourseCodes = new ArrayList<>();
             int n = courseSegmentList.size();
-            for(int j=0 ; j<n ; j++){
-                if(courseSegmentList.get(j).contains(segment)){
+            for (int j = 0; j < n; j++) {
+                if (courseSegmentList.get(j).contains(segment)) {
                     mCourseNames.add(CourseName.get(j));
                     mCourseCodes.add(courseList.get(j));
 
@@ -664,22 +615,17 @@ public class Timetable extends Fragment {
                 }
             }
             Parent.removeView(legend);
-           Parent.addView(legend);
+//            Parent.addView(legend);
             legend.setVisibility(View.VISIBLE);
-            TimeTableLegendAdapter timeTableLegendAdapter = new TimeTableLegendAdapter(getContext() , mCourseNames , mCourseCodes);
+            TimeTableLegendAdapter timeTableLegendAdapter = new TimeTableLegendAdapter(getContext(), mCourseNames, mCourseCodes);
             legend.setAdapter(timeTableLegendAdapter);
-            GridLayoutManager layoutManager = new GridLayoutManager(getContext() , 2  , GridLayoutManager.VERTICAL , false);
+            GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
 
             legend.setLayoutManager(layoutManager);
-        }
-
-        else{
+        } else {
             legend.setVisibility(View.GONE);
             Parent.removeView(legend);
         }
-
-
-
 
 
     }

@@ -15,7 +15,7 @@ import com.lambda.iith.dashboard.R;
 import java.util.ArrayList;
 
 
-public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegendAdapter.ViewHolder>{
+public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegendAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<String> mCourse = new ArrayList<>();
@@ -24,14 +24,13 @@ public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegend
 
     private Context mContext;
 
-    public TimeTableLegendAdapter(Context context, ArrayList<String> Names, ArrayList<String> Emails  ) {
+    public TimeTableLegendAdapter(Context context, ArrayList<String> Names, ArrayList<String> Emails) {
         mCourse = Names;
 
         mCourseCode = Emails;
 
         mContext = context;
     }
-
 
 
     @NonNull
@@ -47,16 +46,10 @@ public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegend
         Log.d(TAG, "onBindViewHolder: called.");
 
 
-
         holder.course.setText(mCourse.get(position));
 
 
         holder.time.setText(mCourseCode.get(position));
-
-
-
-
-
 
 
     }
@@ -67,16 +60,16 @@ public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegend
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView course , time;
+        TextView course, time;
         ConstraintLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            course= itemView.findViewById(R.id.CourseName);
+            course = itemView.findViewById(R.id.CourseName);
 
             time = itemView.findViewById(R.id.CourseTime);
             parentLayout = itemView.findViewById(R.id.ParentLayout);

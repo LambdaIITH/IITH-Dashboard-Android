@@ -19,9 +19,10 @@ public class AddCourse extends AppCompatActivity {
     Spinner spinner;
     private String slot;
     private Button add;
-    private CheckBox c1,c2,c3;
-    private EditText e1,e2;
+    private CheckBox c1, c2, c3;
+    private EditText e1, e2;
     private String segment = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,22 +53,21 @@ public class AddCourse extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(c1.isChecked()){
-                    segment+="12";
+                if (c1.isChecked()) {
+                    segment += "12";
                 }
-                if(c2.isChecked()){
-                    segment+="34";
+                if (c2.isChecked()) {
+                    segment += "34";
                 }
-                if(c3.isChecked()){
-                    segment+="56";
+                if (c3.isChecked()) {
+                    segment += "56";
                 }
 
-                if(!(e1.getText().toString().equals("") || e2.getText().toString().equals("") || slot.equals(null) || segment.equals(""))){
-                    Timetable.addCourse(e1.getText().toString() , e2.getText().toString() , slot , segment);
-                    startActivity(new Intent(AddCourse.this , MainActivity.class));
-                }
-                else{
-                    Toast.makeText(getBaseContext() ,"All fields are mandatory" , Toast.LENGTH_SHORT ).show();
+                if (!(e1.getText().toString().equals("") || e2.getText().toString().equals("") || slot.equals(null) || segment.equals(""))) {
+                    Timetable.addCourse(e1.getText().toString(), e2.getText().toString(), slot, segment);
+                    startActivity(new Intent(AddCourse.this, MainActivity.class));
+                } else {
+                    Toast.makeText(getBaseContext(), "All fields are mandatory", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -75,9 +75,8 @@ public class AddCourse extends AppCompatActivity {
         });
 
 
-
-
     }
+
     @Override
     public boolean onSupportNavigateUp() {
 

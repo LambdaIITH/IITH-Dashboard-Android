@@ -1,8 +1,10 @@
 package Model;
 
-import android.support.annotation.ColorInt;
-
 public class Lecture {
+
+    private String course;
+    private String courseId;
+    private int courseColor;
 
     public String getCourse() {
         return course;
@@ -20,13 +22,12 @@ public class Lecture {
         this.courseId = courseId;
     }
 
-    public void setCourseColor(int courseColor){ this.courseColor = courseColor;}
     public int getCourseColor() {
         return courseColor;
     }
 
-    private String course;
-    private String courseId;
-    private int courseColor;
+    public void setCourseColor(int courseColor) {
+        this.courseColor = courseColor;
+    }
 
 }

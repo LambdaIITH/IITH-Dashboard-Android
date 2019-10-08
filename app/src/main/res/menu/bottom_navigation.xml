@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/nav_bus"
-        android:icon="@mipmap/baseline_directions_bus_black_18dp"
+        android:icon="@mipmap/baseline_directions_bus_black_48"
         android:title="." />
     <item
         android:id="@+id/nav_mess"

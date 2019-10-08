@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:mstb="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentStart="false"
@@ -23,7 +23,6 @@
         mstb:mstbPrimaryColor="@color/toggle"
         mstb:mstbSecondaryColor="@color/brandedsurface"
         mstb:values="@array/CabToggle" />
-
 
 
     <Button
@@ -142,7 +141,6 @@
         app:layout_constraintTop_toTopOf="@+id/cabToggle" />
 
     <View
-        android:id="@+id/divider4"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
@@ -178,7 +176,6 @@
         app:layout_constraintTop_toTopOf="@+id/reg_Date" />
 
     <TextView
-        android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"

@@ -15,7 +15,7 @@ import com.lambda.iith.dashboard.R;
 import java.util.ArrayList;
 
 
-public class BSAdapter extends RecyclerView.Adapter<BSAdapter.ViewHolder>{
+public class BSAdapter extends RecyclerView.Adapter<BSAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
 
@@ -24,13 +24,12 @@ public class BSAdapter extends RecyclerView.Adapter<BSAdapter.ViewHolder>{
 
     private Context mContext;
 
-    public BSAdapter(Context context, ArrayList<String> Emails  ) {
+    public BSAdapter(Context context, ArrayList<String> Emails) {
 
 
         mEmails = Emails;
         mContext = context;
     }
-
 
 
     @NonNull
@@ -44,8 +43,6 @@ public class BSAdapter extends RecyclerView.Adapter<BSAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
-
-
 
 
         holder.Name.setText(mEmails.get(position));
@@ -66,16 +63,16 @@ public class BSAdapter extends RecyclerView.Adapter<BSAdapter.ViewHolder>{
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView Name , mobile , email;
+        TextView Name, mobile, email;
         ConstraintLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            Name= itemView.findViewById(R.id.name);
+            Name = itemView.findViewById(R.id.name);
 
             //email = itemView.findViewById(R.id.email);
             parentLayout = itemView.findViewById(R.id.ParentLayout);

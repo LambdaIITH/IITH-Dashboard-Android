@@ -10,12 +10,13 @@ import android.support.v7.widget.Toolbar;
 
 import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
+
 import Adapters.ViewPagerAdapter;
 
 public class Main2Activity extends AppCompatActivity {
 
 
-    private TabLayout tabLayout ;
+    private TabLayout tabLayout;
     private ViewPager viewPager;
 
 
@@ -46,9 +47,9 @@ public class Main2Activity extends AppCompatActivity {
             }
         });*/
 
-        tabLayout =(TabLayout) findViewById(R.id.tablayout_id);
+        tabLayout = findViewById(R.id.tablayout_id);
 //        appBarLayout =(AppBarLayout) findViewById(R.id.appbarid);
-        viewPager = (ViewPager) findViewById(R.id.viewpager_id);
+        viewPager = findViewById(R.id.viewpager_id);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         // Adding fragments
         adapter.AddFragment(new FragmentQuiz(), "LOST");
@@ -58,6 +59,7 @@ public class Main2Activity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
 
@@ -65,5 +67,5 @@ public class Main2Activity extends AppCompatActivity {
         startActivity(homeIntent);
         return true;
     }
-    }
+}
 

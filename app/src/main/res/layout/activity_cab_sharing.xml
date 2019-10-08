@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".cabsharing.CabSharing">
@@ -18,7 +17,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="0dp"
         fab:menu_animationDelayPerItem="50"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
@@ -62,8 +61,8 @@
             android:layout_height="wrap_content"
 
             android:src="@mipmap/baseline_delete_black_24"
-            fab:fab_label="Remove"
             fab:fab_colorNormal="@color/toggle"
+            fab:fab_label="Remove"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton

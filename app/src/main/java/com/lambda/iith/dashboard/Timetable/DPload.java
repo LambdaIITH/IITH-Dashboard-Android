@@ -12,9 +12,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DPload extends AsyncTask<String , Void , Void> {
+public class DPload extends AsyncTask<String, Void, Void> {
 
     private Bitmap myBitmap;
+
     @Override
     protected Void doInBackground(String... strings) {
         try {

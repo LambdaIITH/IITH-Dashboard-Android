@@ -12,12 +12,11 @@ import android.widget.TextView;
 
 import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
-import com.lambda.iith.dashboard.cabsharing.CabSharing;
 
 import java.util.ArrayList;
 
 
-public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerViewAdapter_CSHOME.ViewHolder>{
+public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerViewAdapter_CSHOME.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
 
@@ -26,13 +25,12 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
 
     private Context mContext;
 
-    public RecyclerViewAdapter_CSHOME(Context context, ArrayList<String> Emails  ) {
+    public RecyclerViewAdapter_CSHOME(Context context, ArrayList<String> Emails) {
 
 
         mEmails = Emails;
         mContext = context;
     }
-
 
 
     @NonNull
@@ -48,9 +46,7 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
         Log.d(TAG, "onBindViewHolder: called.");
 
 
-
-
-        holder.Name.setText( mEmails.get(position));
+        holder.Name.setText(mEmails.get(position));
 
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -68,18 +64,18 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView Name , mobile , email;
+        TextView Name, mobile, email;
         ConstraintLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            Name= itemView.findViewById(R.id.name);
+            Name = itemView.findViewById(R.id.name);
 
-           // email = itemView.findViewById(R.id.email);
+            // email = itemView.findViewById(R.id.email);
             parentLayout = itemView.findViewById(R.id.ParentLayout);
         }
     }

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import Model.Lecture;
 
 
-public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdapter.ViewHolder>{
+public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<Lecture> mCourse = new ArrayList<>();
@@ -27,14 +27,13 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
 
     private Context mContext;
 
-    public HomeTimeTableAdapter(Context context, ArrayList<Lecture> Names, ArrayList<String> Emails  , ArrayList<String> Time2 ) {
+    public HomeTimeTableAdapter(Context context, ArrayList<Lecture> Names, ArrayList<String> Emails, ArrayList<String> Time2) {
         mCourse = Names;
 
         mTime1 = Emails;
         mTime2 = Time2;
         mContext = context;
     }
-
 
 
     @NonNull
@@ -50,9 +49,9 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
         Log.d(TAG, "onBindViewHolder: called.");
 
 
-        if(!mCourse.get(position).getCourse().equals("Name")){
-        holder.course.setText(mCourse.get(position).getCourse());}
-        else{
+        if (!mCourse.get(position).getCourse().equals("Name")) {
+            holder.course.setText(mCourse.get(position).getCourse());
+        } else {
             holder.course.setText(mCourse.get(position).getCourseId());
         }
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -61,15 +60,13 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
                 MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acads);
             }
         });
-        if(!mTime1.get(position).isEmpty()) {
+        if (!mTime1.get(position).isEmpty()) {
             holder.time.setText(mTime1.get(position) + " to " + mTime2.get(position));
-        }
-        else{
+        } else {
             holder.time.setVisibility(View.GONE);
 
         }
         System.out.println("XXX");
-
 
 
     }
@@ -80,16 +77,16 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView course , time;
+        TextView course, time;
         ConstraintLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            course= itemView.findViewById(R.id.CourseName);
+            course = itemView.findViewById(R.id.CourseName);
 
             time = itemView.findViewById(R.id.CourseTime);
             parentLayout = itemView.findViewById(R.id.HomeTimeTableParent);
