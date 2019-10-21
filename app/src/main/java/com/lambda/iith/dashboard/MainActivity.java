@@ -19,6 +19,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +28,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,20 +51,25 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lambda.iith.dashboard.Timetable.AddCourse;
 import com.lambda.iith.dashboard.Timetable.DPload;
 import com.lambda.iith.dashboard.Timetable.Timetable;
 import com.lambda.iith.dashboard.Timetable.timetableComp;
+import com.lambda.iith.dashboard.cabsharing.BookingFilter;
 import com.lambda.iith.dashboard.cabsharing.CabSharing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import Model.Filter;
 
 
 public class MainActivity extends AppCompatActivity
@@ -70,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     public static ImageView imageView;
 
     public String name;
-    public String email;
+    public static String email;
     public Uri photoUrl;
     int a;
     private GoogleSignInClient mGoogleSignInClient;
@@ -84,7 +94,7 @@ public class MainActivity extends AppCompatActivity
     private List<String> courseSegmentList;
     private List<String> slotList;
     private ArrayList<String> CourseName;
-    private RequestQueue queue;
+    private RequestQueue queue , queue1;
     private SwipeRefreshLayout pullToRefresh;
     private FragmentManager fragmentManager;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -193,6 +203,7 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
         queue = Volley.newRequestQueue(MainActivity.this);
+        queue1 = Volley.newRequestQueue(MainActivity.this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         refresh();
@@ -201,7 +212,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        test();
         timetableComp Timetablecomp = new timetableComp();
         Timetablecomp.execute(getApplicationContext());
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -305,6 +316,13 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+    private void test(){
+
+    }
+
+
+
 
     @Override
     protected void onResume() {
@@ -488,7 +506,60 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private int Switch = 0;
+
+
     private void refresh() {
+        if (!sharedPreferences.getBoolean("Registered", false) && sharedPreferences.getBoolean("FIRSTCABLAUNCH" , true)) {
+
+
+            RetrieveBooking();
+        }
+        if(sharedPreferences.getBoolean("Registered", false) ) {
+
+
+            checkForUpdates();
+
+        }
+        queue1.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                if(Switch==1){
+                updateShares();}
+            }
+        });
+
+        BusData();
+        messData();
+
+        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+
+
+                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                pullToRefresh.setRefreshing(false);
+
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commitAllowingStateLoss();
+                return;
+
+
+            }
+        });
+
+
+
+    }
+
+
+
+
+    private void BusData(){
         String url = "https://iith.dev/bus";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -520,6 +591,13 @@ public class MainActivity extends AppCompatActivity
             }
 
         });
+
+        queue.add(stringRequest);
+
+
+    }
+
+    private void messData(){
         String url2 = "https://iith.dev/dining";
 
 
@@ -547,141 +625,134 @@ public class MainActivity extends AppCompatActivity
             }
 
         });
-
-        queue.add(stringRequest);
         queue.add(stringRequest2);
-        final SharedPreferences sharedPref = sharedPreferences;
+    }
 
-        String url4 = "https://iith.dev/query";
-        final String startTime = sharedPref.getString("startTime", "    NA      NA  ");
-        final String endTime = sharedPref.getString("endTime", "    NA      NA  ");
-        final int CabID = sharedPref.getInt("Route", 100);
-        StringRequest stringRequest4;
-        System.out.println("FGFGG" + sharedPref.getBoolean("Registered", false));
-        if (sharedPref.getBoolean("Registered", false)) {
-
-            stringRequest4 = new StringRequest(Request.Method.GET, url4,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            JSONArray JA = null;
-                            JSONArray JA2 = null;
-                            try {
-                                JA = new JSONArray(response);
-                                JA2 = new JSONArray();
-
-                                for (int i = 0; i < JA.length(); i++) {
-                                    JSONObject JO = (JSONObject) JA.get(i);
-                                    System.out.println("GGGG1233");
-
-                                    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd:HH:mm");
-                                    java.util.Date T1 = format1.parse(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
-                                    System.out.println(startTime.substring(0, 10) + ":" + startTime.substring(11, 16));
-                                    java.util.Date T2 = format1.parse(endTime.substring(0, 10) + ":" + endTime.substring(11, 16));
-                                    java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
-                                    java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
-                                    System.out.println(T1);
-                                    System.out.println(T2);
-                                    System.out.println(T3);
-                                    System.out.println(T4);
-                                    if ((JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(email)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0))) {
-                                        System.out.println("GGGG1233" + JO);
-                                        JA2.put(JO);
+    public void updateShares(){
+        final String url4 = "https://iith.dev/query";
 
 
-                                    }
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url4,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Filter filter = new Filter();
+                        filter.set(response , sharedPreferences);
 
-                                }
+                        new BookingFilter().execute(filter);
 
 
-                                SharedPreferences.Editor edit = sharedPref.edit();
-                                edit.putString("CabShares", JA2.toString());
+                    }
 
-                                edit.commit();
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        queue.add(stringRequest);
+    }
+
+    private void checkForUpdates(){
 
 
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
+        String URL9 = "https://iith.dev/update";
+        JSONObject jsonBody = new JSONObject();
 
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
-                }
 
-            });
-        } else {
-            System.out.println("HERE");
-            stringRequest4 = new StringRequest(Request.Method.GET, url4,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            JSONArray JA = null;
-                            JSONArray JA2 = null;
-                            try {
-                                JA = new JSONArray(response);
-                                JA2 = new JSONArray();
-                                System.out.println("HERE1" + JA);
-                                for (int i = 0; i < JA.length(); i++) {
-                                    JSONObject JO = (JSONObject) JA.get(i);
-                                    System.out.println("GGGG" + i + JO);
-                                    System.out.println(email);
-                                    if (JO.getString("Email").equals(email)) {
-                                        SharedPreferences.Editor edit = sharedPref.edit();
-                                        System.out.println("HERE2" + JO);
-                                        edit.putString("startTime", JO.getString("StartTime"));
-                                        edit.putString("endTime", JO.getString("EndTime"));
-                                        edit.putBoolean("Registered", true);
-                                        edit.putInt("Private", 0);
-                                        edit.putInt("Route", JO.getInt("RouteID"));
-                                        edit.commit();
-                                    }
+        final String start = sharedPreferences.getString("startTime", "    NA      NA  ");
+        final String end = sharedPreferences.getString("endTime", "    NA      NA  ");
+        final int route = sharedPreferences.getInt("Route", 100);
 
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
-                }
 
-            });
+        try {
+            jsonBody.put("QueryTimeStart", start);
+            jsonBody.put("QueryTimeEnd", end);
+            jsonBody.put("RouteID", route);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
 
-        queue.add(stringRequest4);
+        final String requestBody = jsonBody.toString();
+        System.out.println("!@@@" + requestBody);
 
-        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, URL9, jsonBody, new Response.Listener<JSONObject>() {
+
             @Override
-            public void onRequestFinished(Request<Object> request) {
+            public void onResponse(JSONObject response) {
 
+                try {
+                    if(response.getBoolean("IsUpdateReqd")){ Switch = 1;}
+                    else{ Switch = 0;}
+                } catch (JSONException e) {
+                    Switch = 1;
+                    e.printStackTrace();
+                }
 
-                Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentlayout);
+            }
+        }, new Response.ErrorListener() {
 
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                pullToRefresh.setRefreshing(false);
-
-                ft.detach(fragment);
-                ft.attach(fragment);
-                ft.commitAllowingStateLoss();
-                return;
-
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
 
             }
         });
 
-
+        queue1.add(stringRequest);
     }
 
+    private void RetrieveBooking(){
+        final String url4 = "https://iith.dev/query";
+        final String startTime = sharedPreferences.getString("startTime", "    NA      NA  ");
+        final String endTime = sharedPreferences.getString("endTime", "    NA      NA  ");
+        final int CabID = sharedPreferences.getInt("Route", 100);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url4,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        sharedPreferences.edit().putBoolean("FIRSTCABLAUNCH", false);
+                        JSONArray JA = null;
+                        JSONArray JA2 = null;
+                        try {
+                            JA = new JSONArray(response);
+                            JA2 = new JSONArray();
+                            System.out.println("HERE1" + JA);
+                            for (int i = 0; i < JA.length(); i++) {
+                                JSONObject JO = (JSONObject) JA.get(i);
+                                System.out.println("GGGG" + i + JO);
+                                System.out.println(email);
+                                if (JO.getString("Email").equals(email)) {
+                                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                                    System.out.println("HERE2" + JO);
+                                    edit.putString("startTime", JO.getString("StartTime"));
+                                    edit.putString("endTime", JO.getString("EndTime"));
+                                    edit.putBoolean("Registered", true);
+                                    edit.putInt("Private", 0);
+                                    edit.putInt("Route", JO.getInt("RouteID"));
+                                    edit.commit();
+                                }
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        queue.add(stringRequest);
+
+    }
     private String getUID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -693,10 +764,7 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
-    private void
-
-    fetchData() {
+    private void fetchData() {
         String UUID = getUID();
         pullToRefresh.setRefreshing(true);
         DocumentReference users = FirebaseFirestore.getInstance().document("users/" + UUID);
