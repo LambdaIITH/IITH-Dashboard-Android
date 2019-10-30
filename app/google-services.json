@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "198169856520-lc2p6gg1m0i7aq6bedfokg5b14q4h89f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lambda.iith.dashboard",
+            "certificate_hash": "7b6a87512588bb2d0e2b267930ade6864857c856"
+          }
+        },
+        {
           "client_id": "198169856520-ac1fqi88sn5h00p2rsldar2vo11ovun3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -124,15 +124,17 @@ public class Timetable extends Fragment {
         if (courseList.contains(code)) {
             Toast.makeText(mContext, "Course already exists", Toast.LENGTH_SHORT).show();
             return;
-        } else if (slotList.contains(slot)) {
-            for (int t = 0; t < courseList.size(); t++) {
-                if (slotList.get(t).equals(slot)) {
-                    if (courseSegmentList.contains(segment)) {
-                        Toast.makeText(mContext, "Course Clashes", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+        } if(slotList.contains(slot)){
+
+            for(int i=0 ; i<courseList.size() ; i++){
+                if(slotList.get(i).equals(slot) && courseSegmentList.get(i).contains(segment)){
+                    Toast.makeText(mContext, "Course Clashes", Toast.LENGTH_SHORT).show();
+                    return;
+
                 }
+
             }
+
         }
 
 
