@@ -80,11 +80,9 @@ public class MessMenu extends Fragment {
                     parse("LDH");
 
 
-                    System.out.println("HelloWTF");
-
                 } else {
                     parse("UDH");
-                    System.out.println("HelloWTF1");
+
                 }
                 int position = MessDay.getSelectedItemPosition();
                 try {
@@ -245,7 +243,7 @@ public class MessMenu extends Fragment {
 
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         MessDay.setSelection((day + 5) % 7);
-        System.out.println("H:" + (day - 2) % 7);
+
 
 
         return rootview;
@@ -305,10 +303,10 @@ public class MessMenu extends Fragment {
             }
             else{
             JA = new JSONObject(sharedPreferences.getString("MESSJSON", "NULL"));}
-            System.out.println(JA);
+
             JSONObject JA1 = JA.getJSONObject(string);
             j1 = JA1.getJSONObject("Sunday");
-            System.out.println("HHHH" + j1);
+
             j2 = JA1.getJSONObject("Monday");
             j3 = JA1.getJSONObject("Tuesday");
             j4 = JA1.getJSONObject("Wednesday");
@@ -319,7 +317,6 @@ public class MessMenu extends Fragment {
             JSONObject JA2 = JA.getJSONObject(string + " Additional");
             j11 = JA2.getJSONObject("Sunday");
 
-            System.out.println("HHH!" + j11);
             j21 = JA2.getJSONObject("Monday");
             j31 = JA2.getJSONObject("Tuesday");
             j41 = JA2.getJSONObject("Wednesday");

@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -34,6 +35,8 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
          t3 = textViews[2];
         t4 = textViews[3];
 
+
+
         try {
             JSONObject JO;
             if (k == 1) {
@@ -41,141 +44,33 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
             } else {
                 JO = new JSONObject(sharedPref.getString("FromIITH", "{  \"LAB\": \"01:45 ,02:15 ,03:00 ,03:45 ,04:30 ,05:15 ,06:00 ,06:45 ,07:15 ,07:45 ,08:15 ,13:00 ,14:15 ,14:45 ,19:30 ,20:15,\",  \"LINGAMPALLY\": \"11:30 ,13:15 ,14:45 ,17:45 ,19:00 ,20:45,\",  \"ODF\": \"09:00 ,10:30 ,12:10 ,13:10 ,14:45 ,17:45 ,18:00 ,19:00 ,20:15 ,21:00 ,22:00 ,23:00,\",  \"SANGAREDDY\": \"08:30 ,13:30 ,17:45 ,18:25 ,20:40,\",  \"LINGAMPALLYW\": \"10:30 ,12:30 ,14:45 ,17:45 ,19:00 ,20:45,\",  \"ODFS\": \"08:40 ,10:15 ,12:10 ,13:15 ,14:45 ,16:10 ,17:45 ,19:10 ,20:30 ,21:10 ,22:10 ,23:30,\"}"));
             }
-            Date date = Calendar.getInstance().getTime();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd");
-            String da = dateFormat.format(Calendar.getInstance().getTime());
-            try {
-                if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                    string = JO.getString("LINGAMPALLYW");
-                } else {
-                    string = JO.getString("LINGAMPALLY");
-                }
-
-                temp = "";
-
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
-                        //t1.setText(format1.format(date));
-                        java.util.Date T1 = format1.parse(da + ":" + temp.trim());
-
-                        if (T1.compareTo(date) > 0) {
-                           a = temp;
-                            break;
-                        } else {
-                            a = " N/A ";
-                        }
-                        temp = "";
-                        continue;
-                    }
-
-                    temp += string.substring(i, i + 1);
 
 
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
+                string = JO.getString("LINGAMPALLYW");
+            } else {
+                string = JO.getString("LINGAMPALLY");
             }
 
-            try {
-                if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                    string = JO.getString("ODFS");
-                } else {
-                    string = JO.getString("ODF");
-                }
-                temp = "";
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
-                        java.util.Date T1 = format1.parse(da + ":" + temp.trim());
-
-                        if (T1.compareTo(date) > 0) {
-                           b = temp;
-                            break;
-                        } else {
-                            b=(" N/A ");
-                        }
-                        temp = "";
-                        continue;
-                    }
-
-                    temp += string.substring(i, i + 1);
+            String[] BusTimes = string.split(",", -1);
+            a = TimeCalc(BusTimes);
 
 
-                }
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
+                string = JO.getString("ODFS");
+            } else {
+                string = JO.getString("ODF");
             }
-            try {
-                string = JO.getString("SANGAREDDY");
-                temp = "";
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");
 
-                        d=(temp);
-
-                        java.util.Date T1 = format1.parse(da + temp.trim());
-
-                        if (T1.compareTo(date) > 0) {
-
-                            break;
-                        } else {
-                            d=(" N/A ");
-                        }
-                        temp = "";
-                        continue;
-                    }
-
-                    temp += string.substring(i, i + 1);
+            b = TimeCalc(string.split(",", -1));
 
 
-                }
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
+            string = JO.getString("SANGAREDDY");
+            d = TimeCalc(string.split(",", -1));
 
 
-                string = JO.getString("LAB");
-                temp = "";
-                for (int i = 0; i < string.length(); i++) {
-                    if (string.substring(i, i + 1).equals(",")) {
-                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:ddHH:mm");
-
-                        c=(temp);
-
-                        java.util.Date T1 = format1.parse(da + temp.trim());
-
-                        if (T1.compareTo(date) > 0) {
-
-                            break;
-                        } else {
-                            c=(" N/A ");
-                        }
-                        temp = "";
-                        continue;
-                    }
-
-
-                    temp += string.substring(i, i + 1);
-
-
-                }
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            string = JO.getString("LAB");
+            c = TimeCalc(string.split(",", -1));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -184,6 +79,44 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
         return null;
     }
 
+    private String TimeCalc(String[] BusTimes){
+
+        try {
+
+            Date date = Calendar.getInstance().getTime();
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd");
+            String da = dateFormat.format(Calendar.getInstance().getTime());
+
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
+
+
+            for (int i = 0; i < BusTimes.length ; i++) {
+
+                if(BusTimes[i].length()==4){
+                    BusTimes[i] = "0"+BusTimes[i];
+
+                }
+
+                java.util.Date T1 = format1.parse(da + ":" + BusTimes[i]);
+
+                if (T1.compareTo(date) > 0) {
+
+                    return BusTimes[i];
+                }
+
+
+            }
+
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+       return BusTimes[0];
+
+
+    }
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);

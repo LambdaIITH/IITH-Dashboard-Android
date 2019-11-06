@@ -91,10 +91,9 @@ public class Timetable extends Fragment {
 
 
         for (int i = 0; i < n; i++) {
-            System.out.println("!+" + i);
-            System.out.println("!1+" + CourseCode);
+
             if (courseList.get(i).equals(CourseCode)) {
-                System.out.println("!+" + i);
+
                 CourseName.set(i, Name);
                 saveArrayList(courseList, "CourseList");
 

@@ -66,7 +66,7 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
             holder.time.setVisibility(View.GONE);
 
         }
-        System.out.println("XXX");
+
 
 
     }

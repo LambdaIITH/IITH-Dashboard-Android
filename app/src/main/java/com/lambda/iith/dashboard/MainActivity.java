@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         idToken = task.getResult().getToken();
-                        System.out.println("HHHH" + idToken);
+
 
 
                     }
@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println(("!!!!" + sharedPreferences.getBoolean("PleaseUpdateCAB", false)));
+
         if (sharedPreferences.getBoolean("PleaseUpdateCAB", false)) {
             pullToRefresh.setRefreshing(true);
             refresh();
@@ -378,8 +378,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -399,7 +397,6 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -572,6 +569,7 @@ public class MainActivity extends AppCompatActivity
                             JA = new JSONArray(response);
 
 
+
                             SharedPreferences.Editor edit = sharedPreferences.edit();
                             edit.putString("ToIITH", JA.getString(1));
                             edit.putString("FromIITH", JA.getString(0));
@@ -677,7 +675,7 @@ public class MainActivity extends AppCompatActivity
 
 
         final String requestBody = jsonBody.toString();
-        System.out.println("!@@@" + requestBody);
+
 
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, URL9, jsonBody, new Response.Listener<JSONObject>() {
 
@@ -721,14 +719,13 @@ public class MainActivity extends AppCompatActivity
                         try {
                             JA = new JSONArray(response);
                             JA2 = new JSONArray();
-                            System.out.println("HERE1" + JA);
+
                             for (int i = 0; i < JA.length(); i++) {
                                 JSONObject JO = (JSONObject) JA.get(i);
-                                System.out.println("GGGG" + i + JO);
-                                System.out.println(email);
+
                                 if (JO.getString("Email").equals(email)) {
                                     SharedPreferences.Editor edit = sharedPreferences.edit();
-                                    System.out.println("HERE2" + JO);
+
                                     edit.putString("startTime", JO.getString("StartTime"));
                                     edit.putString("endTime", JO.getString("EndTime"));
                                     edit.putBoolean("Registered", true);
@@ -773,16 +770,12 @@ public class MainActivity extends AppCompatActivity
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     courseList = (List<String>) documentSnapshot.get("identifiedCourses");
-                    System.out.println("HFfd");
                     courseSegmentList = (List<String>) documentSnapshot.get("identifiedSegments");
                     slotList = (List<String>) documentSnapshot.get("identifiedSlots");
 
                 }
                 CourseName = new ArrayList<>();
                 try {
-
-
-                    System.out.println("FDF" + courseList.size());
 
                     for (int j = 0; j < courseList.size(); j++) {
                         CourseName.add("Name");

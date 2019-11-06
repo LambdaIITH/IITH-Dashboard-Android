@@ -18,7 +18,7 @@
         <activity
             android:name=".About"
             android:label="@string/title_activity_about"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".Timetable.AddCourse"
             android:label="@string/title_activity_add_course"

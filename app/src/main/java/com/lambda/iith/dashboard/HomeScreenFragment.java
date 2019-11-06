@@ -214,7 +214,6 @@ public class HomeScreenFragment extends Fragment {
             }
             try {
                 if (sharedPref.getInt("MESSDEF", 1) == 1) {
-
                     data = JO1.getJSONObject("UDH");
                     data1 = JO1.getJSONObject("UDH Additional");
                 } else {

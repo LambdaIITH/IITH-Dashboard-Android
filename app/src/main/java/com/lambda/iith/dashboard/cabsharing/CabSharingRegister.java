@@ -177,7 +177,7 @@ public class CabSharingRegister extends AppCompatActivity {
                                 editor.putInt("Private", 0);
 
                                 final String requestBody = jsonBody.toString();
-                                System.out.println(requestBody);
+
 
                                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                                     @Override
