@@ -2,9 +2,9 @@ package com.lambda.iith.dashboard;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +28,7 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
     }
     @Override
     protected Void doInBackground(TextView... textViews) {
-        String string;
+        JSONArray BusTimes = new JSONArray();
         String temp;
        t1 = textViews[0];
          t2 = textViews[1];
@@ -47,30 +47,30 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
 
 
             if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                string = JO.getString("LINGAMPALLYW");
+                BusTimes = JO.getJSONArray("LINGAMPALLYW");
             } else {
-                string = JO.getString("LINGAMPALLY");
+                BusTimes = JO.getJSONArray("LINGAMPALLY");
             }
 
-            String[] BusTimes = string.split(",", -1);
+
             a = TimeCalc(BusTimes);
 
 
             if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                string = JO.getString("ODFS");
+                BusTimes = JO.getJSONArray("ODFS");
             } else {
-                string = JO.getString("ODF");
+                BusTimes = JO.getJSONArray("ODF");
             }
 
-            b = TimeCalc(string.split(",", -1));
+            b = TimeCalc(BusTimes);
 
 
-            string = JO.getString("SANGAREDDY");
-            d = TimeCalc(string.split(",", -1));
+            BusTimes = JO.getJSONArray("SANGAREDDY");
+            d = TimeCalc(BusTimes);
 
 
-            string = JO.getString("LAB");
-            c = TimeCalc(string.split(",", -1));
+            BusTimes = JO.getJSONArray("LAB");
+            c = TimeCalc(BusTimes);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,8 +79,8 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
         return null;
     }
 
-    private String TimeCalc(String[] BusTimes){
-
+    private String TimeCalc(JSONArray BusTimes) {
+        ArrayList<String> mArray = new ArrayList<>();
         try {
 
             Date date = Calendar.getInstance().getTime();
@@ -91,31 +91,41 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
             SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
 
 
-            for (int i = 0; i < BusTimes.length ; i++) {
+            for (int i = 0; i < BusTimes.length(); i++) {
 
-                if(BusTimes[i].length()==4){
-                    BusTimes[i] = "0"+BusTimes[i];
+                if (BusTimes.getString(i).length() == 4) {
+                    mArray.add("0" + BusTimes.getString(i));
 
+                } else {
+                    mArray.add(BusTimes.getString(i));
                 }
 
-                java.util.Date T1 = format1.parse(da + ":" + BusTimes[i]);
+                for (int j = 0; j < mArray.size(); j++) {
 
-                if (T1.compareTo(date) > 0) {
+                    java.util.Date T1 = format1.parse(da + ":" + mArray.get(j));
+                    if (T1.compareTo(date) > 0) {
 
-                    return BusTimes[i];
+                        return mArray.get(i);
+                    }
+
                 }
+                return mArray.get(0);
+
+
+
+
+
 
 
             }
 
 
-
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-       return BusTimes[0];
-
-
+        return "/NA";
     }
     @Override
     protected void onPostExecute(Void aVoid) {

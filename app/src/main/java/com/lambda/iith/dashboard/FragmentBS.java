@@ -22,11 +22,13 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import Adapters.BSAdapter;
 
@@ -168,18 +170,18 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         Head1.setText(s2);
 
         try {
-            String string = JO.getString(s1);
-            String[] BusTimes = string.split(",", -1);
-            for (int i = 0; i < BusTimes.length; i++) {
-                if (BusTimes[i].length()==4){
-                    BusTimes[i]="0"+BusTimes[i];
-                }
-                if (!BusTimes[i].equals("")) {
-                    mArray.add(BusTimes[i]);
+            JSONArray BusTimes = JO.getJSONArray(s1);
+
+            for (int i = 0; i < BusTimes.length(); i++) {
+                if (BusTimes.getString(i).length() == 4) {
+                    mArray.add("0" + BusTimes.getString(i));
+                } else {
+                    mArray.add(BusTimes.getString(i));
                 }
 
 
             }
+            Collections.sort(mArray);
 
 
         } catch (JSONException e) {
@@ -190,18 +192,17 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
 
 
         try {
-            String string = JO2.getString(s1);
-            String[] BusTimes = string.split(",", -1);
-            for (int i = 0; i < BusTimes.length; i++) {
-                if (BusTimes[i].length()==4){
-                    BusTimes[i]="0"+BusTimes[i];
-                }
-                if (!BusTimes[i].equals("")) {
-                    mArray2.add(BusTimes[i]);
+            JSONArray BusTimes = JO2.getJSONArray(s1);
+            for (int i = 0; i < BusTimes.length(); i++) {
+                if (BusTimes.getString(i).length() == 4) {
+                    mArray2.add("0" + BusTimes.getString(i));
+                } else {
+                    mArray2.add(BusTimes.getString(i));
                 }
 
 
             }
+            Collections.sort(mArray2);
 
         } catch (JSONException e) {
             e.printStackTrace();
