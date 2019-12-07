@@ -19,7 +19,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,13 +27,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -51,7 +47,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.lambda.iith.dashboard.Timetable.AddCourse;
 import com.lambda.iith.dashboard.Timetable.DPload;
 import com.lambda.iith.dashboard.Timetable.Timetable;
@@ -63,10 +58,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import Model.Filter;
@@ -130,7 +124,7 @@ public class MainActivity extends AppCompatActivity
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //No button clicked
+
                                     break;
                             }
                         }
@@ -557,25 +551,35 @@ public class MainActivity extends AppCompatActivity
 
 
     private void BusData(){
-        String url = "https://iith.dev/bus";
+        String url = "https://iith.dev/v2/bus";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        JSONArray JA = null;
+
+                        JSONObject JA = null;
                         // Display the first 500 characters of the response string.
                         try {
-                            JA = new JSONArray(response);
+                            response = new String(response.getBytes("ISO-8859-1"), "UTF-8");
+                            JA = new JSONObject(response);
+                            Iterator<String> keys = JA.getJSONObject("TOIITH").keys();
+                            ArrayList<String> mArray = new ArrayList<>();
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                if (JA.getJSONObject("TOIITH").get(key) instanceof JSONObject) {
+                                    mArray.add(key);
 
-
-
+                                }
+                            }
                             SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putString("ToIITH", JA.getString(1));
-                            edit.putString("FromIITH", JA.getString(0));
+                            edit.putString("ToIITH", JA.getString("TOIITH"));
+                            edit.putString("FromIITH", JA.getString("FROMIITH"));
                             edit.commit();
 
                         } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
 
@@ -789,6 +793,9 @@ public class MainActivity extends AppCompatActivity
                 saveArrayList(courseList, "CourseList");
 
                 saveArrayList(courseSegmentList, "Segment");
+                sharedPreferences.edit().putInt("seg1_begin", -1).apply();
+                sharedPreferences.edit().putInt("seg2_begin", -1).apply();
+                sharedPreferences.edit().putInt("seg3_begin", -1).apply();
 
                 saveArrayList(slotList, "SlotList");
                 saveArrayList2(CourseName, "CourseName");
@@ -799,6 +806,7 @@ public class MainActivity extends AppCompatActivity
                 ft.detach(fragment);
                 ft.attach(fragment);
                 ft.commitAllowingStateLoss();
+
 
                 Toast.makeText(getBaseContext(), "Data Synced", Toast.LENGTH_SHORT).show();
                 pullToRefresh.setRefreshing(false);

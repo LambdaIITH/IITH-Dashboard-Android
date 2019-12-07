@@ -121,7 +121,8 @@
                             android:layout_marginBottom="13dp"
                             android:text=" N/A "
                             android:textAlignment="center"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"
+                            tools:visibility="gone" />
 
                         <TextView
                             android:id="@+id/toLing2"
@@ -159,7 +160,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ODF"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            tools:visibility="gone" />
 
                         <TextView
                             android:id="@+id/textView23"

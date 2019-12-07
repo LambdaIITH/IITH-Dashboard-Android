@@ -17,7 +17,7 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import Model.Lecture;
 
@@ -50,9 +50,14 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         CourseName = getArrayList("CourseName");
 
         colorArray.add(mContext.getResources().getColor(R.color.timetable_blue));
-        colorArray.add(mContext.getResources().getColor(R.color.timetable_green));
-        colorArray.add(mContext.getResources().getColor(R.color.timetable_orange));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_brown));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_blue3));
         colorArray.add(mContext.getResources().getColor(R.color.timetable_red));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_orange));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_blue2));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_green));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_pink));
+
         if (courseList == null) {
             courseList = new ArrayList<>();
             courseSegmentList = new ArrayList<>();
@@ -143,9 +148,16 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         courseMap.add(HM);
         courseMap.add(HM2);
         courseMap.add(HM3);
-        int a = 0;
-        int b = 0;
-        int c = 0;
+        Random r = new Random();
+        if (sharedPreferences1.getInt("seg1_begin", -1) == -1) {
+            sharedPreferences1.edit().putInt("seg1_begin", r.nextInt((colorArray.size() - 1) + 1)).commit();
+            sharedPreferences1.edit().putInt("seg2_begin", r.nextInt((colorArray.size() - 1) + 1)).commit();
+            sharedPreferences1.edit().putInt("seg3_begin", r.nextInt((colorArray.size() - 1) + 1)).commit();
+        }
+
+        int a = sharedPreferences1.getInt("seg1_begin", 0);
+        int b = sharedPreferences1.getInt("seg2_begin", 0);
+        int c = sharedPreferences1.getInt("seg3_begin", 0);
         for (int i = 0; i < n; i++) {
 
 
@@ -156,7 +168,7 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
                 h1.get(slotList.get(i)).setCourse(CourseName.get(i));
                 (courseMap.get(0)).get(slotList.get(i)).setCourseId(courseList.get(i));
 
-                (courseMap.get(0)).get(slotList.get(i)).setCourseColor(colorArray.get(a % 4));
+                (courseMap.get(0)).get(slotList.get(i)).setCourseColor(colorArray.get(a % colorArray.size()));
                 a++;
 
 
@@ -165,14 +177,14 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
                 ArrayMap<String, Lecture> h1 = (courseMap.get(1));
                 h1.get(slotList.get(i)).setCourse(CourseName.get(i));
                 (courseMap.get(1)).get(slotList.get(i)).setCourseId(courseList.get(i));
-                (courseMap.get(1)).get(slotList.get(i)).setCourseColor(colorArray.get(b % 4));
+                (courseMap.get(1)).get(slotList.get(i)).setCourseColor(colorArray.get(b % colorArray.size()));
                 b++;
             }
             if (courseSegmentList.get(i).contains("56")) {
                 ArrayMap<String, Lecture> h1 = (courseMap.get(2));
                 h1.get(slotList.get(i)).setCourse(CourseName.get(i));
                 (courseMap.get(2)).get(slotList.get(i)).setCourseId(courseList.get(i));
-                (courseMap.get(2)).get(slotList.get(i)).setCourseColor(colorArray.get(c % 4));
+                (courseMap.get(2)).get(slotList.get(i)).setCourseColor(colorArray.get(c % colorArray.size()));
                 c++;
             }
         }

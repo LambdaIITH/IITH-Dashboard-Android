@@ -7,8 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.constraint.Constraints;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -127,7 +125,7 @@ public class HomeScreenFragment extends Fragment {
         b3 = view.findViewById(R.id.textView5);
         b4 = view.findViewById(R.id.textView7);
 
-        double width2 = convertPxToDp(getContext(),Launch.width/4);
+        double width2 = convertPxToDp(getContext(), Launch.width / 3);
         ViewGroup.LayoutParams params = t1.getLayoutParams();
         params.width = (int) ((width2-5) * scale + 0.5f);
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;

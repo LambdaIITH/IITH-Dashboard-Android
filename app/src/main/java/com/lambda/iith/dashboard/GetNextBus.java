@@ -2,9 +2,9 @@ package com.lambda.iith.dashboard;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,49 +28,51 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
     }
     @Override
     protected Void doInBackground(TextView... textViews) {
-        String string;
+        JSONArray BusTimes = new JSONArray();
         String temp;
-       t1 = textViews[0];
-         t2 = textViews[1];
-         t3 = textViews[2];
+        t1 = textViews[0];
+        t2 = textViews[1];
+        t3 = textViews[2];
         t4 = textViews[3];
-
+        Init init = new Init();
 
 
         try {
             JSONObject JO;
             if (k == 1) {
-                JO = new JSONObject(sharedPref.getString("ToIITH", "{\"LAB\":\"02:00 ,02:30 ,03:15 ,04:00 ,04:45 ,05:30 ,06:15 ,07:00 ,07:30 ,08:00 ,08:30 ,13:15 ,14:30 ,15:00 ,19:45 ,20:30,\",\"LINGAMPALLY\":\"09:15 ,13:15 ,15:00 ,17:00 ,19:15 ,22:15,\",\"ODF\":\"08:20 , 09:30 ,11:30 ,12:30 ,14:00 ,15:30 ,17:00 ,19:35 ,20:30 ,21:00 ,22:00 ,23:00,\",\"SANGAREDDY\":\"08:45 ,13:45 ,18:00 ,18:40 ,22:00,\",\"LINGAMPALLYW\":\"09:15 ,13:15 ,15:00 ,17:00 ,19:15 ,22:15,\",\"ODFS\":\"08:00 ,09:15 ,11:30 ,12:30 ,14:00 ,15:30 ,17:00 ,18:30 ,19:45 ,20:30 ,21:30 ,23:00,\"}"));
+                JO = new JSONObject(sharedPref.getString("ToIITH", init.DEF1));
+
             } else {
-                JO = new JSONObject(sharedPref.getString("FromIITH", "{  \"LAB\": \"01:45 ,02:15 ,03:00 ,03:45 ,04:30 ,05:15 ,06:00 ,06:45 ,07:15 ,07:45 ,08:15 ,13:00 ,14:15 ,14:45 ,19:30 ,20:15,\",  \"LINGAMPALLY\": \"11:30 ,13:15 ,14:45 ,17:45 ,19:00 ,20:45,\",  \"ODF\": \"09:00 ,10:30 ,12:10 ,13:10 ,14:45 ,17:45 ,18:00 ,19:00 ,20:15 ,21:00 ,22:00 ,23:00,\",  \"SANGAREDDY\": \"08:30 ,13:30 ,17:45 ,18:25 ,20:40,\",  \"LINGAMPALLYW\": \"10:30 ,12:30 ,14:45 ,17:45 ,19:00 ,20:45,\",  \"ODFS\": \"08:40 ,10:15 ,12:10 ,13:15 ,14:45 ,16:10 ,17:45 ,19:10 ,20:30 ,21:10 ,22:10 ,23:30,\"}"));
+                JO = new JSONObject(sharedPref.getString("FromIITH", init.DEF2));
+
             }
 
 
             if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                string = JO.getString("LINGAMPALLYW");
+                BusTimes = JO.getJSONArray("LINGAMPALLYW");
             } else {
-                string = JO.getString("LINGAMPALLY");
+                BusTimes = JO.getJSONArray("LINGAMPALLY");
             }
 
-            String[] BusTimes = string.split(",", -1);
+
             a = TimeCalc(BusTimes);
 
 
             if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                string = JO.getString("ODFS");
+                BusTimes = JO.getJSONArray("ODF");
             } else {
-                string = JO.getString("ODF");
+                BusTimes = JO.getJSONArray("ODF");
             }
 
-            b = TimeCalc(string.split(",", -1));
+            b = TimeCalc(BusTimes);
 
 
-            string = JO.getString("SANGAREDDY");
-            d = TimeCalc(string.split(",", -1));
+            BusTimes = JO.getJSONArray("SANGAREDDY");
+            d = TimeCalc(BusTimes);
 
 
-            string = JO.getString("LAB");
-            c = TimeCalc(string.split(",", -1));
+            BusTimes = JO.getJSONArray("LAB");
+            c = TimeCalc(BusTimes);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,8 +81,8 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
         return null;
     }
 
-    private String TimeCalc(String[] BusTimes){
-
+    private String TimeCalc(JSONArray BusTimes) {
+        ArrayList<String> mArray = new ArrayList<>();
         try {
 
             Date date = Calendar.getInstance().getTime();
@@ -91,31 +93,34 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
             SimpleDateFormat format1 = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
 
 
-            for (int i = 0; i < BusTimes.length ; i++) {
+            for (int i = 0; i < BusTimes.length(); i++) {
 
-                if(BusTimes[i].length()==4){
-                    BusTimes[i] = "0"+BusTimes[i];
+                if (BusTimes.getString(i).length() == 4) {
+                    mArray.add("0" + BusTimes.getString(i));
 
+                } else {
+                    mArray.add(BusTimes.getString(i));
                 }
-
-                java.util.Date T1 = format1.parse(da + ":" + BusTimes[i]);
-
-                if (T1.compareTo(date) > 0) {
-
-                    return BusTimes[i];
-                }
-
-
             }
 
+            for (int j = 0; j < mArray.size(); j++) {
+
+                Date T1 = format1.parse(da + ":" + mArray.get(j));
+                if (T1.compareTo(date) > 0) {
+
+                    return mArray.get(j);
+                }
+
+                }
+            return mArray.get(0);
 
 
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-       return BusTimes[0];
-
-
+        return "/NA";
     }
     @Override
     protected void onPostExecute(Void aVoid) {

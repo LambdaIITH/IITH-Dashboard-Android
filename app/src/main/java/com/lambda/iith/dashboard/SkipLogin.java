@@ -40,6 +40,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SkipLogin extends AppCompatActivity {
     public final static int RC_SIGN_IN = 0;
@@ -208,24 +213,39 @@ public class SkipLogin extends AppCompatActivity {
     }
 
     private void refresh() {
-        String url = "https://iith.dev/bus";
+        String url = "https://iith.dev/v2/bus";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        JSONArray JA = null;
+                        JSONObject JA = null;
                         // Display the first 500 characters of the response string.
                         try {
-                            JA = new JSONArray(response);
+                            response = new String(response.getBytes("ISO-8859-1"), "UTF-8");
+                            JA = new JSONObject(response);
+
+
+                            Iterator<String> keys = JA.getJSONObject("TOIITH").keys();
+                            ArrayList<String> mArray = new ArrayList<>();
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                if (JA.getJSONObject("TOIITH").get(key) instanceof JSONObject) {
+                                    mArray.add(key);
+
+                                }
+                            }
 
 
                             SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putString("ToIITH", JA.getString(1));
-                            edit.putString("FromIITH", JA.getString(0));
+                            edit.putString("ToIITH", JA.getString("TOIITH"));
+                            edit.putString("FromIITH", JA.getString("FROMIITH"));
                             edit.commit();
 
+
                         } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
 

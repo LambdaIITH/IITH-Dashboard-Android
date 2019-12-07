@@ -22,11 +22,13 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import Adapters.BSAdapter;
 
@@ -104,17 +106,16 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
 
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Init init = new Init();
 
         try {
-            JO = new JSONObject(sharedPreferences.getString("FromIITH", "{    \"LAB\": \"00:00 ,00:15 ,00:45 ,01:15 ,01:45 ,02:15 ,03:15 ,04:15 ,05:15 ,06:15 ,07:15 ,07:45 ,08:15 ,08:45 ,09:00 ,09:15 ,09:30 ,09:45 ,10:00 ,10:15 ,10:30 ,10:45 ,11:00 ,11:15 ,11:30 ,11:45 ,12:00 ,12:15 ,12:30 ,12:45 ,13:00 ,13:15 ,13:30 ,13:45 ,14:00 ,14:15 ,14:30 ,14:45 ,15:00 ,15:15 ,15:30 ,15:45 ,16:00 ,16:15 ,16:30 ,16:45 ,17:00 ,17:15 ,17:30 ,17:45 ,18:00 ,18:15 ,18:30 ,18:45 ,19:00 ,19:15 ,19:30 ,19:45 ,20:00 ,20:15 ,20:30 ,20:45 ,21:00 ,21:15 ,21:30 ,21:45 ,22:00 ,22:15 ,22:30 ,22:45 ,23:00 ,23:15 ,23:30 ,23:45 ,\",    \"LINGAMPALLY\": \"09:45 ,14:30 ,16:30 ,17:45 ,19:15 ,21:30 ,\",    \"ODF\": \"09:00 ,10:30 ,12:30 ,14:45 ,17:45 ,19:00 ,20:00 ,21:00 ,22:15 ,\",    \"SANGAREDDY\": \"08:00 ,08:30 ,17:45 ,18:25 ,20:40,\",    \"LINGAMPALLYW\": \"09:45 ,12:30 ,14:30 ,17:45 ,19:15 ,21:30,\",    \"ODFS\": \"09:00 ,10:30 ,12:30 ,14:45 ,17:45 ,19:00 ,20:00 ,21:00 ,22:15,\"  }"));
-
+            JO = new JSONObject(sharedPreferences.getString("FromIITH", init.DEF2));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
-            JO2 = new JSONObject(sharedPreferences.getString("ToIITH", "{    \"LAB\": \"00:00 ,0:30 ,01:00 ,01:30 ,02:00 ,02:30 ,03:30 ,04:30 ,05:30 ,06:30 ,07:30 ,08:00 ,08:30 ,09:00 ,09:15 ,09:30 ,09:45 ,10:00 ,10:15 ,10:30 ,10:45 ,11:00 ,11:15 ,11:30 ,11:45 ,12:00 ,12:15 ,12:30 ,12:45 ,13:00 ,13:15 ,13:30 ,13:45 ,14:00 ,14:15 ,14:30 ,14:45 ,15:00 ,15:15 ,15:30 ,15:45 ,16:00 ,16:15 ,16:30 ,16:45 ,17:00 ,17:15 ,17:30 ,17:45 ,18:00 ,18:15 ,18:30 ,18:45 ,19:00 ,19:15 ,19:30 ,19:45 ,20:00 ,20:15 ,20:30 ,20:45 ,21:00 ,21:15 ,21:30 ,21:45 ,22:00 ,22:15 ,22:30 ,22:45 ,23:00 ,23:15 ,23:30 ,23:45 ,\",    \"LINGAMPALLY\": \"09:15 ,11:00 ,16:30 ,18:00 ,20:15 ,22:30,\",    \"ODF\": \"08:20 , 09:30 ,12:00 ,13:30 ,16:30 ,18:30 ,19:35 ,20:30 ,21:45,\",    \"SANGAREDDY\": \"08:15 ,08:45 ,18:00 ,18:40 ,21:00,\",    \"LINGAMPALLYW\": \"09:30 ,11:30 ,16:30 ,18:00 ,20:15 ,22:30,\",    \"ODFS\": \"08:20 , 09:30 ,12:00 ,13:30 ,16:30 ,18:30 ,19:35 ,20:30 ,21:45,\"  }"));
-
+            JO2 = new JSONObject(sharedPreferences.getString("ToIITH", init.DEF1));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -168,18 +169,18 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         Head1.setText(s2);
 
         try {
-            String string = JO.getString(s1);
-            String[] BusTimes = string.split(",", -1);
-            for (int i = 0; i < BusTimes.length; i++) {
-                if (BusTimes[i].length()==4){
-                    BusTimes[i]="0"+BusTimes[i];
-                }
-                if (!BusTimes[i].equals("")) {
-                    mArray.add(BusTimes[i]);
+            JSONArray BusTimes = JO.getJSONArray(s1);
+
+            for (int i = 0; i < BusTimes.length(); i++) {
+                if (BusTimes.getString(i).length() == 4) {
+                    mArray.add("0" + BusTimes.getString(i));
+                } else {
+                    mArray.add(BusTimes.getString(i));
                 }
 
 
             }
+            Collections.sort(mArray);
 
 
         } catch (JSONException e) {
@@ -190,18 +191,17 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
 
 
         try {
-            String string = JO2.getString(s1);
-            String[] BusTimes = string.split(",", -1);
-            for (int i = 0; i < BusTimes.length; i++) {
-                if (BusTimes[i].length()==4){
-                    BusTimes[i]="0"+BusTimes[i];
-                }
-                if (!BusTimes[i].equals("")) {
-                    mArray2.add(BusTimes[i]);
+            JSONArray BusTimes = JO2.getJSONArray(s1);
+            for (int i = 0; i < BusTimes.length(); i++) {
+                if (BusTimes.getString(i).length() == 4) {
+                    mArray2.add("0" + BusTimes.getString(i));
+                } else {
+                    mArray2.add(BusTimes.getString(i));
                 }
 
 
             }
+            Collections.sort(mArray2);
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -8,10 +8,14 @@
     <color name="onSurface">#FFFFFF</color>
     <color name="brandedsurface">#2E2F31</color>
     <color name="timetable_blue">#FF1868A7</color>
+
     <color name="timetable_green">#FF066D09</color>
     <color name="timetable_orange">#FF8A701F</color>
+    <color name="timetable_blue2">#FF390592</color>
 
+    <color name="timetable_pink">#FF832243</color>
+    <color name="timetable_blue3">#FF2C5E58</color>
+    <color name="timetable_brown">#FF8D2E16</color>
     <color name="timetable_red">#FF7E2D2D</color>
-
 
 </resources>
