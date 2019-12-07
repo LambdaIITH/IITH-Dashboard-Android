@@ -1,8 +1,12 @@
 package com.lambda.iith.dashboard;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,14 +16,24 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Switch;
+
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import com.lambda.iith.dashboard.Timetable.NotificationInitiator;
+
+import java.util.concurrent.TimeUnit;
 
 public class Settings extends AppCompatActivity {
 
+
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor edit;
-    private CheckBox timetable, cab, bus, mess, courseName;
+    private CheckBox cab, bus, mess, timetable;
     private RadioGroup mess_select;
     private Spinner SegDef;
+    private Switch LectureNotification, courseName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +44,37 @@ public class Settings extends AppCompatActivity {
         courseName = findViewById(R.id.CoursenameSelect);
         mess_select = findViewById(R.id.Def);
         SegDef = findViewById(R.id.DefaultSeg);
+        LectureNotification = findViewById(R.id.LectureNotificatonSwitch);
+
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
         if (sharedPreferences.getInt("MESSDEF", 1) == 0) {
             mess_select.check(R.id.MLDH);
         } else {
             mess_select.check(R.id.MUDH);
         }
+
+        LectureNotification.setChecked(sharedPreferences.getBoolean("EnableLectureNotification", true));
+
+
+        LectureNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
+                    refreshNotificationProcess();
+
+                    checkBatteryStatus();
+                    AutostartManager autostartManager = new AutostartManager(Settings.this);
+                } else {
+                    sharedPreferences.edit().putBoolean("EnableLectureNotification", false).commit();
+                    WorkManager.getInstance().cancelAllWork();
+
+                }
+
+            }
+        });
+
 
         courseName.setChecked(sharedPreferences.getBoolean("Cname", true));
 
@@ -106,6 +145,10 @@ public class Settings extends AppCompatActivity {
                     SharedPreferences.Editor edit = sharedPreferences.edit();
                     edit.putString("DefaultSegment", "56");
                     edit.commit();
+                }
+
+                if (sharedPreferences.getBoolean("EnableLectureNotification", true)) {
+                    refreshNotificationProcess();
                 }
             }
 
@@ -183,4 +226,39 @@ public class Settings extends AppCompatActivity {
         return true;
     }
 
+    private void refreshNotificationProcess() {
+        WorkManager.getInstance().cancelAllWork();
+
+
+        //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
+                .build();
+        WorkManager.getInstance()
+                .enqueue(periodicWorkRequest);
+    }
+
+    private void checkBatteryStatus() {
+        System.out.println(getBaseContext().getPackageName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Please Disable Battery Optimization");
+                alert.setMessage("Please exempt IITH Dashboard to receive uninterrupted notifications");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS), 0);
+                    }
+                });
+                alert.show();
+
+
+            }
+
+        }
+    }
 }

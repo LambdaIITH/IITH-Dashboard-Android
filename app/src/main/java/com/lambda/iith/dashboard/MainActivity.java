@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,6 +29,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,12 +52,16 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+import com.lambda.iith.dashboard.BackgroundTasks.DPload;
+import com.lambda.iith.dashboard.Cabsharing.BookingFilter;
+import com.lambda.iith.dashboard.Cabsharing.CabSharing;
+import com.lambda.iith.dashboard.MainFragments.FragmentBS;
+import com.lambda.iith.dashboard.MainFragments.HomeScreenFragment;
+import com.lambda.iith.dashboard.MainFragments.MessMenu;
 import com.lambda.iith.dashboard.Timetable.AddCourse;
-import com.lambda.iith.dashboard.Timetable.DPload;
+import com.lambda.iith.dashboard.Timetable.NotificationInitiator;
 import com.lambda.iith.dashboard.Timetable.Timetable;
 import com.lambda.iith.dashboard.Timetable.timetableComp;
-import com.lambda.iith.dashboard.cabsharing.BookingFilter;
-import com.lambda.iith.dashboard.cabsharing.CabSharing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,6 +70,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import Model.Filter;
 
@@ -205,9 +215,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        test();
+        // Generate Timetable from Storage
         timetableComp Timetablecomp = new timetableComp();
         Timetablecomp.execute(getApplicationContext());
+
+        //Getting User Login details
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
@@ -228,27 +240,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setOnCreateContextMenuListener(this);
-
-
-        bottomNavigationView = findViewById(R.id.BottomNavigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
+        //Setting Refresh and Swipe to Refresh
         MasterRefresh = findViewById(R.id.MainRefresh);
 
         pullToRefresh = findViewById(R.id.pullToRefresh);
@@ -274,17 +266,38 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        //Initiating Navigation Drawer
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setOnCreateContextMenuListener(this);
 
+        //Setting Up BottomNav
+        bottomNavigationView = findViewById(R.id.BottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
+        //GoogleSignInClient
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+
+        //Getting Settings menu for first run
         if (sharedPreferences.getBoolean("firstrun", true)) {
             fetchData();
             sharedPreferences.edit().putBoolean("firstrun", false).commit();
         }
 
 
+        //Setting up Timetable Refresh ( Displayed only when timetable fragment is active
         findViewById(R.id.TimeTableRefresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -308,13 +321,8 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-    }
-
-    private void test(){
 
     }
-
-
 
 
     @Override
@@ -349,6 +357,12 @@ public class MainActivity extends AppCompatActivity
         Nav_Bar_Header = findViewById(R.id.Nav_Bar_name);
         // Setting Username recieved from google account in navigation bar
         Nav_Bar_Email = findViewById(R.id.nav_bar_email);
+        if (sharedPreferences.getBoolean("DEVELOPER", false)) {
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            navigationView.getMenu().findItem(R.id.nav_dev).setVisible(true);
+            sharedPreferences.edit().putBoolean("DEVELOPER", false).commit();
+
+        }
         imageView = findViewById(R.id.nav_bar_dp);
         try {
 
@@ -385,7 +399,7 @@ public class MainActivity extends AppCompatActivity
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(MainActivity.this, SkipLogin.class));
+                        startActivity(new Intent(MainActivity.this, NoLogin.class));
                     }
                 });
     }
@@ -398,7 +412,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-
+        //SideNav Settings
         if (id == R.id.logout) {
             signOut();
 
@@ -407,6 +421,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(MainActivity.this, Settings.class));
         } else if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, About.class));
+        } else if (id == R.id.nav_dev) {
+            startActivity(new Intent(MainActivity.this, Developer.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -422,10 +438,78 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+        if (sharedPreferences.getBoolean("FirstAfterV1.20", true)) {
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setTitle("Want to recieve notifications before lectures?");
+            String[] types = {"YES", "NO"};
+            b.setCancelable(false);
+            b.setItems(types, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if (which == 0) {
+                        sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
+                        WorkManager.getInstance().cancelAllWork();
+
+
+                        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
+                                .build();
+
+                        WorkManager.getInstance()
+                                .enqueue(periodicWorkRequest);
+
+                        AutostartManager autostartManager = new AutostartManager(MainActivity.this);
+
+                    } else {
+                        sharedPreferences.edit().putBoolean("EnableLectureNotification", false).commit();
+                    }
+                    dialog.dismiss();
+                }
+
+
+            });
+            b.show();
+            if (sharedPreferences.getBoolean("EnableLectureNotification", true)) {
+
+
+                checkBatteryStatus();
+            }
+            sharedPreferences.edit().putBoolean("FirstAfterV1.20", false).commit();
+
+        }
+
         super.onStart();
 
 
     }
+
+    private void checkBatteryStatus() {
+        System.out.println(getBaseContext().getPackageName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Please Disable Battery Optimization");
+                alert.setMessage("Please exempt IITH Dashboard to receive uninterrupted notifications");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS), 0);
+                    }
+                });
+                alert.show();
+
+
+            }
+        }
+    }
+
+
+    //First run values for default segment and mess
 
     private void setValues() {
         final AlertDialog.Builder b1 = new AlertDialog.Builder(this);
@@ -446,6 +530,7 @@ public class MainActivity extends AppCompatActivity
 
                 sharedPreferences.edit().putString("DefaultSegment", Integer.toString(22 * which + 12)).commit();
                 dialog.dismiss();
+
 
 
             }
@@ -498,7 +583,7 @@ public class MainActivity extends AppCompatActivity
 
     private int Switch = 0;
 
-
+    //Fetching Data for Cabs Buses and Mess
     private void refresh() {
         if (!sharedPreferences.getBoolean("Registered", false) && sharedPreferences.getBoolean("FIRSTCABLAUNCH" , true)) {
 
@@ -547,35 +632,34 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
     private void BusData(){
         String url = "https://iith.dev/v2/bus";
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        JSONObject JA = null;
+                        JSONObject JO = null;
                         // Display the first 500 characters of the response string.
                         try {
-                            JA = new JSONObject(response.substring(3));
+                            JO = new JSONObject(response.substring(3));
+                            JSONObject JA = JO.getJSONObject("TOIITH");
+                            Iterator iterator = JA.keys();
+                            ArrayList<String> Buses = new ArrayList<>();
+                            while (iterator.hasNext()) {
+                                String key = (String) iterator.next();
+
+                                Buses.add(key);
 
 
-                            Iterator<String> keys = JA.getJSONObject("TOIITH").keys();
-                            ArrayList<String> mArray = new ArrayList<>();
-                            while (keys.hasNext()) {
-                                String key = keys.next();
-                                if (JA.getJSONObject("TOIITH").get(key) instanceof JSONObject) {
-                                    mArray.add(key);
-
-                                }
                             }
-
-
+                            System.out.println(Buses);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putString("ToIITH", JA.getString("TOIITH"));
-                            edit.putString("FromIITH", JA.getString("FROMIITH"));
+
+                            Buses.remove("LINGAMPALLYW");
+                            Buses.remove("ODFS");
+                            edit.putString("BusTypes", Buses.toString());
+                            edit.putString("ToIITH", JO.getJSONObject("TOIITH").toString());
+                            edit.putString("FromIITH", JO.getJSONObject("FROMIITH").toString());
                             edit.commit();
 
                         } catch (JSONException e) {
@@ -594,9 +678,11 @@ public class MainActivity extends AppCompatActivity
         });
 
         queue.add(stringRequest);
-
-
     }
+
+
+
+
 
     private void messData(){
         String url2 = "https://iith.dev/dining";
@@ -629,6 +715,7 @@ public class MainActivity extends AppCompatActivity
         queue.add(stringRequest2);
     }
 
+    //Retrieve Cab shares
     public void updateShares(){
         final String url4 = "https://iith.dev/query";
 
@@ -655,6 +742,7 @@ public class MainActivity extends AppCompatActivity
         queue.add(stringRequest);
     }
 
+    //Check if shares available
     private void checkForUpdates(){
 
 
@@ -706,6 +794,7 @@ public class MainActivity extends AppCompatActivity
         queue1.add(stringRequest);
     }
 
+    //Retrieve already existing booking of current user from server if exists
     private void RetrieveBooking(){
         final String url4 = "https://iith.dev/query";
         final String startTime = sharedPreferences.getString("startTime", "    NA      NA  ");
@@ -753,6 +842,8 @@ public class MainActivity extends AppCompatActivity
         queue.add(stringRequest);
 
     }
+
+    //UID
     private String getUID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -764,6 +855,8 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+
+    //Fetching timetable
     private void fetchData() {
         String UUID = getUID();
         pullToRefresh.setRefreshing(true);
@@ -788,7 +881,9 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
-
+                sharedPreferences.edit().putInt("seg1_begin", -1).apply();
+                sharedPreferences.edit().putInt("seg2_begin", -1).apply();
+                sharedPreferences.edit().putInt("seg3_begin", -1).apply();
                 saveArrayList(courseList, "CourseList");
 
                 saveArrayList(courseSegmentList, "Segment");
@@ -805,6 +900,12 @@ public class MainActivity extends AppCompatActivity
 
                 Toast.makeText(getBaseContext(), "Data Synced", Toast.LENGTH_SHORT).show();
                 pullToRefresh.setRefreshing(false);
+                WorkManager.getInstance().cancelAllWork();
+                //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
+                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
+                        .build();
+                WorkManager.getInstance()
+                        .enqueue(periodicWorkRequest);
 
 
             }
@@ -813,6 +914,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    //Saving timetable
     private void saveArrayList(List<String> list, String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();

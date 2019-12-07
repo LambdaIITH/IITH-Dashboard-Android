@@ -1,2 +1,2 @@
 # IITH_dashboard
-App for IIT Hyderabad community.
+com.lambda.iith.dashboard.App for IIT Hyderabad community.

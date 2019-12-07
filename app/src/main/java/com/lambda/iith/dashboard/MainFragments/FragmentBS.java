@@ -1,4 +1,4 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.MainFragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +20,9 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
+import com.lambda.iith.dashboard.Init;
+import com.lambda.iith.dashboard.Launch;
+import com.lambda.iith.dashboard.R;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.json.JSONArray;
@@ -52,8 +55,8 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         queue = Volley.newRequestQueue(getContext());
         View view = inflater.inflate(R.layout.bs_layout, container, false);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         spinner2 = view.findViewById(R.id.spinner_2);
-
         r1 = view.findViewById(R.id.r1);
         r2 = view.findViewById(R.id.r2);
         Bus1 = view.findViewById(R.id.card1);
@@ -105,17 +108,16 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         });
 
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
+        Init init = new Init();
         try {
-            JO = new JSONObject(sharedPreferences.getString("FromIITH", "{    \"LAB\": \"00:00 ,00:15 ,00:45 ,01:15 ,01:45 ,02:15 ,03:15 ,04:15 ,05:15 ,06:15 ,07:15 ,07:45 ,08:15 ,08:45 ,09:00 ,09:15 ,09:30 ,09:45 ,10:00 ,10:15 ,10:30 ,10:45 ,11:00 ,11:15 ,11:30 ,11:45 ,12:00 ,12:15 ,12:30 ,12:45 ,13:00 ,13:15 ,13:30 ,13:45 ,14:00 ,14:15 ,14:30 ,14:45 ,15:00 ,15:15 ,15:30 ,15:45 ,16:00 ,16:15 ,16:30 ,16:45 ,17:00 ,17:15 ,17:30 ,17:45 ,18:00 ,18:15 ,18:30 ,18:45 ,19:00 ,19:15 ,19:30 ,19:45 ,20:00 ,20:15 ,20:30 ,20:45 ,21:00 ,21:15 ,21:30 ,21:45 ,22:00 ,22:15 ,22:30 ,22:45 ,23:00 ,23:15 ,23:30 ,23:45 ,\",    \"LINGAMPALLY\": \"09:45 ,14:30 ,16:30 ,17:45 ,19:15 ,21:30 ,\",    \"ODF\": \"09:00 ,10:30 ,12:30 ,14:45 ,17:45 ,19:00 ,20:00 ,21:00 ,22:15 ,\",    \"SANGAREDDY\": \"08:00 ,08:30 ,17:45 ,18:25 ,20:40,\",    \"LINGAMPALLYW\": \"09:45 ,12:30 ,14:30 ,17:45 ,19:15 ,21:30,\",    \"ODFS\": \"09:00 ,10:30 ,12:30 ,14:45 ,17:45 ,19:00 ,20:00 ,21:00 ,22:15,\"  }"));
+            JO = new JSONObject(sharedPreferences.getString("FromIITH", Init.DEF2));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
-            JO2 = new JSONObject(sharedPreferences.getString("ToIITH", "{    \"LAB\": \"00:00 ,0:30 ,01:00 ,01:30 ,02:00 ,02:30 ,03:30 ,04:30 ,05:30 ,06:30 ,07:30 ,08:00 ,08:30 ,09:00 ,09:15 ,09:30 ,09:45 ,10:00 ,10:15 ,10:30 ,10:45 ,11:00 ,11:15 ,11:30 ,11:45 ,12:00 ,12:15 ,12:30 ,12:45 ,13:00 ,13:15 ,13:30 ,13:45 ,14:00 ,14:15 ,14:30 ,14:45 ,15:00 ,15:15 ,15:30 ,15:45 ,16:00 ,16:15 ,16:30 ,16:45 ,17:00 ,17:15 ,17:30 ,17:45 ,18:00 ,18:15 ,18:30 ,18:45 ,19:00 ,19:15 ,19:30 ,19:45 ,20:00 ,20:15 ,20:30 ,20:45 ,21:00 ,21:15 ,21:30 ,21:45 ,22:00 ,22:15 ,22:30 ,22:45 ,23:00 ,23:15 ,23:30 ,23:45 ,\",    \"LINGAMPALLY\": \"09:15 ,11:00 ,16:30 ,18:00 ,20:15 ,22:30,\",    \"ODF\": \"08:20 , 09:30 ,12:00 ,13:30 ,16:30 ,18:30 ,19:35 ,20:30 ,21:45,\",    \"SANGAREDDY\": \"08:15 ,08:45 ,18:00 ,18:40 ,21:00,\",    \"LINGAMPALLYW\": \"09:30 ,11:30 ,16:30 ,18:00 ,20:15 ,22:30,\",    \"ODFS\": \"08:20 , 09:30 ,12:00 ,13:30 ,16:30 ,18:30 ,19:35 ,20:30 ,21:45,\"  }"));
+            JO2 = new JSONObject(sharedPreferences.getString("ToIITH", Init.DEF1));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -147,17 +149,11 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
             display("LINGAMPALLYW", "IITH to Lingampally", "Lingampally to IITH");
         } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 0) {
             display("ODF", "Kandi to ODF", "ODF to Kandi");
-            //Toast.makeText(getContext() , "Only Sunday is Weekend for ODF buses" , Toast.LENGTH_SHORT).show();
         } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 1) {
             display("ODFS", "Kandi to ODF", "ODF to Kandi");
-            //Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
         } else if (parent.getItemAtPosition(position).toString().equals("Maingate")) {
-
-
             display("LAB", "Hostel to Maingate", "Maingate to Hostel");
         } else if (parent.getItemAtPosition(position).toString().equals("Sangareddy")) {
-
-
             display("SANGAREDDY", "IITH to Sangareddy", "Sangareddy to IITH");
         }
 

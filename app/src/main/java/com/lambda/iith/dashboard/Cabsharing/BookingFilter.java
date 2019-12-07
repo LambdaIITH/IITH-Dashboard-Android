@@ -1,9 +1,7 @@
-package com.lambda.iith.dashboard.cabsharing;
+package com.lambda.iith.dashboard.Cabsharing;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.ArrayMap;
 
 import com.lambda.iith.dashboard.MainActivity;
 
@@ -13,10 +11,8 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import Model.Filter;
-import Model.Lecture;
 
 public class BookingFilter extends AsyncTask<Filter, Void, Void> {
 

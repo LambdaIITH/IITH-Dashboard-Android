@@ -5,9 +5,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
+        android:excludeFromRecents="true"
         android:icon="@mipmap/application_icon"
         android:label="IITH DashBoard"
         android:roundIcon="@mipmap/application_icon_round"
@@ -15,6 +18,7 @@
         android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
+        <activity android:name=".Developer"></activity>
         <activity
             android:name=".About"
             android:label="@string/title_activity_about"
@@ -29,14 +33,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".SkipLogin"
+            android:name=".NoLogin"
             android:label="IITH Dashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar">
-
-
-        </activity>
-
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".Launch"
             android:label="Dashboard"
@@ -44,19 +44,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateHidden">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
-
         </activity>
-
-
         <activity
-            android:name=".cabsharing.CabSharingRegister"
+            android:name=".CabSharing.CabSharingRegister"
             android:label="@string/title_activity_cab_sharing_register2"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
@@ -64,10 +59,7 @@
             android:name=".MainActivity"
             android:label="IITH Dashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar">
-
-
-        </activity>
+            android:theme="@style/NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"

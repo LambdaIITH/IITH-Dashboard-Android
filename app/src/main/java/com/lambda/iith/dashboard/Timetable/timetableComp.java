@@ -7,6 +7,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
 
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
@@ -17,7 +20,8 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import Model.Lecture;
 
@@ -53,6 +57,10 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         colorArray.add(mContext.getResources().getColor(R.color.timetable_green));
         colorArray.add(mContext.getResources().getColor(R.color.timetable_orange));
         colorArray.add(mContext.getResources().getColor(R.color.timetable_red));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_blue2));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_brown));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_pink));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_blue3));
         if (courseList == null) {
             courseList = new ArrayList<>();
             courseSegmentList = new ArrayList<>();
@@ -143,9 +151,16 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         courseMap.add(HM);
         courseMap.add(HM2);
         courseMap.add(HM3);
-        int a = 0;
-        int b = 0;
-        int c = 0;
+        Random r = new Random();
+        if (sharedPreferences1.getInt("seg1_begin", -1) == -1) {
+            sharedPreferences1.edit().putInt("seg1_begin", r.nextInt((colorArray.size() - 1) + 1)).commit();
+            sharedPreferences1.edit().putInt("seg2_begin", r.nextInt((colorArray.size() - 1) + 1)).commit();
+            sharedPreferences1.edit().putInt("seg3_begin", r.nextInt((colorArray.size() - 1) + 1)).commit();
+        }
+
+        int a = sharedPreferences1.getInt("seg1_begin", 0);
+        int b = sharedPreferences1.getInt("seg1_begin", 0);
+        int c = sharedPreferences1.getInt("seg1_begin", 0);
         for (int i = 0; i < n; i++) {
 
 
@@ -156,7 +171,7 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
                 h1.get(slotList.get(i)).setCourse(CourseName.get(i));
                 (courseMap.get(0)).get(slotList.get(i)).setCourseId(courseList.get(i));
 
-                (courseMap.get(0)).get(slotList.get(i)).setCourseColor(colorArray.get(a % 4));
+                (courseMap.get(0)).get(slotList.get(i)).setCourseColor(colorArray.get(a % colorArray.size()));
                 a++;
 
 
@@ -165,14 +180,14 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
                 ArrayMap<String, Lecture> h1 = (courseMap.get(1));
                 h1.get(slotList.get(i)).setCourse(CourseName.get(i));
                 (courseMap.get(1)).get(slotList.get(i)).setCourseId(courseList.get(i));
-                (courseMap.get(1)).get(slotList.get(i)).setCourseColor(colorArray.get(b % 4));
+                (courseMap.get(1)).get(slotList.get(i)).setCourseColor(colorArray.get(b % colorArray.size()));
                 b++;
             }
             if (courseSegmentList.get(i).contains("56")) {
                 ArrayMap<String, Lecture> h1 = (courseMap.get(2));
                 h1.get(slotList.get(i)).setCourse(CourseName.get(i));
                 (courseMap.get(2)).get(slotList.get(i)).setCourseId(courseList.get(i));
-                (courseMap.get(2)).get(slotList.get(i)).setCourseColor(colorArray.get(c % 4));
+                (courseMap.get(2)).get(slotList.get(i)).setCourseColor(colorArray.get(c % colorArray.size()));
                 c++;
             }
         }
@@ -194,7 +209,33 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
     protected void onPostExecute(ArrayList<ArrayMap<String, Lecture>> arrayMaps) {
         super.onPostExecute(arrayMaps);
         Timetable.courseMap = courseMap;
+        saveArrayList(courseMap, "TimetableMapping");
+        if (sharedPreferences1.getBoolean("RequireReset", false)) {
+            refreshNotificationProcess();
+            sharedPreferences1.edit().putBoolean("RequireReset", false).commit();
+        }
 
 
     }
+
+    private void saveArrayList(ArrayList<ArrayMap<String, Lecture>> list, String key) {
+
+        SharedPreferences.Editor editor = sharedPreferences1.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();
+    }
+
+    private void refreshNotificationProcess() {
+        WorkManager.getInstance().cancelAllWork();
+        //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
+                .build();
+        WorkManager.getInstance()
+                .enqueue(periodicWorkRequest);
+    }
+
+
+
 }

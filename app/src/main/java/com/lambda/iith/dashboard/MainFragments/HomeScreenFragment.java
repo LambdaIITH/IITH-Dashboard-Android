@@ -1,4 +1,4 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.MainFragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,8 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.constraint.Constraints;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +19,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lambda.iith.dashboard.BackgroundTasks.GetNextBus;
+import com.lambda.iith.dashboard.Init;
+import com.lambda.iith.dashboard.Launch;
+import com.lambda.iith.dashboard.MainActivity;
+import com.lambda.iith.dashboard.R;
 import com.lambda.iith.dashboard.Timetable.Timetable;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
@@ -127,9 +130,9 @@ public class HomeScreenFragment extends Fragment {
         b3 = view.findViewById(R.id.textView5);
         b4 = view.findViewById(R.id.textView7);
 
-        double width2 = convertPxToDp(getContext(),Launch.width/4);
+        double width2 = convertPxToDp(getContext(), Launch.width / 3);
         ViewGroup.LayoutParams params = t1.getLayoutParams();
-        params.width = (int) ((width2-5) * scale + 0.5f);
+        params.width = (int) ((width2 - 7) * scale + 0.5f);
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         t1.setLayoutParams(params);
         t2.setLayoutParams(params);
@@ -411,11 +414,7 @@ public class HomeScreenFragment extends Fragment {
                 RecyclerViewAdapter_CSHOME adapter = new RecyclerViewAdapter_CSHOME(getContext(), mEmails);
                 CabSharing.setAdapter(adapter);
                 CabSharing.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -498,50 +497,8 @@ public class HomeScreenFragment extends Fragment {
 
 
         ArrayMap<String, Lecture> course = Timetable.courseMap.get((Integer.parseInt(segment.substring(0, 1)) - 1) / 2);
-
-
-        ArrayList<ArrayList<String>> time = new ArrayList<>();
-        ArrayList<String> t = new ArrayList<>();
-        ArrayList<String> t1 = new ArrayList<>();
-        ArrayList<String> t2 = new ArrayList<>();
-        ArrayList<String> t3 = new ArrayList<>();
-        ArrayList<String> t4 = new ArrayList<>();
-        ArrayList<String> t5 = new ArrayList<>();
-        ArrayList<String> t6 = new ArrayList<>();
-        ArrayList<String> t7 = new ArrayList<>();
-        t.add("09:00");
-        t.add("10:00");
-        time.add(t);
-
-        t1.add("10:00");
-        t1.add("11:00");
-        time.add(t1);
-
-        t2.add("11:00");
-        t2.add("12:00");
-        time.add(t2);
-
-        t3.add("12:00");
-        t3.add("13:00");
-        time.add(t3);
-
-        t4.add("14:30");
-        t4.add("16:00");
-        time.add(t4);
-
-        t5.add("16:00");
-        t5.add("17:30");
-        time.add(t5);
-
-        t6.add("17:30");
-        t6.add("19:00");
-        time.add(t6);
-
-        t7.add("19:00");
-        t7.add("20:30");
-        time.add(t7);
-
-
+        String[] start = {"09:00", "10:00", "11:00", "12:00", "14:30", "16:00", "17:30", "19:00"};
+        String[] end = {"10:00", "11:00", "12:00", "13:00", "16:00", "17:30", "19:00", "20:30"};
         int temp = 0;
         for (int i = 0; i < string.length(); i++) {
 
@@ -550,8 +507,8 @@ public class HomeScreenFragment extends Fragment {
 
 
                 lectures1.add(course.get(string.substring(i, i + 1)));
-                T1.add(time.get(i).get(0));
-                T2.add(time.get(i).get(1));
+                T1.add(start[i]);
+                T2.add(end[i]);
                 temp++;
             }
         }

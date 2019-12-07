@@ -30,7 +30,6 @@
 
         <item>Lingampally</item>
         <item>Sangareddy</item>
-        <item>ODF</item>
         <item>Maingate</item>
     </string-array>
     <string-array name="TimetableView">
@@ -116,6 +115,7 @@
     <string name="title_activity_add_course">AddCourse</string>
     <string name="title_activity_about">About</string>
     <string name="about">About</string>
+    <string name="dev">DEV</string>
 
 
 </resources>

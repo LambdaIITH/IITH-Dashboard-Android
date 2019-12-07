@@ -37,11 +37,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.lambda.iith.dashboard.MainFragments.FragmentBS;
+import com.lambda.iith.dashboard.MainFragments.MessMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class SkipLogin extends AppCompatActivity {
+public class NoLogin extends AppCompatActivity {
     public final static int RC_SIGN_IN = 0;
     private BottomNavigationView bottomNavigationView;
     private GoogleSignInClient mGoogleSignInClient;
@@ -195,7 +197,7 @@ public class SkipLogin extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Info", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(SkipLogin.this, MainActivity.class));
+                            startActivity(new Intent(NoLogin.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Info", "signInWithCredential:failure", task.getException());
