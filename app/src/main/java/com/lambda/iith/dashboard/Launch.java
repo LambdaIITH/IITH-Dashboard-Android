@@ -36,11 +36,12 @@ public class Launch extends Activity {
         createNotificationChannel();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
+
             startActivity(new Intent(Launch.this, NoLogin.class));
 
 
         } else {
-            if (sharedPreferences.getBoolean("EnableLectureNotification", true)) {
+            if (sharedPreferences.getBoolean("EnableLectureNotification", false)) {
                 refreshNotificationProcess();
             }
             startActivity(new Intent(Launch.this, MainActivity.class));
@@ -54,23 +55,28 @@ public class Launch extends Activity {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("Timetable", "Timetable", importance);
             channel.setDescription("Lecture Reminders");
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+
+            int importance1 = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel2 = new NotificationChannel("Alerts", "Important Alerts", importance1);
+            channel.setDescription("Lecture Reminders");
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
+            notificationManager2.createNotificationChannel(channel2);
         }
     }
 
     private void refreshNotificationProcess() {
         WorkManager.getInstance().cancelAllWork();
-        //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
-                .build();
-        WorkManager.getInstance()
-                .enqueue(periodicWorkRequest);
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
+        WorkManager.getInstance().enqueue(periodicWorkRequest);
     }
 
 

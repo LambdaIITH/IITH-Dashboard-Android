@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -54,13 +54,13 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         CourseName = getArrayList("CourseName");
 
         colorArray.add(mContext.getResources().getColor(R.color.timetable_blue));
-        colorArray.add(mContext.getResources().getColor(R.color.timetable_green));
-        colorArray.add(mContext.getResources().getColor(R.color.timetable_orange));
-        colorArray.add(mContext.getResources().getColor(R.color.timetable_red));
-        colorArray.add(mContext.getResources().getColor(R.color.timetable_blue2));
         colorArray.add(mContext.getResources().getColor(R.color.timetable_brown));
-        colorArray.add(mContext.getResources().getColor(R.color.timetable_pink));
         colorArray.add(mContext.getResources().getColor(R.color.timetable_blue3));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_red));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_orange));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_blue2));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_green));
+        colorArray.add(mContext.getResources().getColor(R.color.timetable_pink));
         if (courseList == null) {
             courseList = new ArrayList<>();
             courseSegmentList = new ArrayList<>();
@@ -159,8 +159,8 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         }
 
         int a = sharedPreferences1.getInt("seg1_begin", 0);
-        int b = sharedPreferences1.getInt("seg1_begin", 0);
-        int c = sharedPreferences1.getInt("seg1_begin", 0);
+        int b = sharedPreferences1.getInt("seg2_begin", 0);
+        int c = sharedPreferences1.getInt("seg3_begin", 0);
         for (int i = 0; i < n; i++) {
 
 
@@ -210,7 +210,7 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         super.onPostExecute(arrayMaps);
         Timetable.courseMap = courseMap;
         saveArrayList(courseMap, "TimetableMapping");
-        if (sharedPreferences1.getBoolean("RequireReset", false)) {
+        if (sharedPreferences1.getBoolean("RequireReset", false) && (sharedPreferences1.getBoolean("EnableLectureNotification", false))) {
             refreshNotificationProcess();
             sharedPreferences1.edit().putBoolean("RequireReset", false).commit();
         }
@@ -229,11 +229,8 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
 
     private void refreshNotificationProcess() {
         WorkManager.getInstance().cancelAllWork();
-        //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
-                .build();
-        WorkManager.getInstance()
-                .enqueue(periodicWorkRequest);
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
+        WorkManager.getInstance().enqueue(periodicWorkRequest);
     }
 
 

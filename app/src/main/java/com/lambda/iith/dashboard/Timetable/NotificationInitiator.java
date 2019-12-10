@@ -3,9 +3,9 @@ package com.lambda.iith.dashboard.Timetable;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.util.ArrayMap;
 
+import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -101,13 +101,14 @@ public class NotificationInitiator extends Worker {
             }
         }
 
+
         return Result.success();
     }
 
     @Override
     public void onStopped() {
         super.onStopped();
-        WorkManager.getInstance().cancelAllWork();
+
 
     }
 }

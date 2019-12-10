@@ -8,8 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -18,6 +16,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -65,7 +65,8 @@ public class Settings extends AppCompatActivity {
                     refreshNotificationProcess();
 
                     checkBatteryStatus();
-                    AutostartManager autostartManager = new AutostartManager(Settings.this);
+                    //AutostartManager autostartManager = new AutostartManager(Settings.this);
+                    //sharedPreferences.edit().putBoolean("RequestAutostart" , true);
                 } else {
                     sharedPreferences.edit().putBoolean("EnableLectureNotification", false).commit();
                     WorkManager.getInstance().cancelAllWork();
@@ -228,13 +229,8 @@ public class Settings extends AppCompatActivity {
 
     private void refreshNotificationProcess() {
         WorkManager.getInstance().cancelAllWork();
-
-
-        //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
-                .build();
-        WorkManager.getInstance()
-                .enqueue(periodicWorkRequest);
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
+        WorkManager.getInstance().enqueue(periodicWorkRequest);
     }
 
     private void checkBatteryStatus() {

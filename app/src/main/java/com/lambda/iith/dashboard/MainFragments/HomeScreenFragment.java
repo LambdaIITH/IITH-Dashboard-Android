@@ -4,21 +4,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lambda.iith.dashboard.AutostartManager;
 import com.lambda.iith.dashboard.BackgroundTasks.GetNextBus;
 import com.lambda.iith.dashboard.Init;
 import com.lambda.iith.dashboard.Launch;
@@ -179,7 +181,11 @@ public class HomeScreenFragment extends Fragment {
         busmake(sharedPref.getBoolean("bus", true));
         messmake(sharedPref.getBoolean("mess", true));
         timetablemake(sharedPref.getBoolean("timetable", true));
+        if (sharedPreferences.getBoolean("RequestAutostart", false)) {
 
+            AutostartManager autostartManager = new AutostartManager(getContext());
+            sharedPreferences.edit().putBoolean("RequestAutostart", false).commit();
+        }
 
         return view;
     }

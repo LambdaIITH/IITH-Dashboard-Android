@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pullToRefresh"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragmentlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

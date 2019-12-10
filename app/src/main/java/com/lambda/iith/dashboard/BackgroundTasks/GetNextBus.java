@@ -58,7 +58,7 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
 
 
             if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                BusTimes = JO.getJSONArray("ODFS");
+                BusTimes = JO.getJSONArray("ODF");
             } else {
                 BusTimes = JO.getJSONArray("ODF");
             }

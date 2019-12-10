@@ -4,16 +4,17 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;

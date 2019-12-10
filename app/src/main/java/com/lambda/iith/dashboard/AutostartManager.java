@@ -26,17 +26,19 @@ public class AutostartManager {
     private String PACKAGE_HUAWEI_MAIN = "com.huawei.systemmanager";
     private String PACKAGE_HUAWEI_COMPONENT = "com.huawei.systemmanager.optimize.process.ProtectActivity";
 
-
+    private Context context = null;
     public AutostartManager(Context context1) {
-
+        context = context1;
         if (Build.MANUFACTURER.equalsIgnoreCase("oppo") || Build.MANUFACTURER.equalsIgnoreCase("vivo") || Build.BRAND.equalsIgnoreCase("xiaomi") || Build.BRAND.equalsIgnoreCase("asus") || Build.BRAND.equalsIgnoreCase("honor")) {
-            final Context context = context1;
+
             AlertDialog.Builder alert = new AlertDialog.Builder(context);
             alert.setTitle("Please Enable autostart");
             alert.setMessage("Please allow IITH Dashboard to provide uninterrupted notifications");
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+
+
                     dialog.dismiss();
 
 
@@ -126,5 +128,7 @@ public class AutostartManager {
 
         }
     }
+
+
 }
 

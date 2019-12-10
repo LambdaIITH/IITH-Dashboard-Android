@@ -32,6 +32,22 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="Alerts" />
         <activity
             android:name=".NoLogin"
             android:label="IITH Dashboard"
@@ -49,17 +65,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
         <activity
-            android:name=".CabSharing.CabSharingRegister"
+            android:name=".Cabsharing.CabSharingRegister"
             android:label="@string/title_activity_cab_sharing_register2"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+
         <activity
             android:name=".MainActivity"
             android:label="IITH Dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
 
         <meta-data
             android:name="preloaded_fonts"

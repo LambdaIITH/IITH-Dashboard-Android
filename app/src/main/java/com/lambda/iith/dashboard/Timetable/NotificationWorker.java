@@ -5,10 +5,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -18,6 +18,7 @@ import com.lambda.iith.dashboard.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 
 public class NotificationWorker extends Worker {
 
@@ -43,7 +44,8 @@ public class NotificationWorker extends Worker {
         Notification repeatedNotification = buildLocalNotification(getApplicationContext(), pendingIntent, CourseName, CourseID, Hours, Mins).build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-        notificationManager.notify(Calendar.getInstance().get(Calendar.MINUTE), repeatedNotification);
+
+        notificationManager.notify(new Random().nextInt(), repeatedNotification);
 
 
         return Result.success();

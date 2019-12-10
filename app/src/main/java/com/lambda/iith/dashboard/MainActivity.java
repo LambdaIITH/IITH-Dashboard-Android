@@ -9,18 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +17,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -45,6 +43,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
@@ -319,9 +319,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
-
-
     }
 
 
@@ -447,34 +444,30 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    dialog.dismiss();
                     if (which == 0) {
+
                         sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
-                        WorkManager.getInstance().cancelAllWork();
+
+                        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
+                        WorkManager.getInstance().enqueue(periodicWorkRequest);
 
 
-                        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
-                                .build();
+                        sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
+                        //
 
-                        WorkManager.getInstance()
-                                .enqueue(periodicWorkRequest);
-
-                        AutostartManager autostartManager = new AutostartManager(MainActivity.this);
-
+                        checkBatteryStatus();
                     } else {
                         sharedPreferences.edit().putBoolean("EnableLectureNotification", false).commit();
                     }
-                    dialog.dismiss();
+
                 }
 
 
             });
             b.show();
-            if (sharedPreferences.getBoolean("EnableLectureNotification", true)) {
 
 
-                checkBatteryStatus();
-            }
             sharedPreferences.edit().putBoolean("FirstAfterV1.20", false).commit();
 
         }
@@ -641,7 +634,9 @@ public class MainActivity extends AppCompatActivity
                         JSONObject JO = null;
                         // Display the first 500 characters of the response string.
                         try {
-                            JO = new JSONObject(response.substring(3));
+
+                            JO = new JSONObject(response);
+
                             JSONObject JA = JO.getJSONObject("TOIITH");
                             Iterator iterator = JA.keys();
                             ArrayList<String> Buses = new ArrayList<>();
@@ -856,7 +851,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    //Fetching timetable
+    //+
+    // Fetching timetable
     private void fetchData() {
         String UUID = getUID();
         pullToRefresh.setRefreshing(true);
@@ -887,7 +883,7 @@ public class MainActivity extends AppCompatActivity
                 saveArrayList(courseList, "CourseList");
 
                 saveArrayList(courseSegmentList, "Segment");
-
+                sharedPreferences.edit().putBoolean("RequireReset", true).commit();
                 saveArrayList(slotList, "SlotList");
                 saveArrayList2(CourseName, "CourseName");
                 new timetableComp().execute(getBaseContext());
@@ -900,12 +896,6 @@ public class MainActivity extends AppCompatActivity
 
                 Toast.makeText(getBaseContext(), "Data Synced", Toast.LENGTH_SHORT).show();
                 pullToRefresh.setRefreshing(false);
-                WorkManager.getInstance().cancelAllWork();
-                //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
-                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
-                        .build();
-                WorkManager.getInstance()
-                        .enqueue(periodicWorkRequest);
 
 
             }
