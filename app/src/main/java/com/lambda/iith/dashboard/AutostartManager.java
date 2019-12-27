@@ -5,7 +5,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 public class AutostartManager {
     private String BRAND_ASUS = "asus";
@@ -29,11 +31,26 @@ public class AutostartManager {
     private Context context = null;
     public AutostartManager(Context context1) {
         context = context1;
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if(sharedPreferences.getInt("COUNTAUTOstart" , 0) >6){
+            return;
+        }else{
+            sharedPreferences.edit().putInt("COUNTAUTOstart" , sharedPreferences.getInt("COUNTAUTOstart" , 0)+1).apply();
+        }
+
+
         if (Build.MANUFACTURER.equalsIgnoreCase("oppo") || Build.MANUFACTURER.equalsIgnoreCase("vivo") || Build.BRAND.equalsIgnoreCase("xiaomi") || Build.BRAND.equalsIgnoreCase("asus") || Build.BRAND.equalsIgnoreCase("honor")) {
 
             AlertDialog.Builder alert = new AlertDialog.Builder(context);
             alert.setTitle("Please Enable autostart");
-            alert.setMessage("Please allow IITH Dashboard to provide uninterrupted notifications");
+            alert.setMessage("Please allow IITH Dashboard to provide uninterrupted notifications, Ignore if already enabled");
+            alert.setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

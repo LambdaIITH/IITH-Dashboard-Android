@@ -33,6 +33,10 @@ public class NotificationInitiator extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+
+
+
+        //WorkManager.getInstance().cancelAllWork();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getString("TimeWork", "").length() > 50000) {
             sharedPreferences.edit().putString("TimeWork", " ").commit();
@@ -55,12 +59,15 @@ public class NotificationInitiator extends Worker {
             case Calendar.MONDAY:
                 segments = "ABCDPQWX";
                 break;
-            case Calendar.SATURDAY:
-                segments = "ABCDPQWX";
-                break;
+
             case Calendar.SUNDAY:
                 segments = "ABCDPQWX";
                 break;
+
+            case Calendar.SATURDAY:
+                segments = "ABCDPQWX";
+                break;
+
             case Calendar.TUESDAY:
                 segments = "DEFGRSYZ";
                 break;
@@ -68,14 +75,14 @@ public class NotificationInitiator extends Worker {
                 segments = "BCAGF";
                 break;
             case Calendar.THURSDAY:
-                segments = "CABEQPEX";
+                segments = "CABEQPWX";
                 break;
             case Calendar.FRIDAY:
                 segments = "EFDGSRYZ";
                 break;
         }
 
-        int[] hours = {9, 10, 11, 12, 14, 16, 17, 19};
+        int[] hours = {9, 10, 11, 12, 14, 16,17 , 19};
         int[] mins = {0, 0, 0, 0, 30, 0, 30, 0};
 
         System.out.println("DAY" + segments);
@@ -88,11 +95,12 @@ public class NotificationInitiator extends Worker {
                 calendar.set(Calendar.HOUR_OF_DAY, hours[i]);
                 if (calendar.getTimeInMillis() - System.currentTimeMillis() - Interval * 60 * 1000 > 0) {
 
-
+                    System.out.println(lecture.getCourse());
                     Data.Builder data = new Data.Builder().putString("LectureName", lecture.getCourse()).putString("LectureId", lecture.getCourseId()).putInt("Hours", hours[i]).putInt("Mins", mins[i]);
+                    System.out.println(lecture.getCourse());
                     OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
-                            .setInitialDelay(calendar.getTimeInMillis() - System.currentTimeMillis() - Interval * 60 * 1000, TimeUnit.MILLISECONDS)
-
+                            .setInitialDelay( calendar.getTimeInMillis() - System.currentTimeMillis() - Interval * 60 * 1000 , TimeUnit.MILLISECONDS)
+                            .addTag("LECTUREREMINDER")
                             .setInputData(data.build())
                             .build();
                     WorkManager.getInstance()
@@ -107,7 +115,11 @@ public class NotificationInitiator extends Worker {
 
     @Override
     public void onStopped() {
+        WorkManager.getInstance().cancelAllWork();
         super.onStopped();
+
+
+
 
 
     }

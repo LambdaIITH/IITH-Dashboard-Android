@@ -62,6 +62,7 @@ public class Settings extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
+                    sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
                     refreshNotificationProcess();
 
                     checkBatteryStatus();
@@ -228,8 +229,9 @@ public class Settings extends AppCompatActivity {
     }
 
     private void refreshNotificationProcess() {
-        WorkManager.getInstance().cancelAllWork();
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
+        WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
+        WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).addTag("TIMETABLE").build();
         WorkManager.getInstance().enqueue(periodicWorkRequest);
     }
 

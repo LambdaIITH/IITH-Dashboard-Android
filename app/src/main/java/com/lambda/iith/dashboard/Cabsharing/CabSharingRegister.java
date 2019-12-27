@@ -1,9 +1,14 @@
 package com.lambda.iith.dashboard.Cabsharing;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -40,6 +47,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class CabSharingRegister extends AppCompatActivity {
     public static RequestQueue queue;
@@ -153,6 +161,8 @@ public class CabSharingRegister extends AppCompatActivity {
 
                             Toast.makeText(getApplication().getBaseContext(), "Booked Successfully",
                                     Toast.LENGTH_SHORT).show();
+                            PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(CabSharingBackgroundWork.class , 1 , TimeUnit.HOURS).addTag("CAB").build();
+                            WorkManager.getInstance().enqueue(periodicWorkRequest);
                             sharedPref.edit().putBoolean("PleaseUpdateCAB", true).commit();
                             onBackPressed();
                         } else {
@@ -178,6 +188,8 @@ public class CabSharingRegister extends AppCompatActivity {
                                     public void onResponse(String response) {
                                         Toast.makeText(getApplication().getBaseContext(), "Booked Successfully", Toast.LENGTH_SHORT).show();
                                         editor.commit();
+                                        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(CabSharingBackgroundWork.class , 1 , TimeUnit.HOURS).addTag("CAB").build();
+                                        WorkManager.getInstance().enqueue(periodicWorkRequest);
                                         Log.i("VOLLEY", response);
                                     }
                                 }, new Response.ErrorListener() {
@@ -229,6 +241,10 @@ public class CabSharingRegister extends AppCompatActivity {
                         });
 
 
+                checkBatteryStatus();
+                sharedPref.edit().putBoolean("RequestAutostart", true).commit();
+
+
                 }
 
 
@@ -268,6 +284,31 @@ public class CabSharingRegister extends AppCompatActivity {
         });
 
 
+    }
+
+    private void checkBatteryStatus() {
+        System.out.println(getBaseContext().getPackageName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Please Disable Battery Optimization");
+                alert.setMessage("Please exempt IITH Dashboard to receive uninterrupted notifications");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS), 0);
+                    }
+                });
+                alert.show();
+
+
+            }
+
+        }
     }
 
     public void TimePickerObj(final TextView textView, final TextView textView2, final int k) {

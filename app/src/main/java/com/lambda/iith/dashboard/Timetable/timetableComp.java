@@ -228,8 +228,9 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
     }
 
     private void refreshNotificationProcess() {
-        WorkManager.getInstance().cancelAllWork();
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
+        WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
+        WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).addTag("TIMETABLE").build();
         WorkManager.getInstance().enqueue(periodicWorkRequest);
     }
 

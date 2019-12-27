@@ -55,6 +55,7 @@ import com.google.gson.Gson;
 import com.lambda.iith.dashboard.BackgroundTasks.DPload;
 import com.lambda.iith.dashboard.Cabsharing.BookingFilter;
 import com.lambda.iith.dashboard.Cabsharing.CabSharing;
+import com.lambda.iith.dashboard.Cabsharing.CabSharingBackgroundWork;
 import com.lambda.iith.dashboard.MainFragments.FragmentBS;
 import com.lambda.iith.dashboard.MainFragments.HomeScreenFragment;
 import com.lambda.iith.dashboard.MainFragments.MessMenu;
@@ -67,6 +68,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -319,6 +321,12 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        if(sharedPreferences.getBoolean("Registered" , false)){
+            WorkManager.getInstance().cancelAllWorkByTag("CAB");
+            PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(CabSharingBackgroundWork.class , 1 , TimeUnit.HOURS).addTag("CAB").build();
+            WorkManager.getInstance().enqueue(periodicWorkRequest);
+        }
     }
 
 
@@ -448,8 +456,10 @@ public class MainActivity extends AppCompatActivity
                     if (which == 0) {
 
                         sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
+                        WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
 
-                        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
+                        WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
+                        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).addTag("TIMETABLE").build();
                         WorkManager.getInstance().enqueue(periodicWorkRequest);
 
 
@@ -583,6 +593,7 @@ public class MainActivity extends AppCompatActivity
 
             RetrieveBooking();
         }
+        /**
         if(sharedPreferences.getBoolean("Registered", false) ) {
 
 
@@ -597,6 +608,7 @@ public class MainActivity extends AppCompatActivity
                 updateShares();}
             }
         });
+         **/
 
         BusData();
         messData();
@@ -720,7 +732,13 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         Filter filter = new Filter();
-                        filter.set(response , sharedPreferences);
+                        try {
+                            filter.set(response , sharedPreferences);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
                         new BookingFilter().execute(filter);
 

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -213,6 +214,8 @@ public class CabSharing extends Fragment {
     }
 
     private void DeleteBooking() throws JSONException {
+
+        WorkManager.getInstance().cancelAllWorkByTag("CAB");
 
         if (sharedPref.getInt("Private", -1) == 1) {
             Toast.makeText(getActivity().getBaseContext(), "Deleted Successfully",

@@ -70,6 +70,14 @@ public class Launch extends Activity {
             // or other notification behaviors after this
             NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
             notificationManager2.createNotificationChannel(channel2);
+
+            int importance2 = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel3 = new NotificationChannel("CabSharingAlerts", "Cab Sharing", importance2);
+            channel.setDescription("Lecture Reminders");
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
+            notificationManager3.createNotificationChannel(channel3);
         }
     }
 

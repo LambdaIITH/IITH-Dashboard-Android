@@ -215,7 +215,7 @@ public class NoLogin extends AppCompatActivity {
     }
 
     private void refresh() {
-        String url = "https://iith.dev/bus";
+        String url = "https://iith.dev/v2/bus";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

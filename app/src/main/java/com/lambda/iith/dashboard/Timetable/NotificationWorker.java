@@ -15,6 +15,7 @@ import androidx.work.WorkerParameters;
 import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,8 +35,7 @@ public class NotificationWorker extends Worker {
         String CourseID = getInputData().getString("LectureId");
         int Hours = getInputData().getInt("Hours", 0);
         int Mins = getInputData().getInt("Mins", 0);
-
-
+        System.out.println("START");
         Intent intentToRepeat = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(getApplicationContext(), 100, intentToRepeat, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -45,7 +45,8 @@ public class NotificationWorker extends Worker {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
-        notificationManager.notify(new Random().nextInt(), repeatedNotification);
+
+        notificationManager.notify(2821 + Calendar.getInstance().get(Calendar.HOUR_OF_DAY), repeatedNotification);
 
 
         return Result.success();
