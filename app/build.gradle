@@ -7,15 +7,14 @@ android {
         applicationId "com.lambda.iith.dashboard"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 15
-        versionName "1.20-beta-2"
+        versionCode 16
+        versionName "1.21"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -30,7 +29,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.android.volley:volley:1.1.1'
-    implementation "com.cleveroad:adaptivetablelayout:1.2.1"
+
     implementation 'org.honorato.multistatetogglebutton:multistatetogglebutton:0.2.2'
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'

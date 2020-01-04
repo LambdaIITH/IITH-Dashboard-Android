@@ -81,7 +81,7 @@ public class Background extends Worker {
                                 java.util.Date T3 = format1.parse(JO.getString("StartTime").substring(0, 10) + ":" + JO.getString("StartTime").substring(11, 16));
                                 java.util.Date T4 = format1.parse(JO.getString("EndTime").substring(0, 10) + ":" + JO.getString("EndTime").substring(11, 16));
 
-                                if ((JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(MainActivity.email)) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0))) {
+                                if ((JO.getInt("RouteID") == CabID) && !((JO.getString("Email")).equals(sharedPreferences.getString("UserEmail" , "email"))) && ((T3.compareTo(T1) >= 0 && T3.compareTo(T2) <= 0) || (T4.compareTo(T1) >= 0 && T4.compareTo(T2) <= 0))) {
                                     JA2.put(JO);
 
 
@@ -94,7 +94,7 @@ public class Background extends Worker {
                             edit.putString("CabShares", JA2.toString());
 
                             edit.commit();
-                            System.out.println("TTGG" + JA + ":" + JA2);
+
 
                             for(int j=0 ; j<JA2.length() ; j++){
                                 if(!check(JA ,JA2.getString(j))){

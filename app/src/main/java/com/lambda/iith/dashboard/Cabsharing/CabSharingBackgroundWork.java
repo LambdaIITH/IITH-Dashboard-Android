@@ -80,8 +80,6 @@ public class CabSharingBackgroundWork extends Worker {
                     }
                     Data.Builder builder = new Data.Builder();
                     builder.putString("OLD" , JA.toString());
-
-                    System.out.println("STEP!");
                     OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(Background.class).setInputData(builder.build()).addTag("CAB2").setInitialDelay(1 , TimeUnit.SECONDS).build();
                     WorkManager.getInstance().enqueue(oneTimeWorkRequest);
                 }

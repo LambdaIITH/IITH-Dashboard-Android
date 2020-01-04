@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -242,6 +243,8 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+        sharedPreferences.edit().putString("UserEmail" , email).apply();
+
         //Setting Refresh and Swipe to Refresh
         MasterRefresh = findViewById(R.id.MainRefresh);
 
@@ -437,6 +440,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onStart() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        Launch.height = displayMetrics.heightPixels;
+        Launch.width = displayMetrics.widthPixels;
         if (sharedPreferences.getInt("MESSDEF", -1) == -1 || sharedPreferences.getString("DefaultSegment", "0").equals('0')) {
             setValues();
 
