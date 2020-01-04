@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -12,6 +13,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.lambda.iith.dashboard.Launch;
 import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
 
@@ -35,13 +37,14 @@ public class NotificationWorker extends Worker {
         String CourseID = getInputData().getString("LectureId");
         int Hours = getInputData().getInt("Hours", 0);
         int Mins = getInputData().getInt("Mins", 0);
+        Boolean ring = getInputData().getBoolean("Ring" , false);
         System.out.println("START");
-        Intent intentToRepeat = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intentToRepeat = new Intent(getApplicationContext(), Launch.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(getApplicationContext(), 100, intentToRepeat, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //Build notification
-        Notification repeatedNotification = buildLocalNotification(getApplicationContext(), pendingIntent, CourseName, CourseID, Hours, Mins).build();
+        Notification repeatedNotification = buildLocalNotification(getApplicationContext(), pendingIntent, CourseName, CourseID, Hours, Mins,ring).build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
@@ -53,10 +56,11 @@ public class NotificationWorker extends Worker {
     }
 
 
-    public NotificationCompat.Builder buildLocalNotification(Context context, PendingIntent pendingIntent, String CourseName, String CourseID, int Hours, int Mins) {
+    public NotificationCompat.Builder buildLocalNotification(Context context, PendingIntent pendingIntent, String CourseName, String CourseID, int Hours, int Mins, Boolean ring) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Hours);
         calendar.set(Calendar.MINUTE, Mins);
+        //PendingIntent SnoozeIntent = new PendingIntent(this , Snooze)
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         String desc = dateFormat.format(calendar.getTime());
@@ -67,11 +71,19 @@ public class NotificationWorker extends Worker {
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                                 R.mipmap.application_icon_foreground));
 
+
         if (CourseName.equals("Name")) {
             builder.setContentTitle("Lecture : " + CourseID);
         } else {
             builder.setContentTitle("Lecture : " + CourseName);
         }
+
+        if (ring){
+            builder.setFullScreenIntent(pendingIntent , true);
+        }
+        //builder.addAction(R.mipmap.sync , "SNOOZE" , SnoozeIntent);
+
+
         builder.setContentText(desc)
 
 

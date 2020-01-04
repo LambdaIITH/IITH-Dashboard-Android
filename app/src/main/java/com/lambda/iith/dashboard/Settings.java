@@ -33,7 +33,7 @@ public class Settings extends AppCompatActivity {
     private CheckBox cab, bus, mess, timetable;
     private RadioGroup mess_select;
     private Spinner SegDef;
-    private Switch LectureNotification, courseName;
+    private Switch LectureNotification, courseName , LectureNotificationType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,8 @@ public class Settings extends AppCompatActivity {
         mess_select = findViewById(R.id.Def);
         SegDef = findViewById(R.id.DefaultSeg);
         LectureNotification = findViewById(R.id.LectureNotificatonSwitch);
+        LectureNotificationType = findViewById(R.id.lectureNotificatonTypeSwitch);
+
 
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
@@ -55,22 +57,35 @@ public class Settings extends AppCompatActivity {
         }
 
         LectureNotification.setChecked(sharedPreferences.getBoolean("EnableLectureNotification", true));
+        LectureNotificationType.setEnabled(sharedPreferences.getBoolean("EnableLectureNotification", true));
+        LectureNotificationType.setChecked(sharedPreferences.getBoolean("LectureNotificationRing", false));
 
+        LectureNotificationType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                sharedPreferences.edit().putBoolean("LectureNotificationRing" , isChecked).apply();
+                refreshNotificationProcess();
+            }
+        });
 
         LectureNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LectureNotification.setEnabled(isChecked);
+
                 if (isChecked) {
-                    sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
-                    sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
+                    sharedPreferences.edit().putBoolean("EnableLectureNotification", true).apply();
+                    sharedPreferences.edit().putBoolean("RequestAutostart", true).apply();
                     refreshNotificationProcess();
+
 
                     checkBatteryStatus();
                     //AutostartManager autostartManager = new AutostartManager(Settings.this);
                     //sharedPreferences.edit().putBoolean("RequestAutostart" , true);
                 } else {
-                    sharedPreferences.edit().putBoolean("EnableLectureNotification", false).commit();
-                    WorkManager.getInstance().cancelAllWork();
+                    sharedPreferences.edit().putBoolean("EnableLectureNotification", false).apply();
+                    WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
+                    WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
 
                 }
 
