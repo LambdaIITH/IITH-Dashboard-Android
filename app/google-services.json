@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "198169856520-n73j152fir8n5ev1f4762omclqcg09os.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lambda.iith.dashboard",
+            "certificate_hash": "7c9fab435e60d5a63a35425010695be4b549c29d"
+          }
+        },
+        {
+          "client_id": "198169856520-t4j1hchctk27l61ipjhnjnih30kdgqcb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lambda.iith.dashboard",
+            "certificate_hash": "5765ebd709e441fb5593dbb37551ff7c066a4ae7"
+          }
+        },
+        {
           "client_id": "198169856520-t5eo1q68bqadlda3h7k6t9b1u7m6caqb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -61,7 +77,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCnuwKNSseS_LN1jffxCHxNAwIAmCniwxA"
+          "current_key": "AIzaSyDm4uaUckMcY8_BsnyVvC8Yuo9UlIhos7k"
         }
       ],
       "services": {

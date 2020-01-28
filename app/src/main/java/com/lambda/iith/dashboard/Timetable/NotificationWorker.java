@@ -60,7 +60,7 @@ public class NotificationWorker extends Worker {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Hours);
         calendar.set(Calendar.MINUTE, Mins);
-        //PendingIntent SnoozeIntent = new PendingIntent(this , Snooze)
+
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         String desc = dateFormat.format(calendar.getTime());
@@ -78,14 +78,12 @@ public class NotificationWorker extends Worker {
             builder.setContentTitle("Lecture : " + CourseName);
         }
 
-        if (ring){
-            builder.setFullScreenIntent(pendingIntent , true);
-        }
+
         //builder.addAction(R.mipmap.sync , "SNOOZE" , SnoozeIntent);
 
 
         builder.setContentText(desc)
-
+                
 
                 .setAutoCancel(true);
 

@@ -60,13 +60,9 @@ public class NotificationInitiator extends Worker {
                 segments = "ABCDPQWX";
                 break;
 
-            case Calendar.SATURDAY:
-                segments = "ABCDPQWX";
-                break;
 
-            case Calendar.SUNDAY:
-                segments = "ABCDPQWX";
-                break;
+
+
             case Calendar.TUESDAY:
                 segments = "DEFGRSYZ";
                 break;

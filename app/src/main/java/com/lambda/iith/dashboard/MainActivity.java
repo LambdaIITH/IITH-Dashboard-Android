@@ -450,7 +450,48 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        if (sharedPreferences.getBoolean("FirstAfterV1.20", true)) {
+        if (sharedPreferences.getBoolean("FirstAfterV1.22", true)) {
+            final AlertDialog.Builder b1 = new AlertDialog.Builder(this);
+            b1.setTitle("How many minutes before you need notification");
+            b1.setCancelable(false);
+            String[] types1 = {"5 mins", "10 mins" ,"15 mins","30 mins","45 mins" , "60 mins"};
+            b1.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    checkBatteryStatus();
+                }
+            });
+            b1.setItems(types1, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(which==0){
+                        sharedPreferences.edit().putInt("NotificationTime" , 5).commit();}
+
+                    if(which==1) {
+                        sharedPreferences.edit().putInt("NotificationTime", 10).commit();
+                    }
+                    if(which==2) {
+                        sharedPreferences.edit().putInt("NotificationTime", 15).commit();
+
+                    }if(which==3){
+                        sharedPreferences.edit().putInt("NotificationTime" , 30).commit();
+                    }if(which==4){
+                        sharedPreferences.edit().putInt("NotificationTime" , 45).commit();
+                    }if(which==5){
+                        sharedPreferences.edit().putInt("NotificationTime" , 60).commit();
+                    }
+                    WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
+                    WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
+                    PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).addTag("TIMETABLE").build();
+                    WorkManager.getInstance().enqueue(periodicWorkRequest);
+                    dialog.dismiss();
+
+                }
+
+            });
+
+
             AlertDialog.Builder b = new AlertDialog.Builder(this);
             b.setTitle("Want to recieve notifications before lectures?");
             String[] types = {"YES", "NO"};
@@ -461,19 +502,11 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     if (which == 0) {
-
                         sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
-                        WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
-
-                        WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
-                        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).addTag("TIMETABLE").build();
-                        WorkManager.getInstance().enqueue(periodicWorkRequest);
-
+                        b1.show();
 
                         sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
-                        //
 
-                        checkBatteryStatus();
                     } else {
                         sharedPreferences.edit().putBoolean("EnableLectureNotification", false).commit();
                     }
@@ -514,6 +547,7 @@ public class MainActivity extends AppCompatActivity
                 alert.show();
 
 
+
             }
         }
     }
@@ -546,6 +580,7 @@ public class MainActivity extends AppCompatActivity
             }
 
         });
+
 
 
         AlertDialog.Builder b = new AlertDialog.Builder(this);

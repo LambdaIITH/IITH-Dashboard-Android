@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -27,12 +28,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Settings extends AppCompatActivity {
 
-
+    private TextView H1;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor edit;
     private CheckBox cab, bus, mess, timetable;
     private RadioGroup mess_select;
-    private Spinner SegDef;
+    private Spinner SegDef, LectureTime;
     private Switch LectureNotification, courseName , LectureNotificationType;
 
     @Override
@@ -41,9 +42,12 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        H1 = findViewById(R.id.textView8);
+
         courseName = findViewById(R.id.CoursenameSelect);
         mess_select = findViewById(R.id.Def);
         SegDef = findViewById(R.id.DefaultSeg);
+        LectureTime = findViewById(R.id.ReminderTime);
         LectureNotification = findViewById(R.id.LectureNotificatonSwitch);
         LectureNotificationType = findViewById(R.id.lectureNotificatonTypeSwitch);
 
@@ -57,9 +61,11 @@ public class Settings extends AppCompatActivity {
         }
 
         LectureNotification.setChecked(sharedPreferences.getBoolean("EnableLectureNotification", true));
+        H1.setEnabled(sharedPreferences.getBoolean("EnableLectureNotification", true));
         LectureNotificationType.setEnabled(sharedPreferences.getBoolean("EnableLectureNotification", true));
         LectureNotificationType.setChecked(sharedPreferences.getBoolean("LectureNotificationRing", false));
-
+        LectureTime.setEnabled(sharedPreferences.getBoolean("EnableLectureNotification", true));
+        //LectureTime.setClickable(sharedPreferences.getBoolean("EnableLectureNotification", true));
         LectureNotificationType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -71,8 +77,9 @@ public class Settings extends AppCompatActivity {
         LectureNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                LectureNotification.setEnabled(isChecked);
-
+                LectureNotification.setChecked(isChecked);
+                H1.setEnabled(isChecked);
+                LectureTime.setEnabled(isChecked);
                 if (isChecked) {
                     sharedPreferences.edit().putBoolean("EnableLectureNotification", true).apply();
                     sharedPreferences.edit().putBoolean("RequestAutostart", true).apply();
@@ -145,6 +152,61 @@ public class Settings extends AppCompatActivity {
             SegDef.setSelection(2);
 
         }
+
+        int interval = sharedPreferences.getInt("NotificationTime", 30);
+        System.out.println("1+" + interval);
+        if(interval==5){
+            LectureTime.setSelection(0);
+        }
+        else if(interval==10){
+            LectureTime.setSelection(1);
+        }
+        else if(interval==15){
+            LectureTime.setSelection(2);
+        }
+        else if(interval==30){
+            LectureTime.setSelection(3);
+        }
+        else if(interval==45){
+            LectureTime.setSelection(4);
+        }
+        else if(interval==60){
+            LectureTime.setSelection(5);
+        }
+
+
+        LectureTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(position);
+                    if(position==0){
+                        sharedPreferences.edit().putInt("NotificationTime" , 5).commit();}
+
+                    if(position==1) {
+                        sharedPreferences.edit().putInt("NotificationTime", 10).commit();
+                    }
+                    if(position==2) {
+                        sharedPreferences.edit().putInt("NotificationTime", 15).commit();
+
+                    }if(position==3){
+                        sharedPreferences.edit().putInt("NotificationTime" , 30).commit();
+                    }if(position==4){
+                        sharedPreferences.edit().putInt("NotificationTime" , 45).commit();
+                    }if(position==5){
+                        sharedPreferences.edit().putInt("NotificationTime" , 60).commit();
+                    }
+                if (sharedPreferences.getBoolean("EnableLectureNotification", true)) {
+                    refreshNotificationProcess();
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         SegDef.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
