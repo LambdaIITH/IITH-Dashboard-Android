@@ -45,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -252,8 +253,7 @@ public class NoLogin extends AppCompatActivity {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+
                         }
 
                     }

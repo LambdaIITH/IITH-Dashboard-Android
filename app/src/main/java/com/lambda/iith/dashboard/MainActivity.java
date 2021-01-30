@@ -69,6 +69,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -712,8 +713,6 @@ public class MainActivity extends AppCompatActivity
                             edit.commit();
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
 
