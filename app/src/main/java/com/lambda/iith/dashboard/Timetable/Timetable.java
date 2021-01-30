@@ -5,20 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,15 +16,23 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lambda.iith.dashboard.Launch;
-import com.lambda.iith.dashboard.MainActivity;
 import com.lambda.iith.dashboard.R;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
@@ -44,8 +41,8 @@ import org.honorato.multistatetogglebutton.ToggleButton;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import Adapters.RecyclerViewAdapter2_TT;
 import Adapters.RecyclerViewAdapter_TT;
@@ -98,9 +95,9 @@ public class Timetable extends Fragment {
                 saveArrayList(courseList, "CourseList");
 
                 saveArrayList(courseSegmentList, "Segment");
-
+                sharedPreferences.edit().putBoolean("RequireReset", true).commit();
                 saveArrayList(slotList, "SlotList");
-                saveArrayList2(CourseName, "CourseName");
+                saveArrayList(CourseName, "CourseName");
                 new timetableComp().execute(mContext);
                 int i1 = segment.getSelectedItemPosition();
 
@@ -141,13 +138,13 @@ public class Timetable extends Fragment {
         courseSegmentList.add(segment);
         slotList.add(slot);
         CourseName.add(name);
-
+        sharedPreferences.edit().putBoolean("RequireReset", true).commit();
         saveArrayList(courseList, "CourseList");
 
         saveArrayList(courseSegmentList, "Segment");
 
         saveArrayList(slotList, "SlotList");
-        saveArrayList2(CourseName, "CourseName");
+        saveArrayList(CourseName, "CourseName");
 
         final FragmentTransaction ft = fragmentManager.beginTransaction();
 
@@ -176,7 +173,7 @@ public class Timetable extends Fragment {
                 saveArrayList(courseSegmentList, "Segment");
 
                 saveArrayList(slotList, "SlotList");
-                saveArrayList2(CourseName, "CourseName");
+                saveArrayList(CourseName, "CourseName");
 
                 break;
 
@@ -185,7 +182,7 @@ public class Timetable extends Fragment {
 
 
         }
-
+        sharedPreferences.edit().putBoolean("RequireReset", true).commit();
         final FragmentTransaction ft = fragmentManager.beginTransaction();
         timetableComp timetableComp = new timetableComp();
         timetableComp.execute(mContext);
@@ -201,16 +198,19 @@ public class Timetable extends Fragment {
         String json = gson.toJson(list);
         editor.putString(key, json);
         editor.commit();     // This line is IMPORTANT !!!
+
+
     }
 
-    private static void saveArrayList2(ArrayList<String> list, String key) {
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(key, json);
-        editor.commit();     // This line is IMPORTANT !!!
+    private void refreshNotificationProcess() {
+        WorkManager.getInstance().cancelAllWork();
+        //OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationInitiator.class).setInitialDelay(1000 , TimeUnit.MILLISECONDS).build();
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS)
+                .build();
+        WorkManager.getInstance()
+                .enqueue(periodicWorkRequest);
     }
+
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -243,7 +243,6 @@ public class Timetable extends Fragment {
         c3.setLayoutParams(params1);
         c4.setLayoutParams(params1);
         c5.setLayoutParams(params1);
-
 
         DaySelect = view.findViewById(R.id.DaySelect);
         courseList = getArrayList("CourseList");
@@ -300,23 +299,16 @@ public class Timetable extends Fragment {
                     Seg = "12";
                 } else if (parent.getItemAtPosition(position).toString().equals("3-4")) {
                     Seg = "34";
-
                 } else {
                     Seg = "56";
-
                 }
-
                 if (k == 1) {
-
                     arrgen(Seg);
 
                 } else {
-
-
                     daily(Seg);
                 }
             }
-
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -324,14 +316,14 @@ public class Timetable extends Fragment {
 
             }
         });
-
-
         return view;
     }
+
 
     public double convertPxToDp(Context context, double px) {
         return px / context.getResources().getDisplayMetrics().density;
     }
+
 
     private void arrgen(String segment) {
         showLegend(segment);
@@ -341,8 +333,6 @@ public class Timetable extends Fragment {
         ArrayMap<String, Lecture> course = courseMap.get((Integer.parseInt(segment.substring(0, 1)) - 1) / 2);
         lectureList.clear();
         int def = getResources().getColor(R.color.brandedsurface);
-
-        //lectureList.add(create("Day" , "" , def ));
         lectureList.add(create("9", "", def));
         lectureList.add((create("10", "", def)));
         lectureList.add(create("11", "", def));
@@ -351,8 +341,6 @@ public class Timetable extends Fragment {
         lectureList.add(create("16", "", def));
         lectureList.add(create("17:30", "", def));
         lectureList.add(create("19", "", def));
-
-        //lectureList.add(create("MON", "", def));
         lectureList.add(course.get("A"));
         lectureList.add(course.get("B"));
         lectureList.add(course.get("C"));
@@ -361,9 +349,6 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("Q"));
         lectureList.add(course.get("W"));
         lectureList.add(course.get("X"));
-
-
-        //lectureList.add(create("TUE", "", def));
         lectureList.add(course.get("D"));
         lectureList.add(course.get("E"));
         lectureList.add(course.get("F"));
@@ -372,9 +357,6 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("S"));
         lectureList.add(course.get("Y"));
         lectureList.add(course.get("Z"));
-
-
-        //lectureList.add(create("WED", "", def));
         lectureList.add(course.get("B"));
         lectureList.add(course.get("C"));
         lectureList.add(course.get("A"));
@@ -383,8 +365,6 @@ public class Timetable extends Fragment {
         lectureList.add(create("", "", def));
         lectureList.add(create("", "", def));
         lectureList.add(create("", "", def));
-
-        //lectureList.add(create("THU", "", def));
         lectureList.add(course.get("C"));
         lectureList.add(course.get("A"));
         lectureList.add(course.get("B"));
@@ -393,8 +373,6 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("P"));
         lectureList.add(course.get("W"));
         lectureList.add(course.get("X"));
-
-        //lectureList.add(create("FRI", "" , def));
         lectureList.add(course.get("E"));
         lectureList.add(course.get("F"));
         lectureList.add(course.get("D"));
@@ -403,24 +381,11 @@ public class Timetable extends Fragment {
         lectureList.add(course.get("R"));
         lectureList.add(course.get("Y"));
         lectureList.add(course.get("Z"));
-
-
         RecyclerViewAdapter_TT myAdapter = new RecyclerViewAdapter_TT(getContext(), lectureList);
         StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(8, StaggeredGridLayoutManager.HORIZONTAL);
-
-
-        //manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         myRV.setAdapter(myAdapter);
         myRV.setLayoutManager(manager);
         myRV.setHasFixedSize(false);
-
-
-        //lectureList.add(create(course.get("A") , "Name"));
-        //lectureList.add(create(course.get("A") , "Name"));
-        //lectureList.add(create(course.get("A") , "Name"));
-        //lectureList.add(create(course.get("A") , "Name"));
-
-
     }
 
     private Lecture create(String id, String name, int color) {
@@ -444,125 +409,56 @@ public class Timetable extends Fragment {
             }
         });
         DaySelect.setValue(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1);
-
-
-        //int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-
-
     }
+
 
     private void matchDay(int day, String segment) {
 
         switch (day) {
             case 2: {
                 dailyCreate("ABCDPQWX", segment);
-
                 return;
-
             }
             case 3: {
                 dailyCreate("DEFGRSYZ", segment);
-
                 return;
             }
             case 4: {
                 dailyCreate("BCAGF", segment);
-
                 return;
             }
             case 5: {
                 dailyCreate("CABEQPWX", segment);
-
                 return;
             }
             case 6: {
                 dailyCreate("EFDGSRYZ", segment);
-
                 return;
             }
-            case 7: {
+            default:
                 dailyCreate("", segment);
                 return;
-            }
-
-
-            case 1: {
-                dailyCreate("", segment);
-
-                return;
-            }
-
-
         }
-
-
     }
 
+
+
     private void dailyCreate(String string, String segment) {
-
-
         ArrayMap<String, Lecture> course = courseMap.get((Integer.parseInt(segment.substring(0, 1)) - 1) / 2);
         lectures1.clear();
         T1.clear();
         T2.clear();
-
-        ArrayList<ArrayList<String>> time = new ArrayList<>();
-        ArrayList<String> t = new ArrayList<>();
-        ArrayList<String> t1 = new ArrayList<>();
-        ArrayList<String> t2 = new ArrayList<>();
-        ArrayList<String> t3 = new ArrayList<>();
-        ArrayList<String> t4 = new ArrayList<>();
-        ArrayList<String> t5 = new ArrayList<>();
-        ArrayList<String> t6 = new ArrayList<>();
-        ArrayList<String> t7 = new ArrayList<>();
-        t.add("09:00");
-        t.add("10:00");
-        time.add(t);
-
-        t1.add("10:00");
-        t1.add("11:00");
-        time.add(t1);
-
-        t2.add("11:00");
-        t2.add("12:00");
-        time.add(t2);
-
-        t3.add("12:00");
-        t3.add("13:00");
-        time.add(t3);
-
-        t4.add("14:30");
-        t4.add("16:00");
-        time.add(t4);
-
-        t5.add("16:00");
-        t5.add("17:30");
-        time.add(t5);
-
-        t6.add("17:30");
-        t6.add("19:00");
-        time.add(t6);
-
-        t7.add("19:00");
-        t7.add("20:30");
-        time.add(t7);
-
-
-        int temp = 0;
+        String[] start = {"09:00", "10:00", "11:00", "12:00", "14:30", "16:00", "17:30", "19:00"};
+        String[] end = {"10:00", "11:00", "12:00", "13:00", "16:00", "17:30", "19:00", "20:30"};
 
         for (int i = 0; i < string.length(); i++) {
-
-
             if (!course.get(string.substring(i, i + 1)).getCourseId().equals("")) {
-
-
                 lectures1.add(course.get(string.substring(i, i + 1)));
-                T1.add(time.get(i).get(0));
-                T2.add(time.get(i).get(1));
-                temp++;
+                T1.add(start[i]);
+                T2.add(end[i]);
+
             }
         }
-
 
         RecyclerViewAdapter2_TT adapter = new RecyclerViewAdapter2_TT(getContext(), lectures1, T1, T2);
         myRV.setAdapter(adapter);
@@ -570,6 +466,7 @@ public class Timetable extends Fragment {
         myRV.setLayoutManager(layout);
         return;
     }
+
 
     @Override
     public void onResume() {
@@ -582,8 +479,6 @@ public class Timetable extends Fragment {
     public void onStart() {
         if (sharedPreferences.getBoolean("TimeTableLaunch1", true)) {
             sharedPreferences.edit().putBoolean("TimeTableLaunch1", false).commit();
-
-
             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
             alert.setTitle("TIP");
             alert.setMessage("You can use AIMS Helper Chrome extension to load timetable directly from AIMS");
@@ -596,10 +491,9 @@ public class Timetable extends Fragment {
             });
             alert.show();
         }
-
-
         super.onStart();
     }
+
 
     private void showLegend(String segment) {
 

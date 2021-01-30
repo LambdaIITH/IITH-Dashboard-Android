@@ -1,30 +1,27 @@
-package com.lambda.iith.dashboard.cabsharing;
+package com.lambda.iith.dashboard.Cabsharing;
 
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -32,7 +29,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -50,10 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import Adapters.RecyclerViewAdapter;
@@ -138,7 +131,6 @@ public class CabSharing extends Fragment {
         time2 = view.findViewById(R.id.CS_Time2);
         Date2 = view.findViewById(R.id.CS_Date2);
         cab = view.findViewById(R.id.CAbType);
-       ;
         if(sharedPref.getBoolean("Registered" , false)) {
 
             Date.setText(startTime.substring(8, 10) + "-" + startTime.substring(5, 7) +"-" + startTime.substring(0, 4));
@@ -222,6 +214,8 @@ public class CabSharing extends Fragment {
     }
 
     private void DeleteBooking() throws JSONException {
+
+        WorkManager.getInstance().cancelAllWorkByTag("CAB");
 
         if (sharedPref.getInt("Private", -1) == 1) {
             Toast.makeText(getActivity().getBaseContext(), "Deleted Successfully",

@@ -1,8 +1,10 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.BackgroundTasks;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.TextView;
+
+import com.lambda.iith.dashboard.Init;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 public class GetNextBus extends AsyncTask <TextView , Void , Void> {
@@ -36,17 +39,13 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
         t4 = textViews[3];
         Init init = new Init();
 
-
         try {
             JSONObject JO;
             if (k == 1) {
-                JO = new JSONObject(sharedPref.getString("ToIITH", init.DEF1));
-
+                JO = new JSONObject(sharedPref.getString("ToIITH", Init.DEF1));
             } else {
-                JO = new JSONObject(sharedPref.getString("FromIITH", init.DEF2));
-
+                JO = new JSONObject(sharedPref.getString("FromIITH", Init.DEF2));
             }
-
 
             if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 7 || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
                 BusTimes = JO.getJSONArray("LINGAMPALLYW");
@@ -98,21 +97,25 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
                 if (BusTimes.getString(i).length() == 4) {
                     mArray.add("0" + BusTimes.getString(i));
 
-                } else {
+                } else if (BusTimes.getString(i).length() > 4) {
                     mArray.add(BusTimes.getString(i));
                 }
+                Collections.sort(mArray);
             }
 
-            for (int j = 0; j < mArray.size(); j++) {
+                for (int j = 0; j < mArray.size(); j++) {
 
-                Date T1 = format1.parse(da + ":" + mArray.get(j));
-                if (T1.compareTo(date) > 0) {
+                    java.util.Date T1 = format1.parse(da + ":" + mArray.get(j));
+                    if (T1.compareTo(date) > 0) {
 
-                    return mArray.get(j);
+                        return mArray.get(j);
+                    }
+
                 }
+                return mArray.get(0);
 
-                }
-            return mArray.get(0);
+
+
 
 
         } catch (ParseException e) {

@@ -30,13 +30,21 @@
 
         <item>Lingampally</item>
         <item>Sangareddy</item>
-
         <item>Maingate</item>
     </string-array>
     <string-array name="TimetableView">
         <item>Day</item>
         <item>Week</item>
 
+    </string-array>
+
+    <string-array name="DurationLecture">
+        <item> 5 mins </item>
+        <item> 10 mins </item>
+        <item> 15 mins </item>
+        <item> 30 mins </item>
+        <item> 45 mins </item>
+        <item> 60 mins </item>
     </string-array>
 
     <string-array name="BusToggle">
@@ -116,6 +124,7 @@
     <string name="title_activity_add_course">AddCourse</string>
     <string name="title_activity_about">About</string>
     <string name="about">About</string>
+    <string name="dev">DEV</string>
 
 
 </resources>

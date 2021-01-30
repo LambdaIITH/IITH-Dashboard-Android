@@ -1,15 +1,9 @@
-package com.lambda.iith.dashboard;
+package com.lambda.iith.dashboard.MainFragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +11,19 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
+import com.lambda.iith.dashboard.Init;
+import com.lambda.iith.dashboard.Launch;
+import com.lambda.iith.dashboard.R;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.json.JSONArray;
@@ -52,8 +56,8 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         queue = Volley.newRequestQueue(getContext());
         View view = inflater.inflate(R.layout.bs_layout, container, false);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         spinner2 = view.findViewById(R.id.spinner_2);
-
         r1 = view.findViewById(R.id.r1);
         r2 = view.findViewById(R.id.r2);
         Bus1 = view.findViewById(R.id.card1);
@@ -105,17 +109,17 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
         });
 
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         Init init = new Init();
-
         try {
-            JO = new JSONObject(sharedPreferences.getString("FromIITH", init.DEF2));
+            JO = new JSONObject(sharedPreferences.getString("FromIITH", Init.DEF2));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
-            JO2 = new JSONObject(sharedPreferences.getString("ToIITH", init.DEF1));
+            JO2 = new JSONObject(sharedPreferences.getString("ToIITH", Init.DEF1));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -146,17 +150,11 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
             display("LINGAMPALLYW", "IITH to Lingampally", "Lingampally to IITH");
         } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 0) {
             display("ODF", "Kandi to ODF", "ODF to Kandi");
-            //Toast.makeText(getContext() , "Only Sunday is Weekend for ODF buses" , Toast.LENGTH_SHORT).show();
         } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 1) {
             display("ODFS", "Kandi to ODF", "ODF to Kandi");
-            //Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
         } else if (parent.getItemAtPosition(position).toString().equals("Maingate")) {
-
-
             display("LAB", "Hostel to Maingate", "Maingate to Hostel");
         } else if (parent.getItemAtPosition(position).toString().equals("Sangareddy")) {
-
-
             display("SANGAREDDY", "IITH to Sangareddy", "Sangareddy to IITH");
         }
 

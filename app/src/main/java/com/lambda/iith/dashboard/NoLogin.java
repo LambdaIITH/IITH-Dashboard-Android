@@ -5,18 +5,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,21 +32,23 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.lambda.iith.dashboard.MainFragments.FragmentBS;
+import com.lambda.iith.dashboard.MainFragments.MessMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SkipLogin extends AppCompatActivity {
+public class NoLogin extends AppCompatActivity {
     public final static int RC_SIGN_IN = 0;
     private BottomNavigationView bottomNavigationView;
     private GoogleSignInClient mGoogleSignInClient;
@@ -200,7 +202,7 @@ public class SkipLogin extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Info", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(SkipLogin.this, MainActivity.class));
+                            startActivity(new Intent(NoLogin.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Info", "signInWithCredential:failure", task.getException());
@@ -219,27 +221,32 @@ public class SkipLogin extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        JSONObject JA = null;
+
+                        // Display the first 500 characters of the response string.
+                        JSONObject JO = null;
                         // Display the first 500 characters of the response string.
                         try {
-                            response = new String(response.getBytes("ISO-8859-1"), "UTF-8");
-                            JA = new JSONObject(response);
+
+                            JO = new JSONObject(response);
+
+                            JSONObject JA = JO.getJSONObject("TOIITH");
+                            Iterator iterator = JA.keys();
+                            ArrayList<String> Buses = new ArrayList<>();
+                            while (iterator.hasNext()) {
+                                String key = (String) iterator.next();
+
+                                Buses.add(key);
 
 
-                            Iterator<String> keys = JA.getJSONObject("TOIITH").keys();
-                            ArrayList<String> mArray = new ArrayList<>();
-                            while (keys.hasNext()) {
-                                String key = keys.next();
-                                if (JA.getJSONObject("TOIITH").get(key) instanceof JSONObject) {
-                                    mArray.add(key);
-
-                                }
                             }
-
-
+                            System.out.println(Buses);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putString("ToIITH", JA.getString("TOIITH"));
-                            edit.putString("FromIITH", JA.getString("FROMIITH"));
+
+                            Buses.remove("LINGAMPALLYW");
+                            Buses.remove("ODFS");
+                            edit.putString("BusTypes", Buses.toString());
+                            edit.putString("ToIITH", JO.getJSONObject("TOIITH").toString());
+                            edit.putString("FromIITH", JO.getJSONObject("FROMIITH").toString());
                             edit.commit();
 
 

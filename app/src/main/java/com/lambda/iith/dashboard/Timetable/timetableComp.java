@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +21,7 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import Model.Lecture;
 
@@ -57,7 +61,6 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
         colorArray.add(mContext.getResources().getColor(R.color.timetable_blue2));
         colorArray.add(mContext.getResources().getColor(R.color.timetable_green));
         colorArray.add(mContext.getResources().getColor(R.color.timetable_pink));
-
         if (courseList == null) {
             courseList = new ArrayList<>();
             courseSegmentList = new ArrayList<>();
@@ -206,7 +209,31 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
     protected void onPostExecute(ArrayList<ArrayMap<String, Lecture>> arrayMaps) {
         super.onPostExecute(arrayMaps);
         Timetable.courseMap = courseMap;
+        saveArrayList(courseMap, "TimetableMapping");
+        if (sharedPreferences1.getBoolean("RequireReset", false) && (sharedPreferences1.getBoolean("EnableLectureNotification", false))) {
+            refreshNotificationProcess();
+            sharedPreferences1.edit().putBoolean("RequireReset", false).commit();
+        }
 
 
     }
+
+    private void saveArrayList(ArrayList<ArrayMap<String, Lecture>> list, String key) {
+
+        SharedPreferences.Editor editor = sharedPreferences1.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();
+    }
+
+    private void refreshNotificationProcess() {
+        WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
+        WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).addTag("TIMETABLE").build();
+        WorkManager.getInstance().enqueue(periodicWorkRequest);
+    }
+
+
+
 }

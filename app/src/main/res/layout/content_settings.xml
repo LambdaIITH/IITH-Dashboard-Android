@@ -1,19 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Settings"
     tools:layout_editor_absoluteY="81dp"
     tools:showIn="@layout/activity_settings">
 
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Settings"
+    tools:layout_editor_absoluteY="81dp"
+    tools:showIn="@layout/activity_settings">
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="20dp"
+        android:enabled="false"
+        android:text="Duration before lecture"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LectureNotificatonSwitch" />
+
+    <Spinner
+        android:id="@+id/DefaultSeg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:entries="@array/Segments"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView32"
+        app:layout_constraintStart_toEndOf="@+id/textView32" />
+
     <TextView
         android:id="@+id/textView32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="29dp"
         android:layout_marginTop="160dp"
         android:text="Current Segment"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,21 +146,67 @@
     </RadioGroup>
 
     <Spinner
-        android:id="@+id/DefaultSeg"
+        android:id="@+id/ReminderTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:entries="@array/Segments"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView32"
-        app:layout_constraintStart_toEndOf="@+id/textView32" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="17dp"
+        android:entries="@array/DurationLecture"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@id/LectureNotificatonSwitch" />
 
-    <CheckBox
+    <Switch
         android:id="@+id/CoursenameSelect"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="28dp"
+        android:paddingLeft="29dp"
+        android:paddingRight="20dp"
         android:text="Show Course Name in timetable"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DefaultSeg" />
-</android.support.constraint.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+    <Switch
+        android:id="@+id/LectureNotificatonSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+
+        android:checked="true"
+        android:paddingLeft="29dp"
+        android:paddingRight="20dp"
+
+        android:text="Get notification before lecture"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CoursenameSelect" />
+
+    <Switch
+        android:id="@+id/lectureNotificatonTypeSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+
+        android:layout_marginEnd="16dp"
+        android:checked="true"
+        android:enabled="false"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:switchMinWidth="@dimen/activity_horizontal_margin"
+        android:text="Ring before lecture"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CoursenameSelect" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
