@@ -20,8 +20,8 @@
         android:icon="@mipmap/baseline_restaurant_menu_black_48"
         android:title="." />
     <item
-        android:id="@+id/nav_cab"
-        android:icon="@mipmap/baseline_directions_car_black_48"
+        android:id="@+id/nav_acad_info"
+        android:icon="@mipmap/iith_logo"
         android:title="." />
 
 </menu>

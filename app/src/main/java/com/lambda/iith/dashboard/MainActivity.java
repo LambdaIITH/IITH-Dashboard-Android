@@ -69,7 +69,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -187,16 +186,28 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 }
 
-                case R.id.nav_cab: {
+                case R.id.nav_acad_info: {
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
                     MasterRefresh.setVisibility(View.VISIBLE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
                     pullToRefresh.setEnabled(true);
-                    toolbar.setTitle("Cab Sharing");
-                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
+                    toolbar.setTitle("Academic Info");
                     a = 4;
                     return true;
                 }
+
+//                case R.id.nav_cab: {
+//                    findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
+//                    MasterRefresh.setVisibility(View.VISIBLE);
+//                    findViewById(R.id.addcourse).setVisibility(View.GONE);
+//                    pullToRefresh.setEnabled(true);
+//                    toolbar.setTitle("Cab Sharing");
+//                    //fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
+//                    Intent i = new Intent(MainActivity.this, CabSharing.class);
+//                    startActivity(i);
+//                    a = 4;
+//                    return true;
+//                }
 
             }
             return false;
@@ -284,9 +295,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setOnCreateContextMenuListener(this);
 
         //Setting Up BottomNav
-        bottomNavigationView = findViewById(R.id.BottomNavigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
 
         //GoogleSignInClient
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -331,6 +340,11 @@ public class MainActivity extends AppCompatActivity
             PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(CabSharingBackgroundWork.class , 1 , TimeUnit.HOURS).addTag("CAB").build();
             WorkManager.getInstance().enqueue(periodicWorkRequest);
         }
+
+
+        bottomNavigationView = findViewById(R.id.BottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
     }
 
 
@@ -433,6 +447,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_dev) {
             startActivity(new Intent(MainActivity.this, Developer.class));
         }
+        else if (id == R.id.nav_acad_info) {
+//            findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
+//            MasterRefresh.setVisibility(View.VISIBLE);
+//            findViewById(R.id.addcourse).setVisibility(View.GONE);
+//            pullToRefresh.setEnabled(true);
+//            toolbar.setTitle("Cab Sharing");
+            //fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new CabSharing()).commit();
+            Intent i = new Intent(MainActivity.this, CabSharing.class);
+            startActivity(i);
+            a = 4;
+            return true;
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -519,7 +545,7 @@ public class MainActivity extends AppCompatActivity
             b.show();
 
 
-            sharedPreferences.edit().putBoolean("FirstAfterV1.20", false).commit();
+            sharedPreferences.edit().putBoolean("FirstAfterV1.22", false).commit();
 
         }
 
@@ -529,7 +555,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void checkBatteryStatus() {
-        System.out.println(getBaseContext().getPackageName());
+        //System.out.println(getBaseContext().getPackageName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Intent intent = new Intent();
             String packageName = getPackageName();
@@ -702,7 +728,7 @@ public class MainActivity extends AppCompatActivity
 
 
                             }
-                            System.out.println(Buses);
+                            //System.out.println(Buses);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
 
                             Buses.remove("LINGAMPALLYW");
@@ -842,7 +868,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO: Handle error
+                return;
 
             }
         });

@@ -173,6 +173,7 @@ public class NoLogin extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -200,12 +201,14 @@ public class NoLogin extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Info", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             startActivity(new Intent(NoLogin.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
+
                             Log.w("Info", "signInWithCredential:failure", task.getException());
 
                         }
@@ -240,7 +243,7 @@ public class NoLogin extends AppCompatActivity {
 
 
                             }
-                            System.out.println(Buses);
+
                             SharedPreferences.Editor edit = sharedPreferences.edit();
 
                             Buses.remove("LINGAMPALLYW");

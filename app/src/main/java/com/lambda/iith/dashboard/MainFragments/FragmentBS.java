@@ -89,12 +89,12 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
                     display("LINGAMPALLY", "IITH to Lingampally", "Lingampally to IITH");
                 } else if (item.equals("Lingampally") && toggle == 1) {
                     display("LINGAMPALLYW", "IITH to Lingampally", "Lingampally to IITH");
-                } else if (item.equals("ODF") && toggle == 0) {
-                    display("ODF", "Kandi to ODF", "ODF to Kandi");
-                    // Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
-
-                } else if (item.equals("ODF") && toggle == 1) {
-                    display("ODFS", "Kandi to ODF", "ODF to Kandi");
+//                } else if (item.equals("ODF") && toggle == 0) {
+//                    display("ODF", "Kandi to ODF", "ODF to Kandi");
+//                    // Toast.makeText(getContext(), "Only Sunday is Weekend for ODF buses", Toast.LENGTH_SHORT).show();
+//
+//                } else if (item.equals("ODF") && toggle == 1) {
+//                    display("ODFS", "Kandi to ODF", "ODF to Kandi");
                     //Toast.makeText(getContext() , "Only Sunday is Weekend for ODF buses" , Toast.LENGTH_SHORT).show();
                 } else if (item.equals("Maingate")) {
 
@@ -148,10 +148,10 @@ public class FragmentBS extends Fragment implements AdapterView.OnItemSelectedLi
             display("LINGAMPALLY", "IITH to Lingampally", "Lingampally to IITH");
         } else if (parent.getItemAtPosition(position).toString().equals("Lingampally") && toggle == 1) {
             display("LINGAMPALLYW", "IITH to Lingampally", "Lingampally to IITH");
-        } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 0) {
-            display("ODF", "Kandi to ODF", "ODF to Kandi");
-        } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 1) {
-            display("ODFS", "Kandi to ODF", "ODF to Kandi");
+//        } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 0) {
+//            display("ODF", "Kandi to ODF", "ODF to Kandi");
+//        } else if (parent.getItemAtPosition(position).toString().equals("ODF") && toggle == 1) {
+//            display("ODFS", "Kandi to ODF", "ODF to Kandi");
         } else if (parent.getItemAtPosition(position).toString().equals("Maingate")) {
             display("LAB", "Hostel to Maingate", "Maingate to Hostel");
         } else if (parent.getItemAtPosition(position).toString().equals("Sangareddy")) {

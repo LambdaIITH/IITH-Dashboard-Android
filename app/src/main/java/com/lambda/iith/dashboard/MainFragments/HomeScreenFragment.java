@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -115,7 +117,7 @@ public class HomeScreenFragment extends Fragment {
         cab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acad_info);
 
             }
         });
@@ -154,7 +156,7 @@ public class HomeScreenFragment extends Fragment {
         CabSharing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acad_info);
             }
         });
         mess1 = view.findViewById(R.id.menu_home);
@@ -532,8 +534,11 @@ public class HomeScreenFragment extends Fragment {
         myRV.setAdapter(adapter);
         LinearLayoutManager layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         myRV.setLayoutManager(layout);
+
         return;
     }
+
+
 
 
 }

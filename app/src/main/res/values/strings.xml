@@ -125,6 +125,7 @@
     <string name="title_activity_about">About</string>
     <string name="about">About</string>
     <string name="dev">DEV</string>
+    <string name="cab_sharing">Cab Sharing</string>
 
 
 </resources>

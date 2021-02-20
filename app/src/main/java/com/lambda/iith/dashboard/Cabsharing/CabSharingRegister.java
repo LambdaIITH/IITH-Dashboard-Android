@@ -287,7 +287,7 @@ public class CabSharingRegister extends AppCompatActivity {
     }
 
     private void checkBatteryStatus() {
-        System.out.println(getBaseContext().getPackageName());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Intent intent = new Intent();
             String packageName = getPackageName();

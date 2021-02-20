@@ -80,7 +80,7 @@ public class NotificationInitiator extends Worker {
         int[] hours = {9, 10, 11, 12, 14, 16,17 , 19};
         int[] mins = {0, 0, 0, 0, 30, 0, 30, 0};
         Boolean ring = sharedPreferences.getBoolean("LectureNotificationRing" , false);
-        System.out.println("DAY" + segments);
+
         for (int i = 0; i < segments.length(); i++) {
             String slot = Character.toString(segments.charAt(i));
             Lecture lecture = CourseSegment.get(slot);
@@ -91,9 +91,9 @@ public class NotificationInitiator extends Worker {
 
                 if (calendar.getTimeInMillis() - System.currentTimeMillis() - Interval * 60 * 1000 > 0) {
 
-                    System.out.println(lecture.getCourse());
+
                     Data.Builder data = new Data.Builder().putString("LectureName", lecture.getCourse()).putString("LectureId", lecture.getCourseId()).putInt("Hours", hours[i]).putInt("Mins", mins[i]).putBoolean("Ring" , ring);
-                    System.out.println(lecture.getCourse());
+
 
                     OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
                             .setInitialDelay( calendar.getTimeInMillis() - System.currentTimeMillis() - Interval * 60 * 1000 , TimeUnit.MILLISECONDS)

@@ -38,7 +38,7 @@ public class NotificationWorker extends Worker {
         int Hours = getInputData().getInt("Hours", 0);
         int Mins = getInputData().getInt("Mins", 0);
         Boolean ring = getInputData().getBoolean("Ring" , false);
-        System.out.println("START");
+
         Intent intentToRepeat = new Intent(getApplicationContext(), Launch.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(getApplicationContext(), 100, intentToRepeat, PendingIntent.FLAG_UPDATE_CURRENT);
