@@ -88,6 +88,21 @@
         <item>Y</item>
         <item>Z</item>
     </string-array>
+
+    <string-array name="branches">
+        <item>..</item>
+        <item>AI</item>
+        <item>CSE</item>
+        <item>BME</item>
+        <item>CE</item>
+        <item>CHE</item>
+        <item>EE</item>
+        <item>EP</item>
+        <item>ES</item>
+        <item>MAE</item>
+        <item>MSME</item>
+
+    </string-array>
     <string name="title_activity_cab_sharing_register2">CabSharing</string>
     <string name="cab_type_rgia_to_iith">Cab : RGIA to IITH</string>
 

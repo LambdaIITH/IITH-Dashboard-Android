@@ -18,7 +18,11 @@
         android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
-        <activity android:name=".Developer"></activity>
+        <activity
+            android:name=".MainFragments.curriculum"
+            android:label="Curriculum"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".Developer" />
         <activity
             android:name=".About"
             android:label="@string/title_activity_about"
@@ -32,7 +36,6 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
         <activity
             android:name=".Cabsharing.CabSharing"
             android:label="Cab Sharing"
@@ -45,7 +48,6 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-
         </service>
 
         <meta-data
@@ -54,6 +56,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="Alerts" />
+
         <activity
             android:name=".NoLogin"
             android:label="IITH Dashboard"
@@ -71,22 +74,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".Cabsharing.CabSharingRegister"
             android:label="@string/title_activity_cab_sharing_register2"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
-
         <activity
             android:name=".MainActivity"
             android:label="IITH Dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
 
         <meta-data
             android:name="preloaded_fonts"

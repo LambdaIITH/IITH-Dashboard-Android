@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainFragments.curriculum"
+    tools:showIn="@layout/activity_curriculum">
+
+    <TextView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cid"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <!--    <CheckBox-->
+<!--        android:id="@+id/checkBox4"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="60dp"-->
+<!--        android:text="5-6"-->
+<!--        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox5"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox5"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="47dp"-->
+<!--        android:layout_marginEnd="33dp"-->
+<!--        android:text="3-4"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/checkBox4"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/cid" />-->
+
+    <RadioButton
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="102dp"
+        android:text="2020"
+
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <Spinner
+        android:id="@+id/spinnerslot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="184dp"
+        android:layout_marginEnd="87dp"
+        android:entries="@array/branches"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
+        app:layout_constraintEnd_toEndOf="@+id/checkBox5"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="73dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="32dp"
+        android:text="Year"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="152dp"
+        android:text="Branch"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
