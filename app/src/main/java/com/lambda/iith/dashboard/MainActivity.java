@@ -60,6 +60,7 @@ import com.lambda.iith.dashboard.Cabsharing.CabSharingBackgroundWork;
 import com.lambda.iith.dashboard.MainFragments.FragmentBS;
 import com.lambda.iith.dashboard.MainFragments.HomeScreenFragment;
 import com.lambda.iith.dashboard.MainFragments.MessMenu;
+import com.lambda.iith.dashboard.MainFragments.acad_info;
 import com.lambda.iith.dashboard.Timetable.AddCourse;
 import com.lambda.iith.dashboard.Timetable.NotificationInitiator;
 import com.lambda.iith.dashboard.Timetable.Timetable;
@@ -192,6 +193,7 @@ public class MainActivity extends AppCompatActivity
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
                     pullToRefresh.setEnabled(true);
                     toolbar.setTitle("Academic Info");
+                    fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new acad_info()).commit();
                     a = 4;
                     return true;
                 }
