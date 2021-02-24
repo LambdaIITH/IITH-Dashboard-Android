@@ -66,7 +66,13 @@ public class acad_info extends Fragment {
             }
         });
 
-
+//        handbooks.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://calendar.google.com/calendar/u/0/r?cid=c_ll73em8s81nhu8nbjvggqhmbgc@group.calendar.google.com")));
+//
+//            }
+//        });
 
 
 
