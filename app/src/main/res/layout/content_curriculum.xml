@@ -18,36 +18,54 @@
         app:layout_constraintTop_toTopOf="@+id/checkBox3" />
 
 
-    <!--    <CheckBox-->
-    <!--        android:id="@+id/checkBox4"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginEnd="60dp"-->
-    <!--        android:text="5-6"-->
-    <!--        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox5"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
-    <!--    <CheckBox-->
-    <!--        android:id="@+id/checkBox5"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="47dp"-->
-    <!--        android:layout_marginEnd="33dp"-->
-    <!--        android:text="3-4"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/checkBox4"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/cid" />-->
+<RadioGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    
+    android:id="@+id/checkBox3"
+
+            android:layout_marginEnd="109dp"
+            android:text="2020"
+           android:textSize="18sp">
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="2020"
+            android:onClick="onRadioButtonClicked"
+            android:textSize="18sp"/>
 
     <RadioButton
-        android:id="@+id/checkBox3"
+        android:id="@+id/radio2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
 
-        android:layout_marginEnd="109dp"
-        android:text="2020"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="2019"
+        android:onClick="onRadioButtonClicked"
+        android:textSize="18sp"/>
+
+    <RadioButton
+        android:id="@+id/radio3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2018"
+        android:onClick="onRadioButtonClicked"
+        android:textSize="18sp"/>
+
+    <RadioButton
+        android:id="@+id/radio4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2017"
+        android:onClick="onRadioButtonClicked"
+        android:textSize="18sp"/>
+
+
+</RadioGroup>
 
     <Spinner
         android:id="@+id/spinnerslot"
@@ -58,7 +76,7 @@
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.178"
+        app:layout_constraintHorizontal_bias="0.316"
         app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
     <TextView
@@ -79,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="102dp"
         android:text="Branch"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"

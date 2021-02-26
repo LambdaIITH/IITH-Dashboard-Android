@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ public class curriculum extends AppCompatActivity {
 
     private String branch;
     Spinner spinner;
-    private RadioButton c1;
+    private RadioGroup c1;
     private Button show;
     private String year = "";
     private String pdf_link = "";
@@ -33,7 +34,12 @@ public class curriculum extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         c1 = findViewById(R.id.checkBox3);
+
         spinner = findViewById(R.id.spinnerslot);
+
+
+        c1.clearCheck();
+
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -41,9 +47,8 @@ public class curriculum extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 branch = parent.getItemAtPosition(position).toString();
                 System.out.println("jai goyal" + branch);
-                if (c1.isChecked()) {
-                    year = "2020";
-                }
+
+
 
                 if(!branch.equals("..") && !year.equals(""))
                 {
@@ -79,4 +84,32 @@ public class curriculum extends AppCompatActivity {
     }
 
 
+    public void onRadioButtonClicked(View view) {
+
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio1:
+                if (checked)
+                    year = "2020";
+                    break;
+            case R.id.radio2:
+                if (checked)
+                    year = "2019";
+                    break;
+
+            case R.id.radio3:
+                if (checked)
+                    year = "2018";
+                break;
+            case R.id.radio4:
+                if (checked)
+                    year = "2017";
+                break;
+
+        }
+
+
+    }
 }
