@@ -8,29 +8,52 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical">
 
-
-        <Button
-            android:id="@+id/curriculum"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:paddingTop="10dp"
-            android:text="Curriculum" />
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/acad_calender"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:text="Add Calender" />
 
-        <Button
-            android:id="@+id/handbooks"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:text="Academic Handbooks" />
+            <Button
+                android:id="@+id/curriculum"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:background="@color/toggle"
+                android:paddingTop="0dp"
+                android:text="Curriculum"
+                android:textColor="@color/Background" />
+
+            <Button
+                android:id="@+id/acad_calender"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:background="@color/toggle"
+                android:text="Add Google Calender"
+                android:textColor="@color/Background" />
+
+            <Button
+                android:id="@+id/handbooks"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:background="@color/toggle"
+                android:text="Handbook"
+                android:textColor="@color/Background" />
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </FrameLayout>

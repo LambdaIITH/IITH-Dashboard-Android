@@ -1,6 +1,7 @@
 package com.lambda.iith.dashboard.MainFragments;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -29,7 +30,8 @@ public class curriculum extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curriculum);
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         c1 = findViewById(R.id.checkBox3);
         spinner = findViewById(R.id.spinnerslot);
 

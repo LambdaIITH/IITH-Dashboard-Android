@@ -1,6 +1,7 @@
 package com.lambda.iith.dashboard.MainFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lambda.iith.dashboard.AutostartManager;
 import com.lambda.iith.dashboard.BackgroundTasks.GetNextBus;
+import com.lambda.iith.dashboard.Cabsharing.CabSharing;
 import com.lambda.iith.dashboard.Init;
 import com.lambda.iith.dashboard.Launch;
 import com.lambda.iith.dashboard.MainActivity;
@@ -117,7 +119,8 @@ public class HomeScreenFragment extends Fragment {
         cab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acad_info);
+
+                startActivity(new Intent(getActivity(), com.lambda.iith.dashboard.Cabsharing.CabSharing.class));
 
             }
         });

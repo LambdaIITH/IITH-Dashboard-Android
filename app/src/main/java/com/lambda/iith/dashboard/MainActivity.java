@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity
                     findViewById(R.id.TimeTableRefresh).setVisibility(View.GONE);
                     MasterRefresh.setVisibility(View.VISIBLE);
                     findViewById(R.id.addcourse).setVisibility(View.GONE);
-                    pullToRefresh.setEnabled(true);
+                    pullToRefresh.setEnabled(false);
                     toolbar.setTitle("Academic Info");
                     fragmentManager.beginTransaction().replace(R.id.fragmentlayout, new acad_info()).commit();
                     a = 4;

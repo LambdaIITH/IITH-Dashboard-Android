@@ -142,7 +142,7 @@
         android:layout_marginBottom="50dp"
         android:lineSpacingExtra="8sp"
         android:soundEffectsEnabled="true"
-        android:text="Github  :   https://github.com/iith-dashboard"
+        android:text="github.com/LambdaIITH/IITH-Dashboard-Android"
         android:textColor="@android:color/holo_blue_light"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
