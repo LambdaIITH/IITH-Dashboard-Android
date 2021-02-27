@@ -4,6 +4,10 @@
     tools:showIn="navigation_view">
 
     <item
+        android:id="@+id/nav_acad_info"
+        android:icon="@mipmap/baseline_directions_car_black_48"
+        android:title="@string/cab_sharing" />
+    <item
         android:id="@+id/nav_Settings"
         android:icon="@mipmap/settings"
         android:title="@string/action_settings" />

@@ -44,7 +44,7 @@ public class About extends AppCompatActivity {
         github.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/iith-dashboard"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/LambdaIITH/IITH-Dashboard-Android"));
                 startActivity(browserIntent);
             }
         });

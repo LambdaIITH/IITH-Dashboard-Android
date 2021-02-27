@@ -1,6 +1,7 @@
 package com.lambda.iith.dashboard.MainFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lambda.iith.dashboard.AutostartManager;
 import com.lambda.iith.dashboard.BackgroundTasks.GetNextBus;
+import com.lambda.iith.dashboard.Cabsharing.CabSharing;
 import com.lambda.iith.dashboard.Init;
 import com.lambda.iith.dashboard.Launch;
 import com.lambda.iith.dashboard.MainActivity;
@@ -115,7 +119,8 @@ public class HomeScreenFragment extends Fragment {
         cab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
+
+                startActivity(new Intent(getActivity(), com.lambda.iith.dashboard.Cabsharing.CabSharing.class));
 
             }
         });
@@ -154,7 +159,7 @@ public class HomeScreenFragment extends Fragment {
         CabSharing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acad_info);
             }
         });
         mess1 = view.findViewById(R.id.menu_home);
@@ -532,8 +537,11 @@ public class HomeScreenFragment extends Fragment {
         myRV.setAdapter(adapter);
         LinearLayoutManager layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         myRV.setLayoutManager(layout);
+
         return;
     }
+
+
 
 
 }

@@ -53,7 +53,7 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_cab);
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.nav_acad_info);
 
             }
         });

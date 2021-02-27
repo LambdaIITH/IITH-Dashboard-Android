@@ -68,7 +68,7 @@ public class CabSharingBackgroundWork extends Worker {
 
             @Override
             public void onRequestFinished(Request<Object> request) {
-                System.out.println("TTT1" + Switch);
+
                 final String emptyJA = new JSONArray().toString();
                 if (Switch) {
 
@@ -191,7 +191,7 @@ public class CabSharingBackgroundWork extends Worker {
 
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println("AAA" + response);
+
 
                 try {
                     Switch = response.getBoolean("IsUpdateReqd");

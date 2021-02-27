@@ -154,7 +154,7 @@ public class Settings extends AppCompatActivity {
         }
 
         int interval = sharedPreferences.getInt("NotificationTime", 30);
-        System.out.println("1+" + interval);
+
         if(interval==5){
             LectureTime.setSelection(0);
         }
@@ -178,7 +178,7 @@ public class Settings extends AppCompatActivity {
         LectureTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(position);
+
                     if(position==0){
                         sharedPreferences.edit().putInt("NotificationTime" , 5).commit();}
 
@@ -313,7 +313,7 @@ public class Settings extends AppCompatActivity {
     }
 
     private void checkBatteryStatus() {
-        System.out.println(getBaseContext().getPackageName());
+        //System.out.println(getBaseContext().getPackageName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Intent intent = new Intent();
             String packageName = getPackageName();

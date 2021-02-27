@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,17 +50,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import Adapters.RecyclerViewAdapter;
+import Model.Filter;
 
-public class CabSharing extends Fragment {
+public class CabSharing extends AppCompatActivity {
 
 
     public int flag;
 
     private RecyclerView recyclerView;
-
+    private ImageButton CabRefresh;
     private TextView textView;
     private CardView dateCard , Time1 , RouteC;
     private ArrayList<String> mNames = new ArrayList<>();
@@ -68,23 +73,33 @@ public class CabSharing extends Fragment {
     private RequestQueue queue;
     private SharedPreferences sharedPref;
     private String idToken;
-    private View view;
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_cab_sharing, container, false);
-        dateCard = view.findViewById(R.id.cardView2);
-        RouteC = view.findViewById(R.id.cardView);
-        Time1 = view.findViewById(R.id.cardView3);
-        textView = view.findViewById(R.id.CAbType);
-        recyclerView = view.findViewById(R.id.Recycler);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cab_sharing);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        dateCard = findViewById(R.id.cardView2);
+        RouteC = findViewById(R.id.cardView);
+        Time1 = findViewById(R.id.cardView3);
+        textView = findViewById(R.id.CAbType);
+        recyclerView = findViewById(R.id.Recycler);
+        CabRefresh = findViewById(R.id.CabRefresh);
+        CabRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateShares();
+            }
+        });
+
         flag = 0;
-        queue = Volley.newRequestQueue(getContext());
-        int width = (int) convertPxToDp(getContext() , Launch.width/2);
+        queue = Volley.newRequestQueue(this);
+        int width = (int) convertPxToDp(this , Launch.width/2);
 
         ViewGroup.LayoutParams params = dateCard.getLayoutParams();
-        final float scale = getContext().getResources().getDisplayMetrics().density;
+        final float scale = this.getResources().getDisplayMetrics().density;
         params.width = (int) ((width - 20) * scale + 0.5f);
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         dateCard.setLayoutParams(params);
@@ -119,18 +134,18 @@ public class CabSharing extends Fragment {
         }
 
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         startTime = sharedPref.getString("startTime", "    NA      NA  ");
         endTime = sharedPref.getString("endTime", "    NA      NA  ");
         CabID = sharedPref.getInt("Route", 100);
 
 
-        Date = view.findViewById(R.id.CS_Date);
-        time1 = view.findViewById(R.id.CS_Time1);
-        time2 = view.findViewById(R.id.CS_Time2);
-        Date2 = view.findViewById(R.id.CS_Date2);
-        cab = view.findViewById(R.id.CAbType);
+        Date = findViewById(R.id.CS_Date);
+        time1 = findViewById(R.id.CS_Time1);
+        time2 = findViewById(R.id.CS_Time2);
+        Date2 = findViewById(R.id.CS_Date2);
+        cab = findViewById(R.id.CAbType);
         if(sharedPref.getBoolean("Registered" , false)) {
 
             Date.setText(startTime.substring(8, 10) + "-" + startTime.substring(5, 7) +"-" + startTime.substring(0, 4));
@@ -149,22 +164,22 @@ public class CabSharing extends Fragment {
         }
 
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
 
         //we are connected to a network
         ParseJSON();
 
 
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.menu_item1);
+        FloatingActionButton floatingActionButton = findViewById(R.id.menu_item1);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), CabSharingRegister.class));
+                startActivity(new Intent(CabSharing.this, CabSharingRegister.class));
             }
         });
 
 
-        FloatingActionButton floatingActionButton1 = view.findViewById(R.id.menu_item2);
+        FloatingActionButton floatingActionButton1 = findViewById(R.id.menu_item2);
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,8 +192,6 @@ public class CabSharing extends Fragment {
 
             }
         });
-
-        return view;
     }
 
 
@@ -208,9 +221,9 @@ public class CabSharing extends Fragment {
     private void UpdateRecycler(ArrayList<String> Emails) {
 
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), Emails);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, Emails);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void DeleteBooking() throws JSONException {
@@ -218,7 +231,7 @@ public class CabSharing extends Fragment {
         WorkManager.getInstance().cancelAllWorkByTag("CAB");
 
         if (sharedPref.getInt("Private", -1) == 1) {
-            Toast.makeText(getActivity().getBaseContext(), "Deleted Successfully",
+            Toast.makeText(this.getBaseContext(), "Deleted Successfully",
                     Toast.LENGTH_SHORT).show();
             SharedPreferences.Editor edit = sharedPref.edit();
             edit.remove("startTime");
@@ -228,16 +241,21 @@ public class CabSharing extends Fragment {
             edit.remove("Private");
             edit.remove("CabShares");
             edit.commit();
-            Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentlayout);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.detach(fragment);
-            ft.attach(fragment);
-            ft.commit();
+            Intent i = new Intent(CabSharing.this, CabSharing.class);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(i);
+            overridePendingTransition(0, 0);
+//            Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentlayout);
+//            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//            ft.detach(fragment);
+//            ft.attach(fragment);
+//            ft.commit();
             return;
         }
 
         if ((sharedPref.getInt("Private", -1) == -1)) {
-            Toast.makeText(getActivity().getBaseContext(), "No Booking",
+            Toast.makeText(this.getBaseContext(), "No Booking",
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -258,7 +276,7 @@ public class CabSharing extends Fragment {
             StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(getActivity().getBaseContext(), "Deleted Successfully",
+                    Toast.makeText(CabSharing.this, "Deleted Successfully",
                             Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor edit = sharedPref.edit();
                     edit.remove("startTime");
@@ -276,7 +294,7 @@ public class CabSharing extends Fragment {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity().getBaseContext(), "Delete Unuccessfull",
+                    Toast.makeText(CabSharing.this.getBaseContext(), "Delete Unuccessfull",
                             Toast.LENGTH_SHORT).show();
                     Log.e("VOLLEY", error.toString());
                 }
@@ -305,11 +323,16 @@ public class CabSharing extends Fragment {
             queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
                 @Override
                 public void onRequestFinished(Request<Object> request) {
-                    Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentlayout);
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(fragment);
-                    ft.attach(fragment);
-                    ft.commit();
+//                    Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentlayout);
+//                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                    ft.detach(fragment);
+//                    ft.attach(fragment);
+//                    ft.commit();
+                      Intent i = new Intent(CabSharing.this, CabSharing.class);
+                      finish();
+                      overridePendingTransition(0, 0);
+                      startActivity(i);
+                      overridePendingTransition(0, 0);
                 }
             });
         }
@@ -320,6 +343,45 @@ public class CabSharing extends Fragment {
     //Deleting from server
     public double convertPxToDp(Context context, double px) {
         return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+
+        onBackPressed();
+        return true;
+    }
+
+    public void updateShares(){
+        final String url4 = "https://iith.dev/query";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url4,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Filter filter = new Filter();
+                        try {
+                            filter.set(response , sharedPref);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        new BookingFilter().execute(filter);
+
+
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Server Refresh Failed ...", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        queue.add(stringRequest);
     }
 
     private boolean checkforupdates() {
@@ -336,7 +398,7 @@ public class CabSharing extends Fragment {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(getActivity().getBaseContext(), "Booked Successfully",
+                    Toast.makeText(CabSharing.this.getBaseContext(), "Booked Successfully",
                             Toast.LENGTH_SHORT).show();
 
 

@@ -57,13 +57,15 @@ public class GetNextBus extends AsyncTask <TextView , Void , Void> {
             a = TimeCalc(BusTimes);
 
 
-            if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-                BusTimes = JO.getJSONArray("ODF");
-            } else {
-                BusTimes = JO.getJSONArray("ODF");
-            }
+//            if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
+//                BusTimes = JO.getJSONArray("ODF");
+//            } else {
+//                BusTimes = JO.getJSONArray("ODF");
+//            }
 
-            b = TimeCalc(BusTimes);
+
+
+            //b = TimeCalc(BusTimes);
 
 
             BusTimes = JO.getJSONArray("SANGAREDDY");
