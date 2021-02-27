@@ -52,17 +52,19 @@
         android:id="@+id/radio3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2018"
+        android:enabled="false"
         android:onClick="onRadioButtonClicked"
-        android:textSize="18sp"/>
+        android:text="2018"
+        android:textSize="18sp" />
 
     <RadioButton
         android:id="@+id/radio4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2017"
+        android:enabled="false"
         android:onClick="onRadioButtonClicked"
-        android:textSize="18sp"/>
+        android:text="2017"
+        android:textSize="18sp" />
 
 
 </RadioGroup>
@@ -102,6 +104,17 @@
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <Button
+        android:id="@+id/curr_fetch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Fetch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerslot" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

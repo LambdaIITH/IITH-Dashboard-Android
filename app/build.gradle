@@ -7,7 +7,7 @@ android {
         applicationId "com.lambda.iith.dashboard"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 20
+        versionCode 21
         versionName "1.30"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

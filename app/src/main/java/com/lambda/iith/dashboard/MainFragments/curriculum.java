@@ -9,15 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.lambda.iith.dashboard.R;
-import com.lambda.iith.dashboard.Timetable.AddCourse;
-import com.lambda.iith.dashboard.Timetable.Timetable;
 
 public class curriculum extends AppCompatActivity {
 
@@ -34,22 +31,17 @@ public class curriculum extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         c1 = findViewById(R.id.checkBox3);
-
+        show = findViewById(R.id.curr_fetch);
         spinner = findViewById(R.id.spinnerslot);
 
 
         c1.clearCheck();
 
+        show.setOnClickListener(new View.OnClickListener()
 
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                branch = parent.getItemAtPosition(position).toString();
-                System.out.println("jai goyal" + branch);
-
-
-
+            public void onClick (View v){
                 if(!branch.equals("..") && !year.equals(""))
                 {
 
@@ -64,9 +56,24 @@ public class curriculum extends AppCompatActivity {
                 {
                     Toast.makeText(getBaseContext(), "All fields are mandatory", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                branch = parent.getItemAtPosition(position).toString();
+
+
+
+
+
 
 
             }
+
+
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

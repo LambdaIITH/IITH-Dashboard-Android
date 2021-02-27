@@ -88,7 +88,7 @@ public class acad_info extends Fragment {
         handbooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://iith.dev/curriculum/handbook/academic_handbook.pdf")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://iith.dev/curriculum/academic_handbook.pdf")));
 
             }
         });
