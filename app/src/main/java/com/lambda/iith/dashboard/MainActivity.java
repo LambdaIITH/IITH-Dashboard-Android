@@ -19,15 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -72,11 +76,16 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import Model.Filter;
+import biweekly.Biweekly;
+import biweekly.ICalendar;
+import biweekly.component.VEvent;
 
 
 public class MainActivity extends AppCompatActivity
@@ -574,9 +583,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
                 alert.show();
-
-
-
             }
         }
     }
@@ -683,7 +689,8 @@ public class MainActivity extends AppCompatActivity
 
         BusData();
         messData();
-
+        GetCalendarData();
+        System.out.println("In main activity");
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
             @Override
             public void onRequestFinished(Request<Object> request) {
@@ -730,7 +737,7 @@ public class MainActivity extends AppCompatActivity
 
 
                             }
-                            //System.out.println(Buses);
+                            System.out.println(Buses);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
 
                             Buses.remove("LINGAMPALLYW");
@@ -953,7 +960,6 @@ public class MainActivity extends AppCompatActivity
                     courseList = (List<String>) documentSnapshot.get("identifiedCourses");
                     courseSegmentList = (List<String>) documentSnapshot.get("identifiedSegments");
                     slotList = (List<String>) documentSnapshot.get("identifiedSlots");
-
                 }
                 CourseName = new ArrayList<>();
                 try {
@@ -992,6 +998,65 @@ public class MainActivity extends AppCompatActivity
         });
 
 
+    }
+
+    private void GetCalendarData() {
+        String url = "https://calendar.google.com/calendar/ical/c_ll73em8s81nhu8nbjvggqhmbgc%40group.calendar.google.com/public/basic.ics";
+
+        StringRequest icsRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("Response Recieved.");
+                        try {
+                           // System.out.println(response);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("AcadCalendar",response).apply();
+                            ICalendar ical = Biweekly.parse(response).first();
+                            VEvent event = ical.getEvents().get(0);
+                            System.out.println(event.getDateStart());
+
+                            //System.out.println(summary);
+                            //add it into shard preferences
+                            //and be done with the function here.
+                            //going to make a test notification
+                            /*
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "AcadEventAlerts")
+                                    .setSmallIcon(R.drawable.ic_notification)
+                                    .setContentTitle("Retrieved Calendar")
+                                    .setContentText("Calendar was synced from Google Calendar")
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+
+                            // notificationId is a unique int for each notification that you must define
+                            notificationManager.notify(1571, builder.build());*/
+
+                            PeriodicWorkRequest testPeriodicRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 1,TimeUnit.DAYS)
+                                    .addTag("ACADEVENTS")
+                                    .build();
+                            OneTimeWorkRequest testRequest = new OneTimeWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class)
+                                    .addTag("ACADEVENTS")
+                                    .build();
+                            //WorkManager.getInstance()
+                              //      .enqueue(testRequest);
+                            WorkManager.getInstance()
+                                    .enqueue(testPeriodicRequest);
+                        } catch (Error error) {
+                            System.out.println(error);
+                        }
+                    }
+                } , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Some error occurred");
+                System.out.println(error);
+            }
+        }
+        );
+        queue.add(icsRequest);
+        System.out.println("finished execution");
     }
 
     //Saving timetable

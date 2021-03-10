@@ -36,9 +36,8 @@ public class Launch extends Activity {
         createNotificationChannel();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
-
+            //the user has not been logged in
             startActivity(new Intent(Launch.this, NoLogin.class));
-
 
         } else {
             if (sharedPreferences.getBoolean("EnableLectureNotification", false)) {
@@ -78,6 +77,15 @@ public class Launch extends Activity {
             // or other notification behaviors after this
             NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
             notificationManager3.createNotificationChannel(channel3);
+
+			//notification channel for acad reminders.
+            int importance3 = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel4 = new NotificationChannel("AcadEventAlerts", "Academic Reminders", importance2);
+            channel.setDescription("Academic Calendar Events");
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager4 = getSystemService(NotificationManager.class);
+            notificationManager4.createNotificationChannel(channel4);
         }
     }
 

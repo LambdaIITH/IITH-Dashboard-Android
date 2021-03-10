@@ -51,8 +51,7 @@ dependencies {
     implementation 'androidx.mediarouter:mediarouter:1.0.0'
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-
-
+    implementation 'net.sf.biweekly:biweekly:0.6.6'
 
 
 }
