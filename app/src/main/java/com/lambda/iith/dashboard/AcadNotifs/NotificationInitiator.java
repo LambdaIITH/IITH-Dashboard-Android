@@ -79,6 +79,9 @@ public class NotificationInitiator extends Worker {
             System.out.println("No Events Scheduled Today");
             return Result.success();
         }
+        //do not push notifications if the user does not want them.
+        if(sharedPrefs.getBoolean("EnableAcadNotification",true) ==  false)
+            return Result.success();
 
         for(int i=0;i<allEvents.size();i++){
             VEvent curr = allEvents.get(i);
@@ -87,7 +90,7 @@ public class NotificationInitiator extends Worker {
 
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.MINUTE, 00);
-            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.HOUR_OF_DAY, 20);
             long diff =  cal.getTimeInMillis() - System.currentTimeMillis();
             if(diff<0)
                 diff = 0;
@@ -105,18 +108,6 @@ public class NotificationInitiator extends Worker {
         DateFormat df = new SimpleDateFormat("dd/mm/yyyy HH");
         Date nextEvent = allEvents.get(0).getDateEnd().getValue();
         String titleString =  allEvents.get(0).getSummary().getValue();
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "AcadEventAlerts")
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle(titleString)
-                .setContentText(df.format(nextEvent))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-
-        // notificationId is a unique int for each notification that you must define
-
-        notificationManager.notify(1572, builder.build());
         */
 
         return Result.success();

@@ -34,7 +34,7 @@ public class Settings extends AppCompatActivity {
     private CheckBox cab, bus, mess, timetable;
     private RadioGroup mess_select;
     private Spinner SegDef, LectureTime;
-    private Switch LectureNotification, courseName , LectureNotificationType;
+    private Switch LectureNotification, courseName , LectureNotificationType, acadReminder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class Settings extends AppCompatActivity {
         LectureTime = findViewById(R.id.ReminderTime);
         LectureNotification = findViewById(R.id.LectureNotificatonSwitch);
         LectureNotificationType = findViewById(R.id.lectureNotificatonTypeSwitch);
-
+        acadReminder = findViewById(R.id.AcadReminderSwitch);
 
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
@@ -109,6 +109,20 @@ public class Settings extends AppCompatActivity {
                     sharedPreferences.edit().putBoolean("Cname", true).commit();
                 } else {
                     sharedPreferences.edit().putBoolean("Cname", false).commit();
+                }
+            }
+        });
+
+        acadReminder.setChecked(sharedPreferences.getBoolean("EnableAcadNotification",true));
+        acadReminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (acadReminder.isChecked()) {
+                    sharedPreferences.edit().putBoolean("EnableAcadNotification", true).commit();
+                    refreshNotificationProcess();
+                    checkBatteryStatus();
+                } else {
+                    sharedPreferences.edit().putBoolean("EnableAcadNotification", false).commit();
                 }
             }
         });
@@ -308,8 +322,19 @@ public class Settings extends AppCompatActivity {
     private void refreshNotificationProcess() {
         WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
         WorkManager.getInstance().cancelAllWorkByTag("TIMETABLE");
+        WorkManager.getInstance().cancelAllWorkByTag("ACADEVENTS");
+        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+
         PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).addTag("TIMETABLE").build();
-        WorkManager.getInstance().enqueue(periodicWorkRequest);
+        if(sharedPreferences.getBoolean("EnableLectureNotification", true))
+            WorkManager.getInstance().enqueue(periodicWorkRequest);
+
+        PeriodicWorkRequest acadRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 1,TimeUnit.DAYS)
+                .addTag("ACADEVENTS")
+                .build();
+
+        if(sharedPreferences.getBoolean("EnableAcadNotification", true))
+            WorkManager.getInstance().enqueue(acadRequest);
     }
 
     private void checkBatteryStatus() {
