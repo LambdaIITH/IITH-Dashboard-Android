@@ -123,7 +123,7 @@ public class Timetable extends Fragment {
         } if(slotList.contains(slot)){
 
             for(int i=0 ; i<courseList.size() ; i++){
-                if(slotList.get(i).equals(slot) && courseSegmentList.get(i).contains(segment)){
+                if(slotList.get(i).equals(slot) && (courseSegmentList.get(i).contains(segment) || segment.contains(courseSegmentList.get(i)))){
                     Toast.makeText(mContext, "Course Clashes", Toast.LENGTH_SHORT).show();
                     return;
 
