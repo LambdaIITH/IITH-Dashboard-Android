@@ -542,7 +542,6 @@ public class MainActivity extends AppCompatActivity
                     if (which == 0) {
                         sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
                         b1.show();
-
                         sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
 
                     } else {
@@ -555,6 +554,25 @@ public class MainActivity extends AppCompatActivity
             });
             b.show();
 
+           final AlertDialog.Builder acadDialog = new AlertDialog.Builder(this);
+           acadDialog.setTitle("Do you want to recieve notifcation about acad calendar events?");
+           String[] acadPrefs = {"YES", "NO"};
+           acadDialog.setCancelable(false);
+           acadDialog.setItems(acadPrefs, new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   if (which == 0) {
+                       sharedPreferences.edit().putBoolean("EnableAcadNotification", true).commit();
+                       sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
+
+                   } else {
+                       sharedPreferences.edit().putBoolean("EnableAcadNotification", false).commit();
+                   }
+
+               }
+           });
+
+           acadDialog.show();
 
             sharedPreferences.edit().putBoolean("FirstAfterV1.22", false).commit();
 
@@ -606,11 +624,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-
                 sharedPreferences.edit().putString("DefaultSegment", Integer.toString(22 * which + 12)).commit();
                 dialog.dismiss();
-
-
 
             }
 
@@ -690,7 +705,7 @@ public class MainActivity extends AppCompatActivity
         BusData();
         messData();
         GetCalendarData();
-        System.out.println("In main activity");
+        //System.out.println("In main activity");
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
             @Override
             public void onRequestFinished(Request<Object> request) {
@@ -705,7 +720,6 @@ public class MainActivity extends AppCompatActivity
                 ft.attach(fragment);
                 ft.commitAllowingStateLoss();
                 return;
-
 
             }
         });
@@ -1013,36 +1027,27 @@ public class MainActivity extends AppCompatActivity
                            // System.out.println(response);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("AcadCalendar",response).apply();
-                            ICalendar ical = Biweekly.parse(response).first();
-                            VEvent event = ical.getEvents().get(0);
-                            System.out.println(event.getDateStart());
 
-                            //System.out.println(summary);
-                            //add it into shard preferences
-                            //and be done with the function here.
-                            //going to make a test notification
                             /*
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "AcadEventAlerts")
                                     .setSmallIcon(R.drawable.ic_notification)
                                     .setContentTitle("Retrieved Calendar")
                                     .setContentText("Calendar was synced from Google Calendar")
                                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                             */
 
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
-
-                            // notificationId is a unique int for each notification that you must define
-                            notificationManager.notify(1571, builder.build());*/
-
-                            PeriodicWorkRequest testPeriodicRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 1,TimeUnit.DAYS)
+                            PeriodicWorkRequest acadPeriodicRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 1,TimeUnit.DAYS)
                                     .addTag("ACADEVENTS")
                                     .build();
-                            OneTimeWorkRequest testRequest = new OneTimeWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class)
-                                    .addTag("ACADEVENTS")
-                                    .build();
-                            //WorkManager.getInstance()
-                              //      .enqueue(testRequest);
-                            WorkManager.getInstance()
-                                    .enqueue(testPeriodicRequest);
+                            //OneTimeWorkRequest testRequest = new OneTimeWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class)
+                            //      .addTag("ACADEVENTS")
+                            //    .build();
+                            //WorkManager.getInstance().enqueue(testRequest);
+
+                            //do not enqueue a request if a user does not want notifications.
+                            if(sharedPreferences.getBoolean("EnableAcadNotification",true))
+                                WorkManager.getInstance().enqueue(acadPeriodicRequest);
+
                         } catch (Error error) {
                             System.out.println(error);
                         }
