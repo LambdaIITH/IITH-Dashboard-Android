@@ -51,7 +51,6 @@ public class NotificationWorker extends Worker {
 
         notificationManager.notify(2821 + Calendar.getInstance().get(Calendar.HOUR_OF_DAY), repeatedNotification);
 
-
         return Result.success();
     }
 
@@ -60,8 +59,6 @@ public class NotificationWorker extends Worker {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Hours);
         calendar.set(Calendar.MINUTE, Mins);
-
-
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         String desc = dateFormat.format(calendar.getTime());
         NotificationCompat.Builder builder =
@@ -71,16 +68,13 @@ public class NotificationWorker extends Worker {
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                                 R.mipmap.application_icon_foreground));
 
-
         if (CourseName.equals("Name")) {
             builder.setContentTitle("Lecture : " + CourseID);
         } else {
             builder.setContentTitle("Lecture : " + CourseName);
         }
 
-
         //builder.addAction(R.mipmap.sync , "SNOOZE" , SnoozeIntent);
-
 
         builder.setContentText(desc)
                 
