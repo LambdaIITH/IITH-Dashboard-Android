@@ -25,16 +25,12 @@ import Model.Lecture;
 public class NotificationInitiator extends Worker {
 
     public NotificationInitiator(@NonNull Context context, @NonNull WorkerParameters workerParams) {
-
         super(context, workerParams);
-
     }
 
     @NonNull
     @Override
     public Result doWork() {
-
-
 
         WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -59,10 +55,6 @@ public class NotificationInitiator extends Worker {
             case Calendar.MONDAY:
                 segments = "ABCDPQWX";
                 break;
-
-
-
-
             case Calendar.TUESDAY:
                 segments = "DEFGRSYZ";
                 break;
@@ -105,8 +97,6 @@ public class NotificationInitiator extends Worker {
                 }
             }
         }
-
-
         return Result.success();
     }
 
@@ -114,10 +104,5 @@ public class NotificationInitiator extends Worker {
     public void onStopped() {
         WorkManager.getInstance().cancelAllWork();
         super.onStopped();
-
-
-
-
-
     }
 }

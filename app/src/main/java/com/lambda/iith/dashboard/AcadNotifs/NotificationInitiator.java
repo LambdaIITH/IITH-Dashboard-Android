@@ -85,30 +85,58 @@ public class NotificationInitiator extends Worker {
 
         for(int i=0;i<allEvents.size();i++){
             VEvent curr = allEvents.get(i);
-            if(now.before(curr.getDateStart().getValue()))
+            Calendar nextEventDate = Calendar.getInstance();
+            nextEventDate.setTime(curr.getDateStart().getValue());
+            Calendar tom = Calendar.getInstance();
+
+            tom.add(Calendar.DAY_OF_YEAR,1);
+            if(nextEventDate.get(Calendar.DAY_OF_YEAR) == tom.get(Calendar.DAY_OF_YEAR))
+            {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.MINUTE, 00);
+                cal.set(Calendar.HOUR_OF_DAY, 20);
+                long diff1 =  cal.getTimeInMillis() - System.currentTimeMillis();
+                if(diff1 < 0)
+                    diff1 = 0;
+                System.out.println("Registering work event");
+                Data.Builder data = new Data.Builder().putString("Title",curr.getSummary().getValue()).putString("Content","Tomorrow");
+                OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                        .addTag("ACADEVENTS")
+                        .setInputData(data.build())
+                        .setInitialDelay(diff1, TimeUnit.MILLISECONDS)
+                        .build();
+
+                if(diff1 > 0) {
+                    WorkManager.getInstance()
+                            .enqueue(oneTimeWorkRequest);
+                }
+
+            }
+            else if(now.before(curr.getDateStart().getValue()))//event has not started yet
                  continue;
+            else {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.MINUTE, 30);
+                cal.set(Calendar.HOUR_OF_DAY, 9);
+                long diff = cal.getTimeInMillis() - System.currentTimeMillis();
 
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.MINUTE, 00);
-            cal.set(Calendar.HOUR_OF_DAY, 20);
-            long diff =  cal.getTimeInMillis() - System.currentTimeMillis();
-            if(diff<0)
-                diff = 0;
-            Data.Builder data = new Data.Builder().putString("Title",curr.getSummary().getValue()).putString("Content",curr.getSummary().getValue());
-            OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
-                    .addTag("ACADEVENTS")
-                    .setInputData(data.build())
-                    .setInitialDelay(diff, TimeUnit.MILLISECONDS)
-                    .build();
-            WorkManager.getInstance()
-                    .enqueue(oneTimeWorkRequest);
+                if (diff < 0)
+                    diff = 0;
+
+                Data.Builder data = new Data.Builder().putString("Title", curr.getSummary().getValue()).putString("Content", curr.getSummary().getValue());
+                OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                        .addTag("ACADEVENTS")
+                        .setInputData(data.build())
+                        .setInitialDelay(diff, TimeUnit.MILLISECONDS)
+                        .build();
+
+                if (diff > 0) {
+                    WorkManager.getInstance()
+                            .enqueue(oneTimeWorkRequest);
+                }
+            }
+
         }
-
-        /*
-        DateFormat df = new SimpleDateFormat("dd/mm/yyyy HH");
-        Date nextEvent = allEvents.get(0).getDateEnd().getValue();
-        String titleString =  allEvents.get(0).getSummary().getValue();
-        */
 
         return Result.success();
     }
