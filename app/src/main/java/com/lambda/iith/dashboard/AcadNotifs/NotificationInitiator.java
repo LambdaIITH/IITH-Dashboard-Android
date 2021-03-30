@@ -123,7 +123,7 @@ public class NotificationInitiator extends Worker {
                 if (diff < 0)
                     diff = 0;
 
-                Data.Builder data = new Data.Builder().putString("Title", curr.getSummary().getValue()).putString("Content", curr.getSummary().getValue());
+                Data.Builder data = new Data.Builder().putString("Title", curr.getSummary().getValue()).putString("Content", "Today");
                 OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
                         .addTag("ACADEVENTS")
                         .setInputData(data.build())
