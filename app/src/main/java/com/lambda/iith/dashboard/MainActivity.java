@@ -554,32 +554,36 @@ public class MainActivity extends AppCompatActivity
             });
             b.show();
 
-           final AlertDialog.Builder acadDialog = new AlertDialog.Builder(this);
-           acadDialog.setTitle("Do you want to recieve notifcation about acad calendar events?");
-           String[] acadPrefs = {"YES", "NO"};
-           acadDialog.setCancelable(false);
-           acadDialog.setItems(acadPrefs, new DialogInterface.OnClickListener() {
-               @Override
-               public void onClick(DialogInterface dialog, int which) {
-                   if (which == 0) {
-                       sharedPreferences.edit().putBoolean("EnableAcadNotification", true).commit();
-                       sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
-
-                   } else {
-                       sharedPreferences.edit().putBoolean("EnableAcadNotification", false).commit();
-                   }
-
-               }
-           });
-
-           acadDialog.show();
-
             sharedPreferences.edit().putBoolean("FirstAfterV1.22", false).commit();
 
         }
 
-        super.onStart();
+        if (sharedPreferences.getBoolean("FirstAfterV1.30", true)) {
 
+            final AlertDialog.Builder acadDialog = new AlertDialog.Builder(this);
+            acadDialog.setTitle("Do you want to receive notification about acad calendar events?");
+            String[] acadPrefs = {"YES", "NO"};
+            acadDialog.setCancelable(false);
+            acadDialog.setItems(acadPrefs, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0) {
+                        sharedPreferences.edit().putBoolean("EnableAcadNotification", true).commit();
+                        sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
+
+                    } else {
+                        sharedPreferences.edit().putBoolean("EnableAcadNotification", false).commit();
+                    }
+
+                }
+            });
+
+            acadDialog.show();
+
+            sharedPreferences.edit().putBoolean("FirstAfterV1.30", false).apply();
+        }
+
+        super.onStart();
 
     }
 
