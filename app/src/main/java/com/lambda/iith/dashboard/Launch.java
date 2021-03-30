@@ -36,9 +36,8 @@ public class Launch extends Activity {
         createNotificationChannel();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
-
+            //the user has not been logged in
             startActivity(new Intent(Launch.this, NoLogin.class));
-
 
         } else {
             if (sharedPreferences.getBoolean("EnableLectureNotification", false)) {
@@ -46,7 +45,6 @@ public class Launch extends Activity {
             }
             startActivity(new Intent(Launch.this, MainActivity.class));
         }
-
 
         finish();
 
@@ -65,7 +63,7 @@ public class Launch extends Activity {
 
             int importance1 = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel2 = new NotificationChannel("Alerts", "Important Alerts", importance1);
-            channel.setDescription("Lecture Reminders");
+            channel2.setDescription("Lecture Reminders");
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
@@ -73,16 +71,25 @@ public class Launch extends Activity {
 
             int importance2 = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel3 = new NotificationChannel("CabSharingAlerts", "Cab Sharing", importance2);
-            channel.setDescription("Lecture Reminders");
+            channel3.setDescription("Cab Sharing Alerts");
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
             notificationManager3.createNotificationChannel(channel3);
+
+			//notification channel for academic calendar reminders.
+            int importance3 = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel acadChannel = new NotificationChannel("AcadEventAlerts", "Academic Reminders", importance2);
+            acadChannel.setDescription("Academic Calendar Events");
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager4 = getSystemService(NotificationManager.class);
+            notificationManager4.createNotificationChannel(acadChannel);
         }
     }
 
     private void refreshNotificationProcess() {
-        WorkManager.getInstance().cancelAllWork();
+        WorkManager.getInstance().cancelAllWorkByTag("LECTUREREMINDER");
         PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(NotificationInitiator.class, 6, TimeUnit.HOURS).build();
         WorkManager.getInstance().enqueue(periodicWorkRequest);
     }

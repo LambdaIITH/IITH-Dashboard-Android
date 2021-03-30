@@ -19,15 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -72,11 +76,16 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import Model.Filter;
+import biweekly.Biweekly;
+import biweekly.ICalendar;
+import biweekly.component.VEvent;
 
 
 public class MainActivity extends AppCompatActivity
@@ -533,7 +542,6 @@ public class MainActivity extends AppCompatActivity
                     if (which == 0) {
                         sharedPreferences.edit().putBoolean("EnableLectureNotification", true).commit();
                         b1.show();
-
                         sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
 
                     } else {
@@ -546,6 +554,25 @@ public class MainActivity extends AppCompatActivity
             });
             b.show();
 
+           final AlertDialog.Builder acadDialog = new AlertDialog.Builder(this);
+           acadDialog.setTitle("Do you want to recieve notifcation about acad calendar events?");
+           String[] acadPrefs = {"YES", "NO"};
+           acadDialog.setCancelable(false);
+           acadDialog.setItems(acadPrefs, new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   if (which == 0) {
+                       sharedPreferences.edit().putBoolean("EnableAcadNotification", true).commit();
+                       sharedPreferences.edit().putBoolean("RequestAutostart", true).commit();
+
+                   } else {
+                       sharedPreferences.edit().putBoolean("EnableAcadNotification", false).commit();
+                   }
+
+               }
+           });
+
+           acadDialog.show();
 
             sharedPreferences.edit().putBoolean("FirstAfterV1.22", false).commit();
 
@@ -574,9 +601,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
                 alert.show();
-
-
-
             }
         }
     }
@@ -600,11 +624,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-
                 sharedPreferences.edit().putString("DefaultSegment", Integer.toString(22 * which + 12)).commit();
                 dialog.dismiss();
-
-
 
             }
 
@@ -683,7 +704,8 @@ public class MainActivity extends AppCompatActivity
 
         BusData();
         messData();
-
+        GetCalendarData();
+        //System.out.println("In main activity");
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
             @Override
             public void onRequestFinished(Request<Object> request) {
@@ -698,7 +720,6 @@ public class MainActivity extends AppCompatActivity
                 ft.attach(fragment);
                 ft.commitAllowingStateLoss();
                 return;
-
 
             }
         });
@@ -730,7 +751,7 @@ public class MainActivity extends AppCompatActivity
 
 
                             }
-                            //System.out.println(Buses);
+                            System.out.println(Buses);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
 
                             Buses.remove("LINGAMPALLYW");
@@ -953,7 +974,6 @@ public class MainActivity extends AppCompatActivity
                     courseList = (List<String>) documentSnapshot.get("identifiedCourses");
                     courseSegmentList = (List<String>) documentSnapshot.get("identifiedSegments");
                     slotList = (List<String>) documentSnapshot.get("identifiedSlots");
-
                 }
                 CourseName = new ArrayList<>();
                 try {
@@ -992,6 +1012,56 @@ public class MainActivity extends AppCompatActivity
         });
 
 
+    }
+
+    private void GetCalendarData() {
+        String url = "https://calendar.google.com/calendar/ical/c_ll73em8s81nhu8nbjvggqhmbgc%40group.calendar.google.com/public/basic.ics";
+
+        StringRequest icsRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("Response Recieved.");
+                        try {
+                           // System.out.println(response);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("AcadCalendar",response).apply();
+
+                            /*
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "AcadEventAlerts")
+                                    .setSmallIcon(R.drawable.ic_notification)
+                                    .setContentTitle("Retrieved Calendar")
+                                    .setContentText("Calendar was synced from Google Calendar")
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                             */
+
+                            PeriodicWorkRequest acadPeriodicRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 1,TimeUnit.DAYS)
+                                    .addTag("ACADEVENTS")
+                                    .build();
+                            //OneTimeWorkRequest testRequest = new OneTimeWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class)
+                            //      .addTag("ACADEVENTS")
+                            //    .build();
+                            //WorkManager.getInstance().enqueue(testRequest);
+
+                            //do not enqueue a request if a user does not want notifications.
+                            if(sharedPreferences.getBoolean("EnableAcadNotification",true))
+                                WorkManager.getInstance().enqueue(acadPeriodicRequest);
+
+                        } catch (Error error) {
+                            System.out.println(error);
+                        }
+                    }
+                } , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Some error occurred");
+                System.out.println(error);
+            }
+        }
+        );
+        queue.add(icsRequest);
+        System.out.println("finished execution");
     }
 
     //Saving timetable
