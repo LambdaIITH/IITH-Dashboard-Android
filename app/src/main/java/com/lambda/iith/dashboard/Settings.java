@@ -259,13 +259,7 @@ public class Settings extends AppCompatActivity {
         timetable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (timetable.isChecked()) {
-                    edit.putBoolean("timetable", true);
-                } else {
-                    edit.putBoolean("timetable", false);
-
-
-                }
+                edit.putBoolean("timetable", timetable.isChecked());
                 edit.commit();
             }
         });
@@ -274,12 +268,7 @@ public class Settings extends AppCompatActivity {
         cab.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (cab.isChecked()) {
-                    edit.putBoolean("cab", true);
-                } else {
-                    edit.putBoolean("cab", false);
-
-                }
+                edit.putBoolean("cab", cab.isChecked());
                 edit.commit();
             }
         });
@@ -287,12 +276,7 @@ public class Settings extends AppCompatActivity {
         bus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (bus.isChecked()) {
-                    edit.putBoolean("bus", true);
-                } else {
-                    edit.putBoolean("bus", false);
-
-                }
+                edit.putBoolean("bus", bus.isChecked());
                 edit.commit();
             }
         });
@@ -300,12 +284,7 @@ public class Settings extends AppCompatActivity {
         mess.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mess.isChecked()) {
-                    edit.putBoolean("mess", true);
-                } else {
-                    edit.putBoolean("mess", false);
-
-                }
+                edit.putBoolean("mess", mess.isChecked());
                 edit.commit();
             }
         });

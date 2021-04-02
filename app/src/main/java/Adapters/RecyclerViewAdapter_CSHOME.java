@@ -24,7 +24,7 @@ public class RecyclerViewAdapter_CSHOME extends RecyclerView.Adapter<RecyclerVie
     private ArrayList<String> mEmails = new ArrayList<>();
 
 
-    private Context mContext;
+    private final Context mContext;
 
     public RecyclerViewAdapter_CSHOME(Context context, ArrayList<String> Emails) {
 

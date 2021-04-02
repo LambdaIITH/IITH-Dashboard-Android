@@ -26,10 +26,10 @@ import Model.Lecture;
 
 public class RecyclerViewAdapter_TT extends RecyclerView.Adapter<RecyclerViewAdapter_TT.MyViewHolder> {
 
-    private Context mContext;
-    private List<Lecture> lectures;
+    private final Context mContext;
+    private final List<Lecture> lectures;
     private List<ColorInt> colours;
-    private int temp = 0;
+    private final int temp = 0;
     private int width;
 
     public RecyclerViewAdapter_TT(Context context, List<Lecture> lectures) {

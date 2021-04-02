@@ -23,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mEmails = new ArrayList<>();
 
 
-    private Context mContext;
+    private final Context mContext;
 
     public RecyclerViewAdapter(Context context, ArrayList<String> Emails) {
 

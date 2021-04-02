@@ -23,15 +23,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -57,6 +54,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+import com.lambda.iith.dashboard.AcadNotifs.icsParse;
 import com.lambda.iith.dashboard.BackgroundTasks.DPload;
 import com.lambda.iith.dashboard.Cabsharing.BookingFilter;
 import com.lambda.iith.dashboard.Cabsharing.CabSharing;
@@ -76,16 +74,11 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import Model.Filter;
-import biweekly.Biweekly;
-import biweekly.ICalendar;
-import biweekly.component.VEvent;
 
 
 public class MainActivity extends AppCompatActivity
@@ -113,7 +106,7 @@ public class MainActivity extends AppCompatActivity
     private RequestQueue queue , queue1;
     private SwipeRefreshLayout pullToRefresh;
     private FragmentManager fragmentManager;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -561,7 +554,7 @@ public class MainActivity extends AppCompatActivity
         if (sharedPreferences.getBoolean("FirstAfterV1.30", true)) {
 
             final AlertDialog.Builder acadDialog = new AlertDialog.Builder(this);
-            acadDialog.setTitle("Do you want to receive notification about acad calendar events?");
+            acadDialog.setTitle("Do you want to receive notification about Academic Calendar events?");
             String[] acadPrefs = {"YES", "NO"};
             acadDialog.setCancelable(false);
             acadDialog.setItems(acadPrefs, new DialogInterface.OnClickListener() {
@@ -1023,38 +1016,22 @@ public class MainActivity extends AppCompatActivity
 
         StringRequest icsRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
+
                     @Override
                     public void onResponse(String response) {
                         System.out.println("Response Recieved.");
-                        try {
-                           // System.out.println(response);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("AcadCalendar",response).apply();
+                        icsParse icsparse = new icsParse(response) ;
 
-                            /*
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "AcadEventAlerts")
-                                    .setSmallIcon(R.drawable.ic_notification)
-                                    .setContentTitle("Retrieved Calendar")
-                                    .setContentText("Calendar was synced from Google Calendar")
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                             */
+                        sharedPreferences.edit().putString("AcadCalendar",icsparse.getArray().toString()).apply();
+
 
                             PeriodicWorkRequest acadPeriodicRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 1,TimeUnit.DAYS)
                                     .addTag("ACADEVENTS")
                                     .build();
-                            //OneTimeWorkRequest testRequest = new OneTimeWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class)
-                            //      .addTag("ACADEVENTS")
-                            //    .build();
-                            //WorkManager.getInstance().enqueue(testRequest);
 
                             //do not enqueue a request if a user does not want notifications.
                             if(sharedPreferences.getBoolean("EnableAcadNotification",true))
                                 WorkManager.getInstance().enqueue(acadPeriodicRequest);
-
-                        } catch (Error error) {
-                            System.out.println(error);
-                        }
                     }
                 } , new Response.ErrorListener() {
             @Override

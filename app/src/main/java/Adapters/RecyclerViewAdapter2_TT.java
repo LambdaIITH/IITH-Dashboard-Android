@@ -17,10 +17,10 @@ import Model.Lecture;
 
 public class RecyclerViewAdapter2_TT extends RecyclerView.Adapter<RecyclerViewAdapter2_TT.MyViewHolder> {
 
-    private Context mContext;
-    private List<Lecture> lectures;
-    private List<String> T1;
-    private List<String> T2;
+    private final Context mContext;
+    private final List<Lecture> lectures;
+    private final List<String> T1;
+    private final List<String> T2;
 
     public RecyclerViewAdapter2_TT(Context context, List<Lecture> lectures, List<String> T1, List<String> T2) {
         this.mContext = context;

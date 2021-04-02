@@ -23,7 +23,7 @@ public class TimeTableLegendAdapter extends RecyclerView.Adapter<TimeTableLegend
     private ArrayList<String> mCourseCode = new ArrayList<>();
 
 
-    private Context mContext;
+    private final Context mContext;
 
     public TimeTableLegendAdapter(Context context, ArrayList<String> Names, ArrayList<String> Emails) {
         mCourse = Names;

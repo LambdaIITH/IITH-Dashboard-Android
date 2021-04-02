@@ -26,7 +26,7 @@ public class HomeTimeTableAdapter extends RecyclerView.Adapter<HomeTimeTableAdap
     private ArrayList<String> mTime1 = new ArrayList<>();
     private ArrayList<String> mTime2 = new ArrayList<>();
 
-    private Context mContext;
+    private final Context mContext;
 
     public HomeTimeTableAdapter(Context context, ArrayList<Lecture> Names, ArrayList<String> Emails, ArrayList<String> Time2) {
         mCourse = Names;

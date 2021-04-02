@@ -69,9 +69,9 @@ public class Timetable extends Fragment {
     private RecyclerView myRV, legend;
     private int k = 1;
     private RelativeLayout Parent;
-    private ArrayList<Lecture> lectures1 = new ArrayList<>();
-    private ArrayList<String> T1 = new ArrayList<>();
-    private ArrayList<String> T2 = new ArrayList<>();
+    private final ArrayList<Lecture> lectures1 = new ArrayList<>();
+    private final ArrayList<String> T1 = new ArrayList<>();
+    private final ArrayList<String> T2 = new ArrayList<>();
     private ArrayList<Integer> colour;
 
     public static ArrayList<String> getArrayList(String key) {

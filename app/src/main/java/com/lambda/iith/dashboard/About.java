@@ -50,7 +50,7 @@ public class About extends AppCompatActivity {
         });
         final Toast mToast = Toast.makeText(About.this, "4 more times for hidden options", Toast.LENGTH_SHORT);
         vesrion.setOnTouchListener(new View.OnTouchListener() {
-            Handler handler = new Handler();
+            final Handler handler = new Handler();
 
             int numberOfTaps = 0;
             long lastTapTimeMs = 0;
