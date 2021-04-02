@@ -1,8 +1,8 @@
 package structs;
 
 public class BsItem {
-    private String bsType;
-    private int backGroundImage;
+    private final String bsType;
+    private final int backGroundImage;
 
     public BsItem(String bsType, int backGroundImage) {
         this.bsType = bsType;

@@ -62,16 +62,16 @@ public class HomeScreenFragment extends Fragment {
     private CardView bus, mess, timetable, cab;
     private RecyclerView CabSharing;
     private TextView mess1;
-    private ArrayList<String> mEmails = new ArrayList<>();
+    private final ArrayList<String> mEmails = new ArrayList<>();
     private View view;
     private RecyclerView myRV;
     private SharedPreferences sharedPref;
     private TextView t1, t2, t3, t4, mealName , b1 , b2 , b3 , b4;
     private MultiStateToggleButton toggleButton;
     private ConstraintLayout constraintLayout;
-    private ArrayList<Lecture> lectures1 = new ArrayList<>();
-    private ArrayList<String> T1 = new ArrayList<>();
-    private ArrayList<String> T2 = new ArrayList<>();
+    private final ArrayList<Lecture> lectures1 = new ArrayList<>();
+    private final ArrayList<String> T1 = new ArrayList<>();
+    private final ArrayList<String> T2 = new ArrayList<>();
 
     @Nullable
     @Override

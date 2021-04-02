@@ -23,7 +23,7 @@ public class BSAdapter extends RecyclerView.Adapter<BSAdapter.ViewHolder> {
     private ArrayList<String> mEmails = new ArrayList<>();
 
 
-    private Context mContext;
+    private final Context mContext;
 
     public BSAdapter(Context context, ArrayList<String> Emails) {
 

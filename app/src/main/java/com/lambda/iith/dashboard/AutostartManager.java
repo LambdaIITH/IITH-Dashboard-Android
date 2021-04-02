@@ -10,23 +10,23 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 
 public class AutostartManager {
-    private String BRAND_ASUS = "asus";
-    private String PACKAGE_ASUS_MAIN = "com.asus.mobilemanager";
-    private String PACKAGE_ASUS_COMPONENT = "com.asus.mobilemanager.powersaver.PowerSaverSettings";
+    private final String BRAND_ASUS = "asus";
+    private final String PACKAGE_ASUS_MAIN = "com.asus.mobilemanager";
+    private final String PACKAGE_ASUS_COMPONENT = "com.asus.mobilemanager.powersaver.PowerSaverSettings";
 
     /***
      * Honor
      */
-    private String BRAND_HONOR = "honor";
-    private String PACKAGE_HONOR_MAIN = "com.huawei.systemmanager";
-    private String PACKAGE_HONOR_COMPONENT = "com.huawei.systemmanager.optimize.process.ProtectActivity";
+    private final String BRAND_HONOR = "honor";
+    private final String PACKAGE_HONOR_MAIN = "com.huawei.systemmanager";
+    private final String PACKAGE_HONOR_COMPONENT = "com.huawei.systemmanager.optimize.process.ProtectActivity";
 
     /***
      * Huawei
      */
-    private String BRAND_HUAWEI = "huawei";
-    private String PACKAGE_HUAWEI_MAIN = "com.huawei.systemmanager";
-    private String PACKAGE_HUAWEI_COMPONENT = "com.huawei.systemmanager.optimize.process.ProtectActivity";
+    private final String BRAND_HUAWEI = "huawei";
+    private final String PACKAGE_HUAWEI_MAIN = "com.huawei.systemmanager";
+    private final String PACKAGE_HUAWEI_COMPONENT = "com.huawei.systemmanager.optimize.process.ProtectActivity";
 
     private Context context = null;
     public AutostartManager(Context context1) {

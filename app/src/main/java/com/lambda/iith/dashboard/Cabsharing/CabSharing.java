@@ -65,8 +65,8 @@ public class CabSharing extends AppCompatActivity {
     private ImageButton CabRefresh;
     private TextView textView;
     private CardView dateCard , Time1 , RouteC;
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mEmails = new ArrayList<>();
+    private final ArrayList<String> mNames = new ArrayList<>();
+    private final ArrayList<String> mEmails = new ArrayList<>();
     private String email, startTime, endTime;
     private TextView Date, time1, time2, cab , Date2;
     private int CabID;
@@ -164,7 +164,7 @@ public class CabSharing extends AppCompatActivity {
         }
 
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
 
         //we are connected to a network
         ParseJSON();

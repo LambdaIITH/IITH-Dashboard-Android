@@ -33,10 +33,10 @@ public class timetableComp extends AsyncTask<Context, Void, ArrayList<ArrayMap<S
     public static ArrayList<Integer> colorArray = new ArrayList<>();
     //private ArrayMap<String, ArrayMap<String, Lecture>> courseMap = new ArrayMap<>();
     private SharedPreferences sharedPreferences1;
-    private String Seg = "12";
+    private final String Seg = "12";
     private Context mContext;
     private MultiStateToggleButton timetableView, DaySelect;
-    private ArrayList<ArrayMap<String, Lecture>> courseMap = new ArrayList<>();
+    private final ArrayList<ArrayMap<String, Lecture>> courseMap = new ArrayList<>();
     private RecyclerView myRV, legend;
     private ArrayList<Integer> colour;
 

@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.Date;
 
 public class GetNextBus extends AsyncTask <TextView , Void , Void> {
-    private SharedPreferences sharedPref;
-    private int k;
+    private final SharedPreferences sharedPref;
+    private final int k;
     private String a,b,c,d;
     private TextView t1,t2,t3,t4;
 
