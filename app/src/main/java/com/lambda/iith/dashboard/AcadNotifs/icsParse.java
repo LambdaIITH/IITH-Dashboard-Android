@@ -20,7 +20,7 @@ public class icsParse {
                     i++;
                     JSONObject JO = new JSONObject();
                     while (!temp[i].contains("END:VEVENT")) {
-                        String[] eve = temp[i].split(":");
+                        String[] eve = temp[i].split(":",2);
                         try {
                         if (eve[0].contains("DTSTART;VALUE=DATE")) {
 
@@ -42,8 +42,6 @@ public class icsParse {
 
             }
 
-
-        System.out.println("HHHH" + AcadCal.toString());
     }
 
     public JSONArray getArray(){
