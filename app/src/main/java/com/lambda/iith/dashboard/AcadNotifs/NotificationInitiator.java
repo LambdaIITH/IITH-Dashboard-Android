@@ -79,7 +79,7 @@ public class NotificationInitiator extends Worker {
 
                 } else if (nextEventDate.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR)) {
                     Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.MINUTE, 00);
+                    cal.set(Calendar.MINUTE, 30);
                     cal.set(Calendar.HOUR_OF_DAY, 9);
                     long diff = cal.getTimeInMillis() - System.currentTimeMillis();
                     if (diff < 0)

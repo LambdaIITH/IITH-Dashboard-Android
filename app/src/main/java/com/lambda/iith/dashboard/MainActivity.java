@@ -1025,7 +1025,7 @@ public class MainActivity extends AppCompatActivity
                         sharedPreferences.edit().putString("AcadCalendar",icsparse.getArray().toString()).apply();
 
 
-                            PeriodicWorkRequest acadPeriodicRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 1,TimeUnit.DAYS)
+                            PeriodicWorkRequest acadPeriodicRequest = new PeriodicWorkRequest.Builder(com.lambda.iith.dashboard.AcadNotifs.NotificationInitiator.class, 6,TimeUnit.HOURS)
                                     .addTag("ACADEVENTS")
                                     .build();
 
